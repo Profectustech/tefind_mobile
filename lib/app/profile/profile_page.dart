@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:saleko/models/SignInResponse.dart';
-import 'package:saleko/providers/account_provider.dart';
-import 'package:saleko/providers/provider.dart';
-import 'package:saleko/services/navigation/navigator_service.dart';
-import 'package:saleko/services/navigation/route_names.dart';
-import 'package:saleko/utils/assets_manager.dart';
-import 'package:saleko/utils/app_colors.dart';
-import 'package:saleko/utils/helpers.dart';
-import 'package:saleko/utils/storage_util.dart';
+import 'package:te_find/models/SignInResponse.dart';
+import 'package:te_find/providers/account_provider.dart';
+import 'package:te_find/providers/provider.dart';
+import 'package:te_find/services/navigation/navigator_service.dart';
+import 'package:te_find/services/navigation/route_names.dart';
+import 'package:te_find/utils/assets_manager.dart';
+import 'package:te_find/utils/app_colors.dart';
+import 'package:te_find/utils/helpers.dart';
+import 'package:te_find/utils/storage_util.dart';
 
 import '../widgets/custom_profile_listTIle.dart';
 

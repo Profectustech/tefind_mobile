@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:saleko/providers/account_provider.dart';
-import 'package:saleko/utils/app_colors.dart';
-import 'package:saleko/utils/assets_manager.dart';
+import 'package:te_find/providers/account_provider.dart';
+import 'package:te_find/utils/app_colors.dart';
+import 'package:te_find/utils/assets_manager.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class shoppingCartListView extends ConsumerStatefulWidget {

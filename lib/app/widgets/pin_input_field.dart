@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:saleko/utils/app_colors.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:te_find/utils/app_colors.dart';
 import 'package:pinput/pinput.dart';
 
 class PinInputField extends StatefulWidget {
@@ -29,16 +30,17 @@ class _PinInputFieldState extends State<PinInputField> {
     const borderColor = AppColors.greyFaint;
 
     final defaultPinTheme = PinTheme(
-      width: 56,
-      height: 56,
+      width: 48.29.w,
+      height: 65.h,
       textStyle: const TextStyle(
         fontSize: 22,
-        color: AppColors.greenText,
+        fontWeight: FontWeight.bold,
+        color:  Colors.black,
       ),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: borderColor),
+        borderRadius: BorderRadius.circular(20.39.r),
+        border: Border.all(color: Colors.black),
       ),
     );
 
@@ -95,7 +97,7 @@ class _PinInputFieldState extends State<PinInputField> {
                 decoration: defaultPinTheme.decoration!.copyWith(
                   color: fillColor,
                   borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: focusedBorderColor),
+                  border: Border.all(color: Colors.black),
                 ),
               ),
               errorPinTheme: defaultPinTheme.copyBorderWith(

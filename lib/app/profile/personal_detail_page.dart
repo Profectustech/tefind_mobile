@@ -2,13 +2,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:saleko/app/change_password.dart';
-import 'package:saleko/providers/account_provider.dart';
-import 'package:saleko/providers/product_provider.dart';
-import 'package:saleko/providers/provider.dart';
-import 'package:saleko/utils/app_colors.dart';
-import 'package:saleko/utils/assets_manager.dart';
-import 'package:saleko/utils/progress_bar_manager/utility_app_bar.dart';
+import 'package:te_find/app/change_password.dart';
+import 'package:te_find/providers/account_provider.dart';
+import 'package:te_find/providers/product_provider.dart';
+import 'package:te_find/providers/provider.dart';
+import 'package:te_find/utils/app_colors.dart';
+import 'package:te_find/utils/assets_manager.dart';
+import 'package:te_find/utils/progress_bar_manager/utility_app_bar.dart';
 
 class PersonalDetailPage extends ConsumerStatefulWidget {
   const PersonalDetailPage({super.key});

@@ -1,4 +1,4 @@
-import 'package:saleko/utils/base_model.dart';
+import 'package:te_find/utils/base_model.dart';
 
 class NavStateProvider extends BaseModel {
   int _currentTabIndex = 0; // Defaults to chat tab

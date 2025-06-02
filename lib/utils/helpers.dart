@@ -4,10 +4,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:saleko/services/navigation/navigator_service.dart';
-import 'package:saleko/services/navigation/route_names.dart';
-import 'package:saleko/utils/app_colors.dart';
-import 'package:saleko/utils/custom_snackbar.dart';
+import 'package:te_find/services/navigation/navigator_service.dart';
+import 'package:te_find/services/navigation/route_names.dart';
+import 'package:te_find/utils/app_colors.dart';
+import 'package:te_find/utils/custom_snackbar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -53,7 +53,7 @@ Future<void> launchPhone(String phone) async {
 }
 
 showToast({String? title, String? message,Widget? icon}) {
-  showSalekoSnackBar( message ?? '',icon, true );
+  showte_findSnackBar( message ?? '',icon, true );
   // if (NavigatorService.navigationKey_.currentContext != null) {
   //   return showTopSnackBar(
   //       Overlay.of(NavigatorService.navigationKey_.currentContext!),
@@ -121,7 +121,7 @@ showToast({String? title, String? message,Widget? icon}) {
 
 
 showErrorToast({String? title, String? message,Widget? icon}) {
-  showSalekoSnackBar( message ?? '',icon, false );
+  showte_findSnackBar( message ?? '',icon, false );
   // if (NavigatorService.navigationKey_.currentContext != null) {
   //   return showTopSnackBar(
   //       Overlay.of(NavigatorService.navigationKey_.currentContext!),

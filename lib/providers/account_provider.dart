@@ -4,21 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:saleko/models/BannerModel.dart';
-import 'package:saleko/models/auth_model.dart';
-import 'package:saleko/models/SignInResponse.dart';
-import 'package:saleko/models/storage/app_storage.dart';
-import 'package:saleko/models/util_model.dart';
-import 'package:saleko/repository/auth_repository.dart';
-import 'package:saleko/services/dialog_service.dart';
-import 'package:saleko/services/navigation/navigator_service.dart';
-import 'package:saleko/services/navigation/route_names.dart';
-import 'package:saleko/utils/assets_manager.dart';
-import 'package:saleko/utils/base_model.dart';
-import 'package:saleko/utils/enums.dart';
-import 'package:saleko/utils/helpers.dart';
-import 'package:saleko/utils/locator.dart';
-import 'package:saleko/utils/storage_util.dart';
+import 'package:te_find/models/BannerModel.dart';
+import 'package:te_find/models/auth_model.dart';
+import 'package:te_find/models/SignInResponse.dart';
+import 'package:te_find/models/storage/app_storage.dart';
+import 'package:te_find/models/util_model.dart';
+import 'package:te_find/repository/auth_repository.dart';
+import 'package:te_find/services/dialog_service.dart';
+import 'package:te_find/services/navigation/navigator_service.dart';
+import 'package:te_find/services/navigation/route_names.dart';
+import 'package:te_find/utils/assets_manager.dart';
+import 'package:te_find/utils/base_model.dart';
+import 'package:te_find/utils/enums.dart';
+import 'package:te_find/utils/helpers.dart';
+import 'package:te_find/utils/locator.dart';
+import 'package:te_find/utils/storage_util.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:uuid/uuid.dart';
 
@@ -709,7 +709,7 @@ class AccountProvider extends BaseModel {
         ],
         webAuthenticationOptions: WebAuthenticationOptions(
           // TODO: Set the `clientId` and `redirectUri` arguments to the values you entered in the Apple Developer portal during the setup
-          clientId: 'com.saleko.saleko',
+          clientId: 'com.te_find.te_find',
           redirectUri:
               // For web your redirect URI needs to be the host of the "current page",
               // while for Android you will be using the API server that redirects back into your app via a deep link

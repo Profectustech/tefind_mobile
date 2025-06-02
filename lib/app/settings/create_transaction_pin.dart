@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:saleko/services/navigation/route_names.dart';
-import 'package:saleko/utils/app_colors.dart';
-import 'package:saleko/utils/progress_bar_manager/utility_app_bar.dart';
+import 'package:te_find/services/navigation/route_names.dart';
+import 'package:te_find/utils/app_colors.dart';
+import 'package:te_find/utils/progress_bar_manager/utility_app_bar.dart';
 
 import '../../providers/account_provider.dart';
 import '../../providers/provider.dart';
@@ -45,7 +45,7 @@ class _CreateTransactionPinState extends ConsumerState<CreateTransactionPin> {
             ],
           ),
           content: Text(
-            "You can now carry out transactions with your Saleko Buyer Wallet",
+            "You can now carry out transactions with your te_find Buyer Wallet",
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 12),
           ),

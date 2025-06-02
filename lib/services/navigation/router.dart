@@ -1,51 +1,49 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:saleko/app/bottom_nav/bottom_nav.dart';
-import 'package:saleko/app/bottom_nav/nav.dart';
-import 'package:saleko/app/forgotPassword/create_new_pin_screen.dart';
-import 'package:saleko/app/forgotPassword/email_input_screen.dart';
-import 'package:saleko/app/forgotPassword/email_verification_screen.dart';
-import 'package:saleko/app/forgotPassword/set_new_password.dart';
-import 'package:saleko/app/home/products/all_fashion_product.dart';
-import 'package:saleko/app/home/check_out.dart';
-import 'package:saleko/app/home/confirmed_payment.dart';
-import 'package:saleko/app/home/products/fashion_page.dart';
-import 'package:saleko/app/home/market/all_market_page.dart';
-import 'package:saleko/app/home/pay_with_wallet.dart';
-import 'package:saleko/app/home/products/product_detail.dart';
-import 'package:saleko/app/home/products/view_all_products.dart';
-import 'package:saleko/app/home/top_deal_fashion.dart';
-import 'package:saleko/app/login/login_screen.dart';
-import 'package:saleko/app/negotiation%20screen/negotiations.dart';
-import 'package:saleko/app/notification.dart';
-import 'package:saleko/app/onboarding/onboarding_screen_view.dart';
-import 'package:saleko/app/profile/add_new_address.dart';
-import 'package:saleko/app/profile/faq_page.dart';
-import 'package:saleko/app/profile/help_page.dart';
-import 'package:saleko/app/profile/legal_terms_page.dart';
-import 'package:saleko/app/profile/privacy_policy_page.dart';
-import 'package:saleko/app/profile/term_of_use.dart';
-import 'package:saleko/app/settings/change_password_page.dart';
-import 'package:saleko/app/settings/change_transaction_pin.dart';
-import 'package:saleko/app/settings/delete_account.dart';
-import 'package:saleko/app/profile/delivery_address.dart';
-import 'package:saleko/app/profile/orders/my_oders_page.dart';
-import 'package:saleko/app/profile/personal_detail_page.dart';
-import 'package:saleko/app/settings/setting_page.dart';
-import 'package:saleko/app/profile/wallet_page.dart';
-import 'package:saleko/app/profile/wishlight_page.dart';
-import 'package:saleko/app/sign_up/set_password.dart';
-import 'package:saleko/app/sign_up/set_up_profile.dart';
-import 'package:saleko/app/sign_up/signup.dart';
-import 'package:saleko/app/sign_up/verify_account.dart';
-import 'package:saleko/app/sign_up/verify_email_or_password.dart';
-import 'package:saleko/models/Products.dart';
+import 'package:te_find/app/bottom_nav/bottom_nav.dart';
+import 'package:te_find/app/bottom_nav/nav.dart';
+import 'package:te_find/app/forgotPassword/email_input_screen.dart';
+import 'package:te_find/app/forgotPassword/set_new_password.dart';
+import 'package:te_find/app/home/products/all_fashion_product.dart';
+import 'package:te_find/app/home/check_out.dart';
+import 'package:te_find/app/home/confirmed_payment.dart';
+import 'package:te_find/app/home/products/fashion_page.dart';
+import 'package:te_find/app/home/market/all_market_page.dart';
+import 'package:te_find/app/home/pay_with_wallet.dart';
+import 'package:te_find/app/home/products/product_detail.dart';
+import 'package:te_find/app/home/products/view_all_products.dart';
+import 'package:te_find/app/home/top_deal_fashion.dart';
+import 'package:te_find/app/login/login_screen.dart';
+import 'package:te_find/app/negotiation%20screen/negotiations.dart';
+import 'package:te_find/app/notification.dart';
+import 'package:te_find/app/onboarding/onboarding_screen_view.dart';
+import 'package:te_find/app/profile/add_new_address.dart';
+import 'package:te_find/app/profile/faq_page.dart';
+import 'package:te_find/app/profile/help_page.dart';
+import 'package:te_find/app/profile/legal_terms_page.dart';
+import 'package:te_find/app/profile/privacy_policy_page.dart';
+import 'package:te_find/app/profile/term_of_use.dart';
+import 'package:te_find/app/settings/change_password_page.dart';
+import 'package:te_find/app/settings/change_transaction_pin.dart';
+import 'package:te_find/app/settings/delete_account.dart';
+import 'package:te_find/app/profile/delivery_address.dart';
+import 'package:te_find/app/profile/orders/my_oders_page.dart';
+import 'package:te_find/app/profile/personal_detail_page.dart';
+import 'package:te_find/app/settings/setting_page.dart';
+import 'package:te_find/app/profile/wallet_page.dart';
+import 'package:te_find/app/profile/wishlight_page.dart';
+import 'package:te_find/app/sign_up/set_password.dart';
+import 'package:te_find/app/sign_up/set_up_profile.dart';
+import 'package:te_find/app/sign_up/signup.dart';
+import 'package:te_find/app/sign_up/verify_account.dart';
+import 'package:te_find/app/sign_up/verify_email_or_password.dart';
+import 'package:te_find/models/Products.dart';
 
-import 'package:saleko/services/analytics_service.dart';
-import 'package:saleko/services/navigation/route_names.dart';
-import 'package:saleko/utils/base_model.dart';
-import 'package:saleko/utils/locator.dart';
+import 'package:te_find/services/analytics_service.dart';
+import 'package:te_find/services/navigation/route_names.dart';
+import 'package:te_find/utils/base_model.dart';
+import 'package:te_find/utils/locator.dart';
 
 import '../../app/forgotPassword/successful_reset_page.dart';
 import '../../app/home/all_brand_page.dart';
@@ -141,20 +139,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       );
     //
 
-    case emailVerificationScreenRoute:
-      return _getPageRoute(
-        routeName: settings.name!,
-        viewToShow: const EmailVerificationScreen(),
-      );
       case successfulResetPageScreenRoute:
       return _getPageRoute(
         routeName: settings.name!,
         viewToShow:  SuccessfulResetPage(),
-      );
-    case createNewPinScreenRoute:
-      return _getPageRoute(
-        routeName: settings.name!,
-        viewToShow: const CreateNewPinScreen(),
       );
     case verificationScreenRoute:
       return _getPageRoute(
@@ -169,7 +157,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case signupScreenRoute:
       return _getPageRoute(
         routeName: settings.name!,
-        viewToShow: const SignupScreen(),
+        viewToShow: const Signup(),
       );
 
     case fashionScreenRoute:
@@ -194,11 +182,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
           routeName: settings.name!,
           viewToShow: ProductBySeller(product: product));
     case productDetailScreenRoute:
-      Products newProducts = settings.arguments! as Products;
+  //    Products newProducts = settings.arguments! as Products;
       return _getPageRoute(
         routeName: settings.name!,
         viewToShow: ProductDetail(
-          newProducts: newProducts,
+         // newProducts: newProducts,
         ),
       );
 

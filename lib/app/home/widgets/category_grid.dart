@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:saleko/models/product.dart';
-import 'package:saleko/services/navigation/navigator_service.dart';
-import 'package:saleko/services/navigation/route_names.dart';
-import 'package:saleko/utils/app_colors.dart';
+import 'package:te_find/models/product.dart';
+import 'package:te_find/services/navigation/navigator_service.dart';
+import 'package:te_find/services/navigation/route_names.dart';
+import 'package:te_find/utils/app_colors.dart';
 
 import '../../../models/CategoriesModel.dart';
 import '../../../utils/assets_manager.dart';

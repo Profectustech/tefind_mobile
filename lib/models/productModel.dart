@@ -327,10 +327,10 @@ class ProductModel {
   }
 }
 
-/// small_image_url : "https://saleko.ng/cache/small/product/13203/VQGhwIWhQ5zSnZH48iUlKg5jHbtXSaLfro6ijLYF.png"
-/// medium_image_url : "https://saleko.ng/cache/medium/product/13203/VQGhwIWhQ5zSnZH48iUlKg5jHbtXSaLfro6ijLYF.png"
-/// large_image_url : "https://saleko.ng/cache/large/product/13203/VQGhwIWhQ5zSnZH48iUlKg5jHbtXSaLfro6ijLYF.png"
-/// original_image_url : "https://saleko.ng/cache/original/product/13203/VQGhwIWhQ5zSnZH48iUlKg5jHbtXSaLfro6ijLYF.png"
+/// small_image_url : "https://te_find.ng/cache/small/product/13203/VQGhwIWhQ5zSnZH48iUlKg5jHbtXSaLfro6ijLYF.png"
+/// medium_image_url : "https://te_find.ng/cache/medium/product/13203/VQGhwIWhQ5zSnZH48iUlKg5jHbtXSaLfro6ijLYF.png"
+/// large_image_url : "https://te_find.ng/cache/large/product/13203/VQGhwIWhQ5zSnZH48iUlKg5jHbtXSaLfro6ijLYF.png"
+/// original_image_url : "https://te_find.ng/cache/original/product/13203/VQGhwIWhQ5zSnZH48iUlKg5jHbtXSaLfro6ijLYF.png"
 
 class ProductImages {
   ProductImages({

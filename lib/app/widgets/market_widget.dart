@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:saleko/models/MarketListModel.dart';
-import 'package:saleko/providers/product_provider.dart';
-import 'package:saleko/utils/app_colors.dart';
-import 'package:saleko/utils/assets_manager.dart';
-import 'package:saleko/utils/helpers.dart';
-import 'package:saleko/utils/toTitleCase.dart';
+import 'package:te_find/models/MarketListModel.dart';
+import 'package:te_find/providers/product_provider.dart';
+import 'package:te_find/utils/app_colors.dart';
+import 'package:te_find/utils/assets_manager.dart';
+import 'package:te_find/utils/helpers.dart';
+import 'package:te_find/utils/toTitleCase.dart';
 
 import '../../providers/provider.dart';
 import '../../services/navigation/navigator_service.dart';

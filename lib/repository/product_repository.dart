@@ -1,6 +1,6 @@
-import 'package:saleko/models/util_model.dart';
-import 'package:saleko/repository/network_helper.dart';
-import 'package:saleko/utils/enums.dart';
+import 'package:te_find/models/util_model.dart';
+import 'package:te_find/repository/network_helper.dart';
+import 'package:te_find/utils/enums.dart';
 
 class ProductRepository {
   final NetworkHelper _networkHelper = NetworkHelper();
@@ -51,7 +51,7 @@ class ProductRepository {
     );
   }
 
-  // https://staging.saleko.ng/api/main-svc-v2/public/products/market?market_id=1&per_page=4&page=1
+  // https://staging.te_find.ng/api/main-svc-v2/public/products/market?market_id=1&per_page=4&page=1
 
   Future<HTTPResponseModel> fProduct({int? page = 1}) async {
     return await _networkHelper.runApi(

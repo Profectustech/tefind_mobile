@@ -1,5 +1,5 @@
-import 'package:saleko/utils/enums.dart';
-import 'package:saleko/app/widgets/custom_toast_notification.dart';
+import 'package:te_find/utils/enums.dart';
+import 'package:te_find/app/widgets/custom_toast_notification.dart';
 
 class DialogService {
   DialogService._internal();

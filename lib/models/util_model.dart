@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:saleko/utils/http.dart';
+import 'package:te_find/utils/http.dart';
 
 class HTTPResponseModel {
   HTTPResponseModel();

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:saleko/providers/product_provider.dart';
-import 'package:saleko/utils/app_colors.dart';
+import 'package:te_find/providers/product_provider.dart';
+import 'package:te_find/utils/app_colors.dart';
 
 class TransactionTile extends StatelessWidget {
   const TransactionTile(

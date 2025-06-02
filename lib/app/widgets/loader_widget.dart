@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:saleko/utils/app_colors.dart';
+import 'package:te_find/utils/app_colors.dart';
 import 'package:shimmer/shimmer.dart';
 class LoaderWidget extends StatelessWidget {
   const LoaderWidget({super.key});

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:saleko/app/widgets/custom_profile_listTIle.dart';
-import 'package:saleko/utils/assets_manager.dart';
+import 'package:te_find/app/widgets/custom_profile_listTIle.dart';
+import 'package:te_find/utils/assets_manager.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:saleko/utils/progress_bar_manager/utility_app_bar.dart';
+import 'package:te_find/utils/progress_bar_manager/utility_app_bar.dart';
 import '../../utils/app_colors.dart';
 import '../widgets/close_account_listTile.dart';
 import '../widgets/custom_button.dart';
@@ -37,7 +37,7 @@ class _DeleteAccountState extends ConsumerState<DeleteAccount> {
                       ),
                       Flexible(
                         child: Text(
-                          "This action will erase all your data from our database, and you will be cease to be a Saleko user.",
+                          "This action will erase all your data from our database, and you will be cease to be a te_find user.",
                           style: TextStyle(
                               fontSize: 14, fontWeight: FontWeight.w400),
                         ),
@@ -139,7 +139,7 @@ class _DeleteAccountState extends ConsumerState<DeleteAccount> {
                           ),
                           Flexible(
                               child: Text(
-                            "Saleko will retain your account information for a recovery period of 30 days, during which your login access will remain active. If you do not log in within this period, your account will be permanently deleted.",
+                            "te_find will retain your account information for a recovery period of 30 days, during which your login access will remain active. If you do not log in within this period, your account will be permanently deleted.",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: AppColors.black,

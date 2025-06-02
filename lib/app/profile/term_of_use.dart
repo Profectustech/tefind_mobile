@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:saleko/utils/app_colors.dart';
+import 'package:te_find/utils/app_colors.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class TermOfUse extends ConsumerStatefulWidget {
@@ -21,7 +21,7 @@ class _TermOfUseState extends ConsumerState<TermOfUse> {
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..loadRequest(
-          Uri.parse('https://saleko.ng/terms-of-use'))
+          Uri.parse('https://te_find.ng/terms-of-use'))
           ..setNavigationDelegate(
         NavigationDelegate(
           onPageStarted: (_) {

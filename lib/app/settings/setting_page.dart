@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:saleko/app/widgets/custom_profile_listTIle.dart';
-import 'package:saleko/providers/provider.dart';
-import 'package:saleko/utils/assets_manager.dart';
+import 'package:te_find/app/widgets/custom_profile_listTIle.dart';
+import 'package:te_find/providers/provider.dart';
+import 'package:te_find/utils/assets_manager.dart';
 
 import '../../providers/account_provider.dart';
 import '../../utils/progress_bar_manager/utility_app_bar.dart';

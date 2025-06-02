@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:saleko/app/onboarding/onboarding_screen_view.dart';
-import 'package:saleko/providers/account_provider.dart';
-import 'package:saleko/providers/provider.dart';
-import 'package:saleko/services/navigation/animated_navigation.dart';
-import 'package:saleko/utils/app_colors.dart';
-import 'package:saleko/utils/storage_util.dart';
+import 'package:te_find/app/onboarding/onboarding_screen_view.dart';
+import 'package:te_find/providers/account_provider.dart';
+import 'package:te_find/providers/provider.dart';
+import 'package:te_find/services/navigation/animated_navigation.dart';
+import 'package:te_find/utils/app_colors.dart';
+import 'package:te_find/utils/storage_util.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -76,11 +76,11 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   Widget build(BuildContext context) {
     accountProvider = ref.watch(RiverpodProvider.accountProvider);
     return Scaffold(
-      backgroundColor: AppColors.primaryColor,
+      backgroundColor: AppColors.white,
       body: Stack(
         children: [
           Image.asset(
-            'assets/images/green_background.png',
+            'assets/images/teFindBackground.png',
             fit: BoxFit.cover, // Ensures it covers the screen
           ),
           Center(

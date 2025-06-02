@@ -1,18 +1,22 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
-import 'package:saleko/app/forgotPassword/email_verification_screen.dart';
-import 'package:saleko/app/widgets/back_button.dart';
-import 'package:saleko/providers/account_provider.dart';
-import 'package:saleko/providers/provider.dart';
-import 'package:saleko/services/navigation/navigator_service.dart';
-import 'package:saleko/services/navigation/route_names.dart';
-import 'package:saleko/utils/app_colors.dart';
-import 'package:saleko/utils/app_styles.dart';
-import 'package:saleko/app/widgets/custom_button.dart';
-import 'package:saleko/app/widgets/custom_text_form_field.dart';
-import 'package:saleko/utils/helpers.dart';
-import 'package:saleko/utils/progress_bar_manager/appbar.dart';
+import 'package:te_find/app/widgets/back_button.dart';
+import 'package:te_find/app/widgets/bottom_modals.dart';
+import 'package:te_find/app/widgets/custom_bottom_sheet.dart';
+import 'package:te_find/providers/account_provider.dart';
+import 'package:te_find/providers/provider.dart';
+import 'package:te_find/services/navigation/navigator_service.dart';
+import 'package:te_find/services/navigation/route_names.dart';
+import 'package:te_find/utils/app_colors.dart';
+import 'package:te_find/utils/app_styles.dart';
+import 'package:te_find/app/widgets/custom_button.dart';
+import 'package:te_find/app/widgets/custom_text_form_field.dart';
+import 'package:te_find/utils/helpers.dart';
+import 'package:te_find/utils/progress_bar_manager/appbar.dart';
+
+import '../../utils/assets_manager.dart';
+import '../widgets/pin_input_field.dart';
 
 class EmailInputScreen extends ConsumerStatefulWidget {
   const EmailInputScreen({super.key});
@@ -29,7 +33,6 @@ class _EmailInputScreenState extends ConsumerState<EmailInputScreen> {
 
   // A boolean to check if the email field is not empty
   bool get isEmailFilled => accountProvider.usernameController.text.isNotEmpty;
-
 
   @override
   void initState() {
@@ -56,75 +59,71 @@ class _EmailInputScreenState extends ConsumerState<EmailInputScreen> {
     accountProvider = ref.watch(RiverpodProvider.accountProvider);
 
     return Scaffold(
-      appBar: CustomAppBar(centerTitle: true, text: '', onTap: () {}),
-      backgroundColor: AppColors.white,
-      body: SafeArea(
-        child: Form(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Forgot Password?",
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.primaryColor,
-                        ),
-                      ),
-                      SizedBox(height: 5.h),
-                      Text(
-                        "No worries, we’ll send you OTP to reset your password.",
-                        style: TextStyle(
-                          fontSize: 15.5,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.black,
-                        ),
-                      ),
-                      SizedBox(height: 32.h),
-                      Text(
-                        "Email or Phone number",
-                        style: TextStyle(
-                            color: AppColors.black,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w400),
-                      ),
-                      SizedBox(height: 10),
-                      CustomTextFormField(
-                        hint: 'Enter email or phone number',
-                        controller: accountProvider.usernameController,
-                        validator: Validators().isEmail,
-                      ),
-                      SizedBox(height: 100.h),
-                      CustomButton(
-                        fillColor: isEmailFilled
-                            ? AppColors.primaryColor
-                            : Colors.grey,
-                        label: 'Send Code',
-                        onPressed: isEmailFilled
-                            ? () {
-                                if (_formKey.currentState!.validate()) {
-                                  accountProvider.sendForgotPassOTP();
-
-                                }
-                              }
-                            : null,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+        appBar: CustomAppBar(
+            centerTitle: false, text: 'Forgot Password', onTap: () {}),
+        backgroundColor: AppColors.white,
+        body: SafeArea(
+            child: Stack(children: [
+          Image.asset(
+            'assets/images/teFindBackground.png',
+            fit: BoxFit.cover, // Ensures it covers the screen
           ),
-        ),
-      ),
-    );
+          Form(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            key: _formKey,
+            child: SingleChildScrollView(
+                child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 50.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Don’t Stress,',
+                      style: TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.faintBlack)),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Text('It happens 🤗',
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.faintBlack)),
+                  SizedBox(
+                    height: 35.h,
+                  ),
+                  Center(
+                    child: Text(
+                        'Kindly input your email to reset your password',
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.faintBlack)),
+                  ),
+                  SizedBox(
+                    height: 35.h,
+                  ),
+                  CustomTextFormField(
+                    label: 'Email',
+                    controller: accountProvider.signInPhoneOrEmailController,
+                    validator: Validators().isEmail,
+                  ),
+                  SizedBox(height: 100.h),
+                  CustomButton(
+                      label: "Proceed",
+                      fillColor:
+                          // isFormValid ?
+                          AppColors.primaryColor,
+                      // : Colors.grey,
+                      onPressed: () {
+                        BottomModals.validatePasswordPin(context: context);
+                      }),
+
+                ],
+              ),
+            )),
+          ),
+        ])));
   }
 }

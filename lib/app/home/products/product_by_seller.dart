@@ -2,12 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:saleko/app/home/products/selectedProduct.dart';
-import 'package:saleko/providers/provider.dart';
-import 'package:saleko/services/navigation/route_names.dart';
-import 'package:saleko/utils/progress_bar_manager/utility_app_bar.dart';
-import 'package:saleko/services/navigation/navigator_service.dart';
-import 'package:saleko/utils/app_colors.dart';
+import 'package:te_find/app/home/products/selectedProduct.dart';
+import 'package:te_find/providers/provider.dart';
+import 'package:te_find/services/navigation/route_names.dart';
+import 'package:te_find/utils/progress_bar_manager/utility_app_bar.dart';
+import 'package:te_find/services/navigation/navigator_service.dart';
+import 'package:te_find/utils/app_colors.dart';
 import '../../../models/CategoriesModel.dart';
 import '../../../models/Products.dart';
 import '../../../providers/account_provider.dart';
@@ -81,7 +81,7 @@ class _ProductBySellerState extends ConsumerState<ProductBySeller> {
                             ),
                             itemBuilder: (context, index) {
                               Products product = snapshot.data![index];
-                              return ProductGridview(newProducts: product);
+                             // return ProductGridview(newProducts: product);
                             },
                           ),
                         );

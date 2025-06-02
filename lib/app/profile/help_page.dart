@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:saleko/utils/app_colors.dart';
-import 'package:saleko/utils/helpers.dart';
+import 'package:te_find/utils/app_colors.dart';
+import 'package:te_find/utils/helpers.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../providers/account_provider.dart';
@@ -24,7 +24,7 @@ class _HelpPageState extends ConsumerState<HelpPage> {
   Future<void> _launchEmail() async {
     final Uri emailUri = Uri(
       scheme: 'mailto',
-      path: 'support@saleko.ng',
+      path: 'support@te_find.ng',
       query: Uri.encodeFull('Subject: Support Request'),
     );
 
@@ -86,13 +86,13 @@ class _HelpPageState extends ConsumerState<HelpPage> {
               thickness: 0.4,
             ),
             profileListTile(Assets.twitterIcon, "Twitter", () {
-              _launchURL("https://twitter.com/Saleko_ng");
+              _launchURL("https://twitter.com/te_find_ng");
             }, addSpacer: true),
             Divider(
               thickness: 0.3,
             ),
             profileListTile(Assets.instagramIcon, "Instagram", () {
-              _launchURL("https://www.instagram.com/saleko.ng/");
+              _launchURL("https://www.instagram.com/te_find.ng/");
             }, addSpacer: true),
             Divider(
               thickness: 0.3,
@@ -103,7 +103,7 @@ class _HelpPageState extends ConsumerState<HelpPage> {
               style: TextStyle(color: AppColors.grey),
             )
             // profileListTile(Assets.instagramIcon, "Facebook", () {
-            //   _launchURL("https://www.facebook.com/saleko.com.ng");
+            //   _launchURL("https://www.facebook.com/te_find.com.ng");
             // }, addSpacer: true),
           ],
         ),

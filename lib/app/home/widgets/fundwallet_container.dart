@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:saleko/app/widgets/custom_bottom_sheet.dart';
-import 'package:saleko/utils/app_colors.dart';
-import 'package:saleko/utils/assets_manager.dart';
+import 'package:te_find/app/widgets/custom_bottom_sheet.dart';
+import 'package:te_find/utils/app_colors.dart';
+import 'package:te_find/utils/assets_manager.dart';
 
 class FundWalletContainer extends StatelessWidget {
   const FundWalletContainer({

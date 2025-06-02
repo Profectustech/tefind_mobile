@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:saleko/app/profile/orders/order_status.dart';
-import 'package:saleko/models/product.dart';
-import 'package:saleko/utils/app_colors.dart';
-import 'package:saleko/utils/assets_manager.dart';
+import 'package:te_find/app/profile/orders/order_status.dart';
+import 'package:te_find/models/product.dart';
+import 'package:te_find/utils/app_colors.dart';
+import 'package:te_find/utils/assets_manager.dart';
 
 class orderListView extends StatelessWidget {
   const orderListView(

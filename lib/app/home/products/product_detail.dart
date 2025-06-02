@@ -3,17 +3,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:saleko/app/home/products/product_detail_fullScreen.dart';
-import 'package:saleko/app/widgets/feature_widget.dart';
-import 'package:saleko/models/Products.dart';
-import 'package:saleko/providers/product_provider.dart';
-import 'package:saleko/providers/provider.dart';
-import 'package:saleko/services/navigation/route_names.dart';
-import 'package:saleko/utils/assets_manager.dart';
-import 'package:saleko/utils/helpers.dart';
-import 'package:saleko/utils/progress_bar_manager/utility_app_bar.dart';
-import 'package:saleko/services/navigation/navigator_service.dart';
-import 'package:saleko/utils/app_colors.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:te_find/app/home/products/product_detail_fullScreen.dart';
+import 'package:te_find/app/widgets/feature_widget.dart';
+import 'package:te_find/models/Products.dart';
+import 'package:te_find/providers/product_provider.dart';
+import 'package:te_find/providers/provider.dart';
+import 'package:te_find/services/navigation/route_names.dart';
+import 'package:te_find/utils/assets_manager.dart';
+import 'package:te_find/utils/helpers.dart';
+import 'package:te_find/utils/progress_bar_manager/utility_app_bar.dart';
+import 'package:te_find/services/navigation/navigator_service.dart';
+import 'package:te_find/utils/app_colors.dart';
 import 'package:intl/intl.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../../models/productModel.dart';
@@ -22,12 +23,18 @@ import 'package:html/parser.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:insta_image_viewer/insta_image_viewer.dart';
 
+import '../../widgets/other_items.dart';
+import '../widgets/product_gridview.dart';
+
 // Create a provider to manage the current page index
 final currentIndexProvider = StateProvider<int>((ref) => 0);
 
 class ProductDetail extends ConsumerStatefulWidget {
-  final Products newProducts;
-  ProductDetail({super.key, required this.newProducts});
+  /// final Products newProducts;
+  ProductDetail({
+    super.key,
+    //   required this.newProducts
+  });
 
   @override
   ConsumerState<ProductDetail> createState() => _ProductDetailState();
@@ -94,527 +101,462 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
   Widget build(BuildContext context) {
     accountProvider = ref.watch(RiverpodProvider.accountProvider);
     productProvider = ref.watch(RiverpodProvider.productProvider);
+    final currentPageIndex = ref.watch(currentIndexProvider);
 
     return Scaffold(
-      appBar: UtilityAppBar(text: "Details"),
+      appBar: UtilityAppBar(
+        text: "Product Name",
+        centerTitle: false,
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      final imageUrl =
-                          widget.newProducts.imageUrls?[0].localUrl ?? "";
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              FullScreenImagePage(imageUrl: imageUrl),
-                        ),
-                      );
-                    },
-                    child: CachedNetworkImage(
-                      imageUrl: widget.newProducts.imageUrls?[0].localUrl ?? "",
-                      imageBuilder: (context, imageProvider) => ClipRRect(
-                        borderRadius: BorderRadius.circular(15.r),
-                        child: Container(
-                          height: 330,
-                          width: 270,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: imageProvider,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                      ),
-                      placeholder: (context, url) => SizedBox(
-                        height: 330,
-                        width: 270,
-                        child: Center(
-                          child: SizedBox(
-                            width: 30.w,
-                            height: 30.h,
-                            child: CircularProgressIndicator(
-                              color: AppColors.primaryColor,
-                            ),
-                          ),
-                        ),
-                      ),
-                      errorWidget: (context, url, error) => ClipRRect(
-                        borderRadius: BorderRadius.circular(15.r),
-                        child: Container(
-                          height: 330,
-                          width: 270,
-                          child: Image.asset(
-                            Assets.laptopPowerbank,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Stack(
+              children: [
+                Container(
+                  height: 280.h,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryColor,
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/bag.png'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 10,
+                  right: 10,
+                  child: Container(
+                    height: 32,
+                    width: 32,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        boxShadow: []),
+                    child: Center(
+                      child: Icon(
+                        Icons.favorite_border_outlined,
                       ),
                     ),
                   ),
-                  Expanded(
-                      child: SizedBox(
-                    width: double.infinity,
-                    height: 241.h,
-                    child: ListView.builder(
-                      padding: EdgeInsets.only(
-                        left: 20,
-                      ),
-                      scrollDirection: Axis.vertical,
-                      itemCount: widget.newProducts.imageUrls!.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 12.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => FullScreenImagePage(
-                                      imageUrl: widget.newProducts
-                                              .imageUrls![index].localUrl ??
-                                          ''),
-                                ),
-                              );
-                            },
-                            child: CachedNetworkImage(
-                              // imageUrl:
-                              //     widget.newProducts.imageUrls![index].localUrl ??
-                              //         '',
-                              imageUrl:
-                                  widget.newProducts.imageUrls?.isNotEmpty ??
-                                          false
-                                      ? widget.newProducts.imageUrls![index]
-                                              .localUrl ??
-                                          ""
-                                      : "",
-                              imageBuilder: (context, imageProvider) =>
-                                  ClipRRect(
-                                borderRadius: BorderRadius.circular(15.r),
-                                child: Container(
-                                  //   padding: EdgeInsets.only(bottom: 10),
-                                  height: 75,
-                                  width: 75,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: imageProvider,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              placeholder: (context, url) => SizedBox(
-                                height: 75.w,
-                                width: 75.w,
-                                child: Center(
-                                  child: SizedBox(
-                                    width: 30.w,
-                                    height: 30.h,
-                                    child: CircularProgressIndicator(
-                                      color: AppColors.primaryColor,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              errorWidget: (context, url, error) => ClipRRect(
-                                borderRadius: BorderRadius.circular(15.r),
-                                child: Image.asset(
-                                  Assets.laptopPowerbank,
-                                  height: 75,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
+                ),
+                Positioned(
+                  bottom: 10,
+                  left: 10,
+                  child: Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 25.w, vertical: 5.h),
+                    decoration: BoxDecoration(
+                        color: AppColors.primaryColor,
+                        borderRadius: BorderRadius.circular(28.r)),
+                    child: Text(
+                      "New",
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.roboto(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.white),
                     ),
-                  ))
-                ],
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              //
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  ),
+                ),
+                Positioned(
+                  bottom: 10.h,
+                  left: 170.w,
+                  child: AnimatedSmoothIndicator(
+                    activeIndex: currentPageIndex,
+                    count: 3,
+                    effect: ScrollingDotsEffect(
+                      spacing: 4.0,
+                      dotWidth: 8.0,
+                      dotHeight: 7.0,
+                      strokeWidth: 8,
+                      dotColor: AppColors.grey,
+                      activeDotColor: AppColors.primaryColor,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
+            Container(
+              height: 164.h,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.circular(16.r)),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    InkWell(
-                      // onTap: () {
-                      //   _navigation.navigateTo(
-                      //     productBySeller,
-                      //     arguments: widget.newProducts,
-                      //   );
-                      // },
-                      onTap: () async {
-                        final products = await productProvider
-                            .selectedProductBySeller(widget.newProducts.seller?.merchantId??"");
-                        if (products != null) {
-                          productProvider.pushToAllScreen(
-                            "Product Seller",
-                            products,
-                          );
-                        }},
-                      child: Container(
-                        child: Row(
+                    Text(
+                      "Luxury Leather Handbag",
+                      style: GoogleFonts.roboto(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.black),
+                    ),
+                    SizedBox(height: 5.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "₦45,000",
+                          style: GoogleFonts.roboto(
+                              fontSize: 24.sp,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.primaryColor),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            // productProvider.addToCart(
+                            //     widget.newProducts.sku ?? '', 1);
+                          },
+                          child: Center(
+                              child: Container(
+                            width: 66.w,
+                            height: 20.h,
+                            decoration: BoxDecoration(
+                                color: AppColors.containerWhite,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Add To Cart",
+                                  style: GoogleFonts.roboto(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.primaryColor),
+                                )
+                              ],
+                            ),
+                          )),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 10.h),
+                    Row(
+                      spacing: 15.w,
+                      children: [
+                        Row(
+                          spacing: 2.w,
                           children: [
-                            SvgPicture.asset(Assets.customerService),
-                            SizedBox(width: 10.w),
+                            SvgPicture.asset(Assets.conditionIcon),
                             Text(
-                              "${widget.newProducts.seller?.shopTitle}",
-                              style: TextStyle(
-                                  color: AppColors.greenText,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400),
+                              "Like New",
+                              style: GoogleFonts.roboto(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.black),
                             )
                           ],
                         ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Text(
-                      "${widget.newProducts.name}", //"Laptop Power Bank | Oraimo LP6JH",
-                      style: TextStyle(
-                          fontSize: 20,
-                          color: AppColors.black,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Text(
-                      "Brand: ${widget.newProducts.brandName ?? ""} | Category: ${widget.newProducts.categoryName} | In Stock: ${widget.newProducts.qty} UNITS",
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: AppColors.greenText,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          width: 40.w,
-                          height: 40.h,
-                          decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 198, 205, 203),
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Center(
-                            child: IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  Icons.favorite_outline_outlined,
-                                  color: AppColors.primaryColor,
-                                )),
-                          ),
+                        Row(
+                          spacing: 2.w,
+                          children: [
+                            SvgPicture.asset(Assets.location),
+                            Text(
+                              "Lekki, Lagos",
+                              style: GoogleFonts.roboto(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.black),
+                            )
+                          ],
                         ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        Container(
-                          width: 40.w,
-                          height: 40.h,
-                          decoration: BoxDecoration(
-                              color: AppColors.greenFade,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Center(
-                            child: IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  Icons.share_outlined,
-                                  color: AppColors.primaryColor,
-                                )),
-                          ),
-                        )
                       ],
                     ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
+                    SizedBox(height: 10.h),
                     Row(
+                      spacing: 2.w,
                       children: [
-                        widget.newProducts.specialPrice != "0.0000"
-                            ? Text(
-                                "${currencyFormat.format(double.parse(widget.newProducts.price ?? "0.0"))}",
-                                style: TextStyle(
-                                    decoration: TextDecoration.lineThrough,
-                                    decorationColor: AppColors.greyText,
-                                    decorationThickness: 2,
-                                    color: AppColors.greyText,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w400),
-                              )
-                            : Container(),
-                        SizedBox(
-                          width: 5.w,
-                        ),
+                        SvgPicture.asset(Assets.timeIcon),
                         Text(
-                          widget.newProducts.specialPrice != "0.0000"
-                              ? "${currencyFormat.format(double.parse(widget.newProducts.specialPrice ?? "0.0"))}"
-                              : "${currencyFormat.format(double.parse(widget.newProducts.price ?? "0.0"))}",
-                          // "#${widget.newProducts.price}",
+                          "Posted on ${formatDate("2023-10-01")}",
                           style: GoogleFonts.roboto(
-                              color: AppColors.red,
-                              fontSize: 30,
-                              fontWeight: FontWeight.w600),
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.black),
                         )
                       ],
                     ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Row(
-                      children: [
-                        // discount
-                        // Container(
-                        //   width: 54.w,
-                        //   height: 28.h,
-                        //   decoration: BoxDecoration(
-                        //       color: AppColors.red,
-                        //       borderRadius: BorderRadius.circular(10)),
-                        //   child: Center(
-                        //       child: Text(
-                        //     "15% off",
-                        //     style: TextStyle(
-                        //       color: AppColors.white,
-                        //       fontSize: 12,
-                        //     ),
-                        //   )),
-                        // ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        Text(
-                          "Offer ends ${formatDate(widget.newProducts?.specialPriceTo)}",
-                          style: TextStyle(
-                            color: AppColors.grey,
-                            fontSize: 12,
-                            decoration: TextDecoration.underline,
-                            decorationThickness: 1,
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-
-                    //Tab bars for Description and Delivery details
-                    // TabBar(
-                    //   labelStyle:
-                    //       TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                    //   controller: _tabController,
-                    //   indicatorColor: AppColors.primaryColor,
-                    //   labelColor: AppColors.primaryColor,
-                    //   unselectedLabelColor: AppColors.grey,
-                    //   tabs: [
-                    //     Tab(
-                    //       text: "Description",
-                    //     ),
-                    //     Tab(text: "Delivery Details"),
-                    //   ],
-                    // ),
-                    // SizedBox(
-                    //   height: MediaQuery.of(context).size.height,
-                    //   child: TabBarView(controller: _tabController,
-                    //       children: [
-                    //     //  Description Detail Tab Content
-                    //     Padding(
-                    //       padding: const EdgeInsets.symmetric(vertical: 20),
-                    //       child: Column(
-                    //         crossAxisAlignment: CrossAxisAlignment.start,
-                    //         children: [
-                    //           HtmlWidget(
-                    //             widget.newProducts.description ??
-                    //                 "", // Handle null case
-                    //             textStyle: TextStyle(
-                    //               fontSize: 14,
-                    //               color: AppColors.black,
-                    //               fontWeight: FontWeight.w200,
-                    //             ),
-                    //           ),
-                    //           SizedBox(height: 30.h),
-                    //           Text(
-                    //             "Features",
-                    //             style: TextStyle(
-                    //                 fontSize: 16,
-                    //                 color: AppColors.blackTextColor,
-                    //                 fontWeight: FontWeight.w600),
-                    //           ),
-                    //           SizedBox(
-                    //             height: 10.h,
-                    //           ),
-                    //           feature_widget(
-                    //             title:
-                    //                 'Durable leather is easily cleanable so you can keep your look fresh.',
-                    //           ),
-                    //           SizedBox(
-                    //             height: 10.h,
-                    //           ),
-                    //           feature_widget(
-                    //             title:
-                    //                 'Water-repellent finish and internal membrane help keep your feet dry.',
-                    //           ),
-                    //           SizedBox(
-                    //             height: 10.h,
-                    //           ),
-                    //           feature_widget(
-                    //             title:
-                    //                 'Toe piece with star pattern adds durability.',
-                    //           ),
-                    //           SizedBox(
-                    //             height: 10.h,
-                    //           ),
-                    //           feature_widget(
-                    //             title:
-                    //                 'Synthetic insulation helps keep you warm.',
-                    //           ),
-                    //           SizedBox(
-                    //             height: 10.h,
-                    //           ),
-                    //           // feature_widget(
-                    //           //   title:
-                    //           //       'Originally designed for performance hoops, the Air unit delivers lightweight cushioning.',
-                    //           // ),
-                    //           // SizedBox(
-                    //           //   height: 10.h,
-                    //           // ),
-                    //           // feature_widget(
-                    //           //   title:
-                    //           //       'Plush tongue wraps over the ankle to help keep out the moisture and cold.',
-                    //           // ),
-                    //           // SizedBox(
-                    //           //   height: 10.h,
-                    //           // ),
-                    //           // feature_widget(
-                    //           //   title:
-                    //           //       'Rubber outsole with aggressive traction pattern adds durable grip.',
-                    //           // ),
-                    //           // SizedBox(
-                    //           //   height: 10.h,
-                    //           // ),
-                    //           // feature_widget(
-                    //           //   title:
-                    //           //       'Durable leather is easily cleanable so you can keep your look fresh.',
-                    //           // ),
-                    //         ],
-                    //       ),
-                    //     ),
-                    //
-                    //     // Deliervy Detail Tab Content
-                    //     Padding(
-                    //       padding: const EdgeInsets.all(16.0),
-                    //       child: Text(
-                    //         "Delivery Detail view. "
-                    //         "It provides information about the Delivery details and mmore.",
-                    //         style: TextStyle(
-                    //           fontSize: 14,
-                    //           color: AppColors.black,
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ]),
-                    // )
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
+            Container(
+              height: 97.h,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.circular(16.r)),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  spacing: 15.w,
+                  children: [
                     Container(
-                      height: 300,
-                      child: Column(
-                        children: [
-                          TabBar(
-                            labelStyle: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w600),
-                            controller: _tabController,
-                            indicatorColor: AppColors.primaryColor,
-                            labelColor: AppColors.primaryColor,
-                            unselectedLabelColor: AppColors.grey,
-                            tabs: [
-                              Tab(
-                                text: "Description",
-                              ),
-                              Tab(text: "Delivery Details"),
-                            ],
-                          ),
-                          Expanded(
-                            child: TabBarView(
-                              controller: _tabController,
-                              children: [
-                                // Description Tab
-                                SingleChildScrollView(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 20),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      HtmlWidget(
-                                          widget.newProducts.description ?? ""),
-                                      SizedBox(height: 30.h),
-                                      Text("Features",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600)),
-                                      SizedBox(height: 10.h),
-                                      feature_widget(
-                                        title:
-                                            'Durable leather is easily cleanable so you can keep your look fresh.',
-                                      ),
-                                      SizedBox(
-                                        height: 10.h,
-                                      ),
-                                      feature_widget(
-                                        title:
-                                            'Water-repellent finish and internal membrane help keep your feet dry.',
-                                      ),
-                                      SizedBox(
-                                        height: 10.h,
-                                      ),
-                                      feature_widget(
-                                        title:
-                                            'Toe piece with star pattern adds durability.',
-                                      ),
-                                      SizedBox(
-                                        height: 10.h,
-                                      ),
-                                      feature_widget(
-                                        title:
-                                            'Synthetic insulation helps keep you warm.',
-                                      ),
-                                    ],
-                                  ),
-                                ),
-
-                                // Delivery Tab
-                                Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Text("Delivery details go here."),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                      height: 48.h,
+                      width: 48.w,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/bag.png'),
+                          fit: BoxFit.cover,
+                        ),
                       ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Amara Johnson",
+                          style: GoogleFonts.roboto(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.black),
+                        ),
+                        SizedBox(height: 5.h),
+                        Row(
+                          spacing: 5.w,
+                          children: [
+                            Text(
+                              "Joined",
+                              style: GoogleFonts.roboto(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.greyText),
+                            ),
+                            Text(
+                              "March 2023",
+                              style: GoogleFonts.roboto(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.black),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                    Spacer(),
+                    InkWell(
+                      onTap: () {},
+                      child: Center(
+                          child: Container(
+                        width: 73.w,
+                        height: 28.h,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                width: 1, color: AppColors.primaryColor),
+                            color: AppColors.white,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "View Profile",
+                              style: GoogleFonts.roboto(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.primaryColor),
+                            )
+                          ],
+                        ),
+                      )),
                     )
                   ],
                 ),
               ),
-            ]),
-          ),
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
+            Container(
+              height: 410.h,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.circular(16.r)),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Description",
+                      style: GoogleFonts.roboto(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.black),
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Text(
+                      "Authentic luxury leather handbag in excellent condition. This elegant piece features premium full-grain leather with minimal signs of use.",
+                      style: GoogleFonts.roboto(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ProductInformation(
+                          subject: "Brand",
+                          value: "Milano Luxury",
+                        ),
+                        ProductInformation(
+                          subject: "Material",
+                          value: "Genuine Leather",
+                        ),
+                        ProductInformation(
+                          subject: "Color",
+                          value: "Rich Brown",
+                        ),
+                        ProductInformation(
+                          subject: "Dimensions",
+                          value: "30cm x 22cm x 12cm",
+                        ),
+                        ProductInformation(
+                          subject: "Hardware",
+                          value: "Gold-tone",
+                        ),
+                        ProductInformation(
+                          subject: "Condition",
+                          value: "Like new, minimal wear",
+                        ),
+                      ],
+                    ),
+                    Text(
+                      "Includes original dust bag and authenticity card. Perfect for both casual and formal occasions. This timeless piece will elevate any outfit.",
+                      style: GoogleFonts.roboto(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 2.h,
+                    ),
+                    Text(
+                      "No trades. Serious inquiries only.",
+                      style: GoogleFonts.roboto(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
+            Container(
+              height: 192.h,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.circular(16.r)),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Item Location",
+                      style: GoogleFonts.roboto(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.black),
+                    ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    Container(
+                        height: 120.h,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            color: AppColors.greenLightest,
+                            borderRadius: BorderRadius.circular(16.r)),
+                        child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20.w, vertical: 20.h),
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Container(
+                                    padding:
+                                    EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
+                                    decoration: BoxDecoration(
+                                        color: AppColors.white,
+                                        borderRadius: BorderRadius.circular(28.r)),
+                                    child: Text(
+                                      "Lekki, Lagos",
+                                      overflow: TextOverflow.ellipsis,
+                                      style: GoogleFonts.roboto(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400,
+                                          color: AppColors.black),
+                                    ),
+                                  ),
+                                ]))),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.0.w, vertical: 20.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Similar Items",
+                    style: GoogleFonts.roboto(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.black),
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 241.h,
+                    child: ListView.builder(
+                      padding: EdgeInsets.only(left: 5),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 4,
+                      itemBuilder: (context, index) {
+                        // Products negotiableProducts =
+                        // productProvider
+                        //     .negotiableProduct![index];
+                        return OtherItems();;
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ]),
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
+        padding: const EdgeInsets.only(bottom: 30.0, left: 20, right: 20),
         child: Container(
           decoration: BoxDecoration(
             color: AppColors.primaryColor,
@@ -627,63 +569,66 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
               ),
             ],
           ),
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 16),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            spacing: 6.w,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                decoration: BoxDecoration(
-                  border: Border.all(color: AppColors.white),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Row(
-                  children: [
-                    GestureDetector(
-                      onTap: removeQuantity,
-                      child: Icon(Icons.remove, color: AppColors.white),
-                    ),
-                    SizedBox(width: 15),
-                    Text(
-                      "$quantity",
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: AppColors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(width: 16),
-                    GestureDetector(
-                      onTap: addQuantity,
-                      child: Icon(Icons.add, color: AppColors.white),
-                    ),
-                  ],
-                ),
-              ),
-              // Add to Cart Button
-              ElevatedButton(
-                onPressed: () {
-                  productProvider.addToCart(
-                      widget.newProducts.sku ?? '', quantity);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                ),
-                child: Text(
-                  "Add to Cart",
-                  style: TextStyle(
-                      fontSize: 14,
-                      color: AppColors.primaryColor,
-                      fontWeight: FontWeight.w400),
-                ),
+              SvgPicture.asset(Assets.offerIcon),
+              Text(
+                "Make Offer",
+                style: TextStyle(
+                    fontSize: 14,
+                    color: AppColors.white,
+                    fontWeight: FontWeight.w400),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class ProductInformation extends StatelessWidget {
+  final String subject;
+  final String value;
+
+  const ProductInformation({
+    super.key,
+    required this.value,
+    required this.subject,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        // crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 120,
+            child: Text(
+              "$subject:",
+              style: GoogleFonts.roboto(
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w600,
+                color: AppColors.black,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              value,
+              style: GoogleFonts.roboto(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w400,
+                color: AppColors.black,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:saleko/utils/locator.dart';
-import 'package:saleko/utils/progress_bar_manager/dialog_models.dart';
-import 'package:saleko/utils/progress_bar_manager/dialog_service.dart';
+import 'package:te_find/utils/locator.dart';
+import 'package:te_find/utils/progress_bar_manager/dialog_models.dart';
+import 'package:te_find/utils/progress_bar_manager/dialog_service.dart';
 
 class BaseModel extends ChangeNotifier {
   final ProgressService _dialogService = locator<ProgressService>();

@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:saleko/app/bottom_nav/nav_service.dart';
-import 'package:saleko/providers/product_provider.dart';
-import 'package:saleko/providers/provider.dart';
-import 'package:saleko/services/navigation/navigator_service.dart';
-import 'package:saleko/services/navigation/route_names.dart';
-import 'package:saleko/utils/app_colors.dart';
-import 'package:saleko/utils/assets_manager.dart';
-import 'package:saleko/utils/helpers.dart';
+import 'package:te_find/app/bottom_nav/nav_service.dart';
+import 'package:te_find/providers/product_provider.dart';
+import 'package:te_find/providers/provider.dart';
+import 'package:te_find/services/navigation/navigator_service.dart';
+import 'package:te_find/services/navigation/route_names.dart';
+import 'package:te_find/utils/app_colors.dart';
+import 'package:te_find/utils/assets_manager.dart';
+import 'package:te_find/utils/helpers.dart';
 
 class UtilityAppBar extends ConsumerStatefulWidget
     implements PreferredSizeWidget {
@@ -40,7 +40,7 @@ class _UtilityAppBarState extends ConsumerState<UtilityAppBar> {
     productProvider = ref.watch(RiverpodProvider.productProvider);
     navStateProvider = ref.watch(RiverpodProvider.navStateProvider);
     return AppBar(
-      backgroundColor: AppColors.primaryColor,
+      backgroundColor: AppColors.white,
       centerTitle: widget.centerTitle,
       leading: IconButton(
         onPressed: () {
@@ -48,13 +48,13 @@ class _UtilityAppBarState extends ConsumerState<UtilityAppBar> {
         },
         icon: Icon(
           Icons.arrow_back,
-          color: AppColors.white,
+          color: AppColors.black,
         ),
       ),
       title: Text(
         widget.text,
         style: const TextStyle(
-          color: Colors.white,
+          color: Colors.black,
           fontSize: 14,
           fontWeight: FontWeight.w600,
         ),
@@ -74,7 +74,7 @@ class _UtilityAppBarState extends ConsumerState<UtilityAppBar> {
                       },
                       child: SvgPicture.asset(
                         "assets/images/cartIcon.svg",
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                     )
                   : InkWell(
@@ -93,7 +93,7 @@ class _UtilityAppBarState extends ConsumerState<UtilityAppBar> {
                               '${productProvider.cartModel?.data?.first.items?.length}'),
                           child: SvgPicture.asset(
                             "assets/images/cartIcon.svg",
-                            color: Colors.white,
+                            color: Colors.black,
                           ))),
               SizedBox(width: 20.h),
             ]

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:saleko/app/change_password.dart';
-import 'package:saleko/app/home/widgets/fundwallet_container.dart';
-import 'package:saleko/app/home/widgets/transactionTile.dart';
-import 'package:saleko/providers/product_provider.dart';
-import 'package:saleko/utils/app_colors.dart';
-import 'package:saleko/utils/assets_manager.dart';
-import 'package:saleko/utils/progress_bar_manager/utility_app_bar.dart';
+import 'package:te_find/app/change_password.dart';
+import 'package:te_find/app/home/widgets/fundwallet_container.dart';
+import 'package:te_find/app/home/widgets/transactionTile.dart';
+import 'package:te_find/providers/product_provider.dart';
+import 'package:te_find/utils/app_colors.dart';
+import 'package:te_find/utils/assets_manager.dart';
+import 'package:te_find/utils/progress_bar_manager/utility_app_bar.dart';
 
 class WalletPage extends ConsumerStatefulWidget {
   const WalletPage({super.key});

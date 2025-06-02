@@ -1,17 +1,22 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:saleko/app/forgotPassword/successful_reset_page.dart';
-import 'package:saleko/app/widgets/custom_button.dart';
-import 'package:saleko/providers/account_provider.dart';
-import 'package:saleko/providers/provider.dart';
-import 'package:saleko/services/navigation/navigator_service.dart';
-import 'package:saleko/services/navigation/route_names.dart';
-import 'package:saleko/utils/app_colors.dart';
-import 'package:saleko/utils/progress_bar_manager/appbar.dart';
+import 'package:flutter/material.dart';
+import 'package:te_find/app/widgets/back_button.dart';
+import 'package:te_find/app/widgets/bottom_modals.dart';
+import 'package:te_find/app/widgets/custom_bottom_sheet.dart';
+import 'package:te_find/providers/account_provider.dart';
+import 'package:te_find/providers/provider.dart';
+import 'package:te_find/services/navigation/navigator_service.dart';
+import 'package:te_find/services/navigation/route_names.dart';
+import 'package:te_find/utils/app_colors.dart';
+import 'package:te_find/utils/app_styles.dart';
+import 'package:te_find/app/widgets/custom_button.dart';
+import 'package:te_find/app/widgets/custom_text_form_field.dart';
+import 'package:te_find/utils/helpers.dart';
+import 'package:te_find/utils/progress_bar_manager/appbar.dart';
 
-import '../widgets/password_criterial_Indicator.dart';
+import '../../utils/assets_manager.dart';
+import '../widgets/pin_input_field.dart';
 
 class SetNewPassword extends ConsumerStatefulWidget {
   const SetNewPassword({super.key});
@@ -21,137 +26,110 @@ class SetNewPassword extends ConsumerStatefulWidget {
 }
 
 class _SetNewPasswordState extends ConsumerState<SetNewPassword> {
-  TextEditingController passwordController = TextEditingController();
-
-  bool get isPasswordFilled =>
-      accountProvider.passwordController.text.isNotEmpty;
-
-  late AccountProvider accountProvider;
-  final _formKey = GlobalKey<FormState>();
   final NavigatorService _navigation = NavigatorService();
+  TextEditingController emailController = TextEditingController();
+  late AccountProvider accountProvider;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  void login() {
-    _navigation.navigateTo(loginScreenRoute);
+  // A boolean to check if the email field is not emptys
+  bool get isEmailFilled => accountProvider.usernameController.text.isNotEmpty;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      accountProvider.usernameController.addListener(_updateButtonState);
+    });
   }
 
-  bool passwordVisible = true;
-  bool isnotChecked = false;
-
-  void handleSignup() {
-
-  }
-@override
+  @override
   void dispose() {
-    accountProvider.passwordController.clear();
+    accountProvider.usernameController.clear();
+    super.dispose();
   }
+
+  void _updateButtonState() {
+    setState(() {
+      isEmailFilled;
+    }); // Trigger a rebuild whenever the email input changes
+  }
+
   @override
   Widget build(BuildContext context) {
     accountProvider = ref.watch(RiverpodProvider.accountProvider);
+
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: CustomAppBar(
-          centerTitle: false,
-          text: 'Login',
-          onTap: () {
-            login();
-          }),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Set new password",
-                    style: TextStyle(fontWeight: FontWeight.w700, fontSize: 24),
-                  ),
-                  SizedBox(height: 20.h),
-                  Text(
-                    "Password",
-                    style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
-                  ),
-                  SizedBox(height: 20.h),
-                  TextFormField(
-                    controller: accountProvider.passwordController,
-                    decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          passwordVisible
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          color: AppColors.fadedBlack.withOpacity(0.4),
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            passwordVisible = !passwordVisible;
-                          });
-                        },
-                      ),
-                      hintText: '******',
-                      hintStyle: const TextStyle(color: Colors.grey),
-                      fillColor: AppColors.white,
-                      filled: true,
-                      focusedBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                            width: 1, color: AppColors.secondaryColor),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        borderSide: BorderSide(
-                          color: AppColors.buttonDisabled.withOpacity(0.3),
-                          width: 1.6.h,
-                        ),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                    ),
-                    onChanged: (v) {
-                      accountProvider.validatePassword();
-                    },
-                    obscureText: passwordVisible,
-                    style: const TextStyle(color: Colors.black),
-                    cursorColor: Colors.black,
-                  ),
-                  SizedBox(height: 30),
-                  Wrap(
-                    spacing: 10,
-                    runSpacing: 10,
-                    children: [
-                      buildCriteriaIndicator(
-                          "8 characters", accountProvider.criteria1Satisfied),
-                      buildCriteriaIndicator(
-                          "Uppercase", accountProvider.hasUppercaseLetter),
-                      buildCriteriaIndicator(
-                          "Lowercase", accountProvider.hasLowercaseLetter),
-                      buildCriteriaIndicator(
-                          "Number", accountProvider.hasNumber),
-                      buildCriteriaIndicator(
-                          "Special Character", accountProvider.hasSymbol),
-                    ],
-                  ),
-                  SizedBox(height: 30),
-                  CustomButton(
-                    label: "Reset Password",
-                    fillColor: isPasswordFilled
-                        ? AppColors.primaryColor
-                        : AppColors.grey,
-                    onPressed: (){
-                      if (_formKey.currentState?.validate() ?? false) {
-                        accountProvider.resetPassword(accountProvider.passwordController.text);
-                      }
-                    },
-                  ),
-                ],
+        appBar: CustomAppBar(
+            centerTitle: false, text: 'Reset Password', onTap: () {}),
+        backgroundColor: AppColors.white,
+        body: SafeArea(
+            child: Stack(children: [
+              Image.asset(
+                'assets/images/teFindBackground.png',
+                fit: BoxFit.cover, // Ensures it covers the screen
               ),
-            ),
-          ),
-        ),
-      ),
-    );
+              Form(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                key: _formKey,
+                child: SingleChildScrollView(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 50.h),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Don’t Stress,',
+                              style: TextStyle(
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.faintBlack)),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          Text('It happens 🤗',
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.faintBlack)),
+                          SizedBox(
+                            height: 35.h,
+                          ),
+                          Center(
+                            child: Text(
+                                'Kindly input your email to reset your password',
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.faintBlack)),
+                          ),
+                          SizedBox(
+                            height: 35.h,
+                          ),
+                          CustomTextFormField(
+                            label: 'Enter New Password',
+                            controller: accountProvider.signInPhoneOrEmailController,
+                            validator: Validators().isEmail,
+                          ),
+                          SizedBox(height: 40.h,),
+                          CustomTextFormField(
+                            label: 'Confirm Password',
+                            controller: accountProvider.signInPhoneOrEmailController,
+                            validator: Validators().isEmail,
+                          ),
+                          SizedBox(height: 100.h),
+                          CustomButton(
+                              label: "Proceed",
+                              fillColor:
+                              // isFormValid ?
+                              AppColors.primaryColor,
+                              // : Colors.grey,
+                              onPressed: () {
+                                BottomModals.validatePasswordPin(context: context);
+                              }),
+
+                        ],
+                      ),
+                    )),
+              ),
+            ])));
   }
 }

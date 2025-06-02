@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:saleko/services/navigation/navigator_service.dart';
-import 'package:saleko/utils/app_colors.dart';
+import 'package:te_find/services/navigation/navigator_service.dart';
+import 'package:te_find/utils/app_colors.dart';
 
 class CategoryTile extends StatelessWidget {
   const CategoryTile({

@@ -13,12 +13,18 @@ class Assets {
   static const String cartEmpty = "assets/images/cart_empty.png";
   static const String coupon = "assets/images/coupon.svg";
   static const String greenBackground = "assets/images/green_background.png";
-  static const String location = "assets/images/location.png";
+  static const String location = "assets/images/location.svg";
+  static const String filter = "assets/images/filter.svg";
   static const String storeLocation = "assets/images/storelocation.svg";
-  static const String saleko = "assets/images/logo_green.svg";
-  static const String salekoWhite = "assets/images/logo_white.svg";
+  static const String te_find = "assets/images/logo_green.svg";
+  static const String te_findWhite = "assets/images/logo_white.svg";
+  static const String te_findLogo = "assets/images/teFindLogo.png";
+  static const String te_findLogo2 = "assets/images/logo2.png";
+  static const String fingerPrint = "assets/images/fingerprint.png";
   static const String monnifyLogo = "assets/images/monify.png";
-  static const String onboardingOne = "assets/images/onboarding2.png";
+  static const String onboardingOne = "assets/images/onboardingImage1.png";
+  static const String onboardingTwo = "assets/images/onboardingImage2.png";
+  static const String onboardingThree = "assets/images/onboardingImage3.png";
   static const String paystackBank = "assets/images/paystackBank.svg";
   static const String paystackBT = "assets/images/paystackBT.svg";
   static const String paystackCard = "assets/images/paystackCard.svg";
@@ -62,7 +68,6 @@ class Assets {
   static const String canceledOrder = "assets/images/canceledOrder.png";
   static const String DeliveredOrder = "assets/images/delivered.png";
   static const String sortBy = "assets/images/sortBy.svg";
-  static const String filter = "assets/images/filter.svg";
   static const String walletShare = "assets/images/WalletShare.svg";
   static const String changePasswordIcon = "assets/images/keyIcon.svg";
   static const String transactionPinIcon = "assets/images/PinIcon.svg";
@@ -90,4 +95,7 @@ class Assets {
   static const String wishListEmpty = "assets/images/wishListEmpty.png";
   static const String shop = "assets/images/shop.svg";
   static const String deleteWishlist = "assets/images/deleteWishLight.svg";
+  static const String offerIcon = "assets/images/offerIcon.svg";
+  static const String conditionIcon = "assets/images/conditionIcon.svg";
+  static const String timeIcon = "assets/images/time.svg";
 }

@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:saleko/models/util_model.dart';
-import 'package:saleko/repository/network_helper.dart';
-import 'package:saleko/utils/enums.dart';
+import 'package:te_find/models/util_model.dart';
+import 'package:te_find/repository/network_helper.dart';
+import 'package:te_find/utils/enums.dart';
 
 class AuthRepository {
   final NetworkHelper _networkHelper = NetworkHelper();

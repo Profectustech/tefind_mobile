@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:saleko/utils/app_colors.dart';
-import 'package:saleko/utils/locator.dart';
-import 'package:saleko/utils/progress_bar_manager/busy_dialog.dart';
-import 'package:saleko/utils/progress_bar_manager/dialog_models.dart';
-import 'package:saleko/utils/progress_bar_manager/dialog_service.dart';
+import 'package:te_find/utils/app_colors.dart';
+import 'package:te_find/utils/locator.dart';
+import 'package:te_find/utils/progress_bar_manager/busy_dialog.dart';
+import 'package:te_find/utils/progress_bar_manager/dialog_models.dart';
+import 'package:te_find/utils/progress_bar_manager/dialog_service.dart';
 
 class ProgressManager extends StatefulWidget {
   final Widget child;

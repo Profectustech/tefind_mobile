@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:saleko/utils/app_colors.dart';
+import 'package:te_find/utils/app_colors.dart';
 
 class PrivacyPolicyPage extends StatefulWidget {
   const PrivacyPolicyPage({super.key});
@@ -18,7 +18,7 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
     super.initState();
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadRequest(Uri.parse("https://saleko.ng/privacy-policy"))
+      ..loadRequest(Uri.parse("https://te_find.ng/privacy-policy"))
       ..setNavigationDelegate(NavigationDelegate(
         // showing a loading indicator for good user experience
         onPageStarted: (_) {

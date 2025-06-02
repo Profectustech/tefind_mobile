@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:saleko/utils/app_colors.dart';
-import 'package:saleko/utils/screen_size.dart';
+import 'package:te_find/utils/app_colors.dart';
+import 'package:te_find/utils/screen_size.dart';
 
 class CustomDobPicker extends StatefulWidget {
   final DateTime initialDate;

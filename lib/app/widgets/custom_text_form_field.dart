@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:saleko/utils/app_colors.dart';
-import 'package:saleko/utils/app_styles.dart';
+import 'package:te_find/utils/app_colors.dart';
+import 'package:te_find/utils/app_styles.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final Function(String)? onChanged;
@@ -60,32 +60,32 @@ class CustomTextFormField extends StatelessWidget {
         hintText: hint,
         suffixIcon: suffixIcon ?? null,
         hintStyle: TextStyle(
-          fontSize: 16,
+          fontSize: 14,
           color: Color(0xff8391A1),
         ),
         labelStyle: TextStyle(
-          fontSize: 16,
+          fontSize: 14,
           fontWeight: FontWeight.w500,
           color: Color(0xff8391A1),
         ),
         focusedBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(3.5)),
-          borderSide: BorderSide(width: 1.2, color: AppColors.primaryColor),
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+          borderSide: BorderSide(width: 1, color: AppColors.primaryColor),
         ),
         disabledBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(3.5)),
-          borderSide: BorderSide(width: 1.2, color: AppColors.greyFaint),
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+          borderSide: BorderSide(width: 1, color: AppColors.greyFaint),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(3.5)),
+          borderRadius: BorderRadius.all(Radius.circular(8)),
           borderSide: BorderSide(
             color: AppColors.grey,
-            width: 1.6.h,
+            width: 1.h,
           ),
         ),
         errorStyle: const TextStyle(color: AppColors.red),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(3.5),
+          borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(),
         ),
       ),

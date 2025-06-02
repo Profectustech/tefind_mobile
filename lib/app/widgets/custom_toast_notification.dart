@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:saleko/services/navigation/navigator_service.dart';
-import 'package:saleko/utils/app_colors.dart';
+import 'package:te_find/services/navigation/navigator_service.dart';
+import 'package:te_find/utils/app_colors.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';

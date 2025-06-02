@@ -11,6 +11,7 @@ class AppColors {
 
   static const Color baseWhite = Color(0xFFFCFFFD);
   static const Color black = Color(0xFF000000);
+  static const Color faintBlack = Color.fromRGBO(75, 85, 99, 1);
   static const Color blackTextColor = Color(0xFF1B1C1E);
   static const Color blueTextColor = Color(0xFF1C265D);
   static const Color blueDeeperText = Color(0xFF1C1939);
@@ -25,7 +26,7 @@ class AppColors {
   static const Color fadedBlack = Color(0xFF060D23);
   static const Color lightWhite = Color(0xFFDEE1F2);
   static const Color lightWhiteBg = Color(0xFFF0F7FF);
-  static const Color primaryColor = Color(0xFF084C3F);
+  static const Color primaryColor = Color.fromRGBO(60, 181, 181, 1);
   static const Color secondaryColor = Color(0xFF088158);
   static const Color shadowGrey = Color(0xFF111111);
   static const Color successGreen = Color(0xFF0C7731);
@@ -33,10 +34,13 @@ class AppColors {
   static const Color warning = Color(0xFF754E00);
   static const Color warningRed = Color(0xFFE00000);
   static const Color white = Color(0xFFFFFFFF);
+  static const Color containerWhite = Color.fromRGBO(250, 250, 250, 1);
   static const Color grey = Color(0xFF8E8E8E);
   static const Color greyLight = Color(0xFFE7E9EA);
   static const Color greyButton = Color (0xFFDADADA);
-  static const Color greyText = Color(0xFF4F4F4F);
+  // static const Color greyText = Color(0xFF4F4F4F);
+  static  Color greyText = HexColor.fromHex("#6B7280");
+  static  Color orange = HexColor.fromHex("#FF7D54");
   static const Color greyButtonText = Color (0xFF6B6B6B);
 
   static const Color greyFaint = Color(0xFFE8ECF4);

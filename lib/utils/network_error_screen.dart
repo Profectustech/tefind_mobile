@@ -1,5 +1,5 @@
-import 'package:saleko/utils/app_colors.dart';
-import 'package:saleko/utils/screen_size.dart';
+import 'package:te_find/utils/app_colors.dart';
+import 'package:te_find/utils/screen_size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 

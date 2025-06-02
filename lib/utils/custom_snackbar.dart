@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:saleko/services/navigation/navigator_service.dart';
-import 'package:saleko/utils/app_colors.dart';
+import 'package:te_find/services/navigation/navigator_service.dart';
+import 'package:te_find/utils/app_colors.dart';
 
-void showSalekoSnackBar(String message, Widget? icon, bool success) {
+void showte_findSnackBar(String message, Widget? icon, bool success) {
   final overlay = Overlay.of(NavigatorService.navigationKey_.currentContext!);
   late OverlayEntry overlayEntry;
   overlayEntry = OverlayEntry(

@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:saleko/app/widgets/custom_button.dart';
-import 'package:saleko/services/navigation/navigator_service.dart';
-import 'package:saleko/utils/app_colors.dart';
-import 'package:saleko/utils/date_grouping.dart';
-import 'package:saleko/utils/screen_size.dart';
+import 'package:te_find/app/widgets/custom_button.dart';
+import 'package:te_find/services/navigation/navigator_service.dart';
+import 'package:te_find/utils/app_colors.dart';
+import 'package:te_find/utils/date_grouping.dart';
+import 'package:te_find/utils/screen_size.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../../../../../utils/locator.dart';
 

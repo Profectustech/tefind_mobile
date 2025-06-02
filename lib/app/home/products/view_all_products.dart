@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:saleko/app/home/products/selectedProduct.dart';
-import 'package:saleko/app/widgets/loader_widget.dart';
-import 'package:saleko/providers/product_provider.dart';
-import 'package:saleko/providers/provider.dart';
-import 'package:saleko/services/navigation/route_names.dart';
-import 'package:saleko/utils/enums.dart';
-import 'package:saleko/utils/network_error_screen.dart';
-import 'package:saleko/utils/progress_bar_manager/utility_app_bar.dart';
-import 'package:saleko/services/navigation/navigator_service.dart';
-import 'package:saleko/utils/app_colors.dart';
+import 'package:te_find/app/home/products/selectedProduct.dart';
+import 'package:te_find/app/widgets/loader_widget.dart';
+import 'package:te_find/providers/product_provider.dart';
+import 'package:te_find/providers/provider.dart';
+import 'package:te_find/services/navigation/route_names.dart';
+import 'package:te_find/utils/enums.dart';
+import 'package:te_find/utils/network_error_screen.dart';
+import 'package:te_find/utils/progress_bar_manager/utility_app_bar.dart';
+import 'package:te_find/services/navigation/navigator_service.dart';
+import 'package:te_find/utils/app_colors.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../models/CategoriesModel.dart';
 import '../../../models/Products.dart';
@@ -113,8 +113,8 @@ class _ViewAllProductState extends ConsumerState<ViewAllProducts> {
                                       itemBuilder: (context, index) {
                                         final feed =
                                             productProvider.allProduct![index];
-                                        return ProductGridview(
-                                            newProducts: feed);
+                                        // return ProductGridview(
+                                        //     newProducts: feed);
                                       },
                                     ),
                                     const SizedBox(height: 30),
@@ -161,7 +161,7 @@ class _ViewAllProductState extends ConsumerState<ViewAllProducts> {
                                   height: 50,
                                 ),
                                 SvgPicture.asset(
-                                  Assets.saleko,
+                                  Assets.te_find,
                                   color: Colors.white,
                                 ),
                                 const Text(

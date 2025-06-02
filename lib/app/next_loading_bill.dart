@@ -7,15 +7,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 // import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:saleko/app/widgets/back_button.dart';
-import 'package:saleko/app/widgets/custom_button.dart';
-import 'package:saleko/app/widgets/custom_text_form_field.dart';
-import 'package:saleko/providers/account_provider.dart';
-import 'package:saleko/providers/provider.dart';
-import 'package:saleko/services/navigation/animated_navigation.dart';
-import 'package:saleko/services/navigation/navigator_service.dart';
-import 'package:saleko/utils/app_colors.dart';
-import 'package:saleko/utils/screen_size.dart';
+import 'package:te_find/app/widgets/back_button.dart';
+import 'package:te_find/app/widgets/custom_button.dart';
+import 'package:te_find/app/widgets/custom_text_form_field.dart';
+import 'package:te_find/providers/account_provider.dart';
+import 'package:te_find/providers/provider.dart';
+import 'package:te_find/services/navigation/animated_navigation.dart';
+import 'package:te_find/services/navigation/navigator_service.dart';
+import 'package:te_find/utils/app_colors.dart';
+import 'package:te_find/utils/screen_size.dart';
 import 'package:image_picker/image_picker.dart';
 
 class LoadingWayBill2 extends ConsumerStatefulWidget {

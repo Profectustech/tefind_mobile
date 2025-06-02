@@ -1,11 +1,11 @@
 // import 'package:flutter/material.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
-// import 'package:saleko/app/profile/profile.dart';
-// import 'package:saleko/app/widgets/custom_bottom_sheet.dart';
-// import 'package:saleko/providers/provider.dart';
-// import 'package:saleko/utils/app_colors.dart';
+// import 'package:te_find/app/profile/profile.dart';
+// import 'package:te_find/app/widgets/custom_bottom_sheet.dart';
+// import 'package:te_find/providers/provider.dart';
+// import 'package:te_find/utils/app_colors.dart';
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:saleko/providers/account_provider.dart';
+// import 'package:te_find/providers/account_provider.dart';
 
 // class BottomNavigation extends ConsumerStatefulWidget {
 //   const BottomNavigation({super.key});

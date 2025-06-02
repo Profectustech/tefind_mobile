@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:saleko/utils/app_colors.dart';
+import 'package:te_find/utils/app_colors.dart';
+import 'package:te_find/utils/assets_manager.dart';
 
 class SearchBox extends StatelessWidget {
   final String hint;
@@ -20,39 +21,64 @@ class SearchBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 50.h,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(11.42)),
-      child: SearchBar(
-        controller: controller ,
-        elevation: MaterialStateProperty.all(0.0),
-        backgroundColor: MaterialStateProperty.all(
-          backgroundColor ?? AppColors.white,
-        ),
-        padding: MaterialStateProperty.all(
-          EdgeInsets.only(left: 15.0, right: 0),
-        ),
-        leading: SvgPicture.asset(
-          "assets/images/searchIcon.svg",
-          color: AppColors.greenLighter,
-        ),
-        shape: MaterialStateProperty.all(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(11.42.r),
+      padding: EdgeInsets.symmetric(horizontal: 10.w),
+      height: 40.h,
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(16.r), color: Color.fromRGBO(255, 255, 255, 1),),
+      child: Row(
+        children: [
+          Row(
+            spacing: 5.w,
+            children: [
+              SvgPicture.asset(Assets.location),
+              Text('Lagos', style: TextStyle(
+                color: AppColors.black,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),),
+              VerticalDivider(
+                color: AppColors.greenLighter,
+                indent: 6,
+                endIndent: 6,
+                thickness: 1,
+              ),
+            ],
           ),
-        ),
-        onChanged: (v) {
-          if (onChanged != null) {
-            onChanged!(v);
-          }
-        },
-        hintText: hint,
-        hintStyle: MaterialStateProperty.all(
-          TextStyle(
-            color: AppColors.greenLighter,
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
+          Expanded(
+            child: SearchBar(
+              controller: controller ,
+              elevation: MaterialStateProperty.all(0.0),
+              backgroundColor: MaterialStateProperty.all(
+                backgroundColor ?? AppColors.white,
+              ),
+              padding: MaterialStateProperty.all(
+                EdgeInsets.only(left: 10.0, right: 0),
+              ),
+              leading: SvgPicture.asset(
+                "assets/images/searchIcon.svg",
+                color: AppColors.greenLighter,
+              ),
+              shape: MaterialStateProperty.all(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(11.42.r),
+                ),
+              ),
+              onChanged: (v) {
+                if (onChanged != null) {
+                  onChanged!(v);
+                }
+              },
+              hintText: hint,
+              hintStyle: MaterialStateProperty.all(
+                TextStyle(
+                  color: AppColors.greenLighter,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
           ),
-        ),
+          SvgPicture.asset(Assets.filter),
+        ],
       ),
     );
   }

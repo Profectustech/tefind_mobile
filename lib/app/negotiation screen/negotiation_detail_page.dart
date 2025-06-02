@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:saleko/app/negotiation%20screen/accept_bottomNav.dart';
-import 'package:saleko/models/message_models.dart';
-import 'package:saleko/utils/app_colors.dart';
-import 'package:saleko/utils/progress_bar_manager/utility_app_bar.dart';
+import 'package:te_find/app/negotiation%20screen/accept_bottomNav.dart';
+import 'package:te_find/models/message_models.dart';
+import 'package:te_find/utils/app_colors.dart';
+import 'package:te_find/utils/progress_bar_manager/utility_app_bar.dart';
 
 import '../../utils/assets_manager.dart';
 import '../widgets/custom_bottom_sheet.dart';

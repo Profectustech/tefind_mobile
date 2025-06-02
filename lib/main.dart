@@ -1,4 +1,11 @@
 import 'dart:io';
+import 'package:te_find/services/navigation/navigator_service.dart';
+import 'package:te_find/services/navigation/router.dart';
+import 'package:te_find/utils/app_colors.dart';
+import 'package:te_find/utils/locator.dart';
+import 'package:te_find/utils/progress_bar_manager/dialog_manager.dart';
+import 'package:te_find/utils/progress_bar_manager/dialog_service.dart';
+import 'package:te_find/utils/storage_util.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -6,20 +13,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:saleko/app/onboarding/onboarding_screen_view.dart';
-import 'package:saleko/app/splashScreen/splashscreen.dart';
-import 'package:saleko/utils/storage_util.dart';
-import 'package:saleko/services/navigation/navigator_service.dart';
-import 'package:saleko/services/navigation/router.dart';
-import 'package:saleko/utils/app_colors.dart';
-import 'package:saleko/utils/locator.dart';
-import 'package:saleko/utils/progress_bar_manager/dialog_manager.dart';
-import 'package:saleko/utils/progress_bar_manager/dialog_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
+import 'app/splashScreen/splashscreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -180,16 +179,17 @@ class _MyAppState extends State<MyApp> {
                 backgroundColor: Colors.white,
               ),
               bottomSheetTheme: const BottomSheetThemeData(
-                backgroundColor: Colors.white, // Set your default color here
+                backgroundColor: Color(0xFFFFFF)
               ),
-              scaffoldBackgroundColor: Color(0xffEDF2F7),
+              scaffoldBackgroundColor: Color.fromRGBO(250, 250, 250, 1),//Color(0xFAFAFA),
               bottomNavigationBarTheme:
                   BottomNavigationBarThemeData(backgroundColor: Colors.white),
-              textTheme: GoogleFonts.sourceSans3TextTheme(
+              textTheme: GoogleFonts.poppinsTextTheme(
                 Theme.of(context).textTheme,
-              ),
-              colorScheme:
-                  ColorScheme.fromSeed(seedColor: AppColors.primaryColor),
+
+            ),
+              // colorScheme:
+              //     ColorScheme.fromSeed(seedColor: AppColors.white),
               useMaterial3: true,
               appBarTheme: const AppBarTheme(
                   centerTitle: true,

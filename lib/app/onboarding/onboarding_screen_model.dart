@@ -1,4 +1,4 @@
-import 'package:saleko/utils/assets_manager.dart';
+import 'package:te_find/utils/assets_manager.dart';
 
 class OnboardingScreenModel {
   String image;
@@ -17,40 +17,31 @@ List<OnboardingScreenModel> getScreens() {
 
   //screen 1
   OnboardingScreenModel screenOne = OnboardingScreenModel(
-    image: Assets.iphoneLogo,
-    title: "Welcome to Saleko!",
+    image: Assets.onboardingOne,
+    title: "Shop with Confidence",
     content:
-        "Discover a world of diverse products and vendors at your fingertips. Get the best deals and a seamless shopping experience all in one place.",
+        "Verified sellers, secure payments, and quality\nassurance for every purchase",
   );
   screens.add(screenOne);
 
   //screen 2
   OnboardingScreenModel screenTwo = OnboardingScreenModel(
-    image: Assets.onboardingOne,
-    title: "Negotiate Prices",
+    image: Assets.onboardingTwo,
+    title: "Shop with Confidence",
     content:
-        "Find the best deals and negotiate prices directly with sellers. Get the products you love at the prices you want.",
+    "Verified sellers, secure payments, and quality\nassurance for every purchase",
   );
 
   screens.add(screenTwo);
 
   //screen 3
   OnboardingScreenModel screenThree = OnboardingScreenModel(
-    image: Assets.street,
-    title: "Search by Market",
+    image: Assets.onboardingThree,
+    title: "Shop with Confidence",
     content:
-        "Explore products from various markets. Whether you're looking for local treasures or international goods, Saleko has it all.",
+    "Verified sellers, secure payments, and quality\nassurance for every purchase",
   );
   screens.add(screenThree);
-  //screen 4
-  OnboardingScreenModel screenFour = OnboardingScreenModel(
-    image: Assets.rider,
-    title: "Swift Delivery",
-    content:
-        "Enjoy fast and reliable delivery services. Your purchases will reach you swiftly and securely.",
-  );
-
-  screens.add(screenFour);
 
   return screens;
 }

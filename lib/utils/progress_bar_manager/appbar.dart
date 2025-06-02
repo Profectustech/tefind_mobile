@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:saleko/utils/app_colors.dart';
-import 'package:saleko/utils/assets_manager.dart'; // Import for AppColors
+import 'package:te_find/utils/app_colors.dart';
+import 'package:te_find/utils/assets_manager.dart'; // Import for AppColors
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   bool centerTitle;
@@ -20,20 +20,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       automaticallyImplyLeading: displayBack ?? true,
       centerTitle: centerTitle,
-      title: SvgPicture.asset(
-        Assets.salekoWhite,
-        color: AppColors.primaryColor,
-      ),
-      actions: [
-        TextButton(
-          onPressed: onTap,
-          child: Text(
-            text,
-            style: TextStyle(fontWeight: FontWeight.w400),
-          ),
+      title: Text(
+        text,
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+          color: AppColors.black,
         ),
-        const SizedBox(width: 5),
-      ],
+      ),
     );
   }
 

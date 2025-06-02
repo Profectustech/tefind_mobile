@@ -1,9 +1,9 @@
 // import 'package:flutter/material.dart';
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:saleko/app/widgets/search_box.dart';
-// import 'package:saleko/utils/app_colors.dart';
-// import 'package:saleko/utils/progress_bar_manager/utility_app_bar.dart';
+// import 'package:te_find/app/widgets/search_box.dart';
+// import 'package:te_find/utils/app_colors.dart';
+// import 'package:te_find/utils/progress_bar_manager/utility_app_bar.dart';
 // import 'package:flutter/gestures.dart';
 // import 'package:url_launcher/url_launcher.dart';
 //
@@ -18,30 +18,30 @@
 //
 // final List<Map<String, dynamic>> faqItems = [
 //   {
-//     "question": "How do I become a merchant on Saleko?",
-//     "answer": "If you wish to set up shop on Saleko, click here for a step by step guide on creating a merchant profile.",
+//     "question": "How do I become a merchant on te_find?",
+//     "answer": "If you wish to set up shop on te_find, click here for a step by step guide on creating a merchant profile.",
 //     "color": AppColors.primaryColor,
 //     url
 //
 //   },
 //   {
-//     "question": "How do I shop on Saleko?",
-//     "answer": "If you wish to shop from local markets, click here for a step by step guide on creating a buyer profile on Saleko.",
+//     "question": "How do I shop on te_find?",
+//     "answer": "If you wish to shop from local markets, click here for a step by step guide on creating a buyer profile on te_find.",
 //     "color": Colors.orange
 //   },
 //   {
 //     "question": "My order has payment issues",
-//     "answer": "If you have any issues relating to making payments on our platform, please reach out to our customer support representatives for immediate assistance through our website's chat box. You can locate the chat box via the chat icon at the bottom right-hand corner of your screen. Once you click on the icon, a chat window will open up, and you'll be connected with one of our support agents.\n \n For further assistance with this issue, please send an email to support@saleko.ng.\n \n We understand that sometimes, technical glitches happen, but we're committed to making sure that your experience with us at Saleko is a smooth one. So take a deep breath, relax and let's get this sorted out.",
+//     "answer": "If you have any issues relating to making payments on our platform, please reach out to our customer support representatives for immediate assistance through our website's chat box. You can locate the chat box via the chat icon at the bottom right-hand corner of your screen. Once you click on the icon, a chat window will open up, and you'll be connected with one of our support agents.\n \n For further assistance with this issue, please send an email to support@te_find.ng.\n \n We understand that sometimes, technical glitches happen, but we're committed to making sure that your experience with us at te_find is a smooth one. So take a deep breath, relax and let's get this sorted out.",
 //     "color": Colors.purple
 //   },
 //   {
-//     "question": "I would like to advertise my product on Saleko",
-//     "answer": "To advertise your products on Saleko, please reach out to us at info@saleko.ng or call 07000SALEKO.",
+//     "question": "I would like to advertise my product on te_find",
+//     "answer": "To advertise your products on te_find, please reach out to us at info@te_find.ng or call 07000te_find.",
 //     "color": Colors.black
 //   },
 //   {
 //     "question": "Order cancellation issue",
-//     "answer": "If your order was cancelled or if you would like to cancel your order, please reach out to our customer support representatives for immediate assistance through our website's chat box. You can locate the chat box via the chat icon at the bottom right-hand corner of your screen. Once you click on the icon, a chat window will open up, and you'll be connected with one of our support agents.\n \nFor further assistance call 07000SALEKO or email the support team at support@saleko.ng.",
+//     "answer": "If your order was cancelled or if you would like to cancel your order, please reach out to our customer support representatives for immediate assistance through our website's chat box. You can locate the chat box via the chat icon at the bottom right-hand corner of your screen. Once you click on the icon, a chat window will open up, and you'll be connected with one of our support agents.\n \nFor further assistance call 07000te_find or email the support team at support@te_find.ng.",
 //     "color": Colors.deepOrange
 //   },
 //   {
@@ -75,7 +75,7 @@
 //         child: Padding(padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20), child:
 //           Column(
 //             children: [
-//               Text("We’re here to help you with anything and everything on Saleko.", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),),
+//               Text("We’re here to help you with anything and everything on te_find.", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),),
 //               SizedBox(height: 20.h,),
 //               SearchBox(hint: "Search for help"),
 //               SizedBox(height: 20.h,),
@@ -189,9 +189,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:saleko/app/widgets/search_box.dart';
-import 'package:saleko/utils/app_colors.dart';
-import 'package:saleko/utils/progress_bar_manager/utility_app_bar.dart';
+import 'package:te_find/app/widgets/search_box.dart';
+import 'package:te_find/utils/app_colors.dart';
+import 'package:te_find/utils/progress_bar_manager/utility_app_bar.dart';
 import 'package:flutter/gestures.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -206,61 +206,61 @@ int expandedIndex = -1;
 
 final List<Map<String, dynamic>> faqItems = [
   {
-    "question": "How do I become a merchant on Saleko?",
-    "answer": "If you wish to set up shop on Saleko, click here for a step by step guide on creating a merchant profile.",
+    "question": "How do I become a merchant on te_find?",
+    "answer": "If you wish to set up shop on te_find, click here for a step by step guide on creating a merchant profile.",
     "color": AppColors.primaryColor,
-    "url": "https://saleko.ng/become-a-seller"// "https://flutter.dev"
+    "url": "https://te_find.ng/become-a-seller"// "https://flutter.dev"
   },
   {
-    "question": "How do I shop on Saleko?",
-    "answer": "If you wish to shop from local markets, click here for a step by step guide on creating a buyer profile on Saleko.",
+    "question": "How do I shop on te_find?",
+    "answer": "If you wish to shop from local markets, click here for a step by step guide on creating a buyer profile on te_find.",
     "color": Colors.orange,
-    "url": "https://saleko.ng/create-buyers-profile"
+    "url": "https://te_find.ng/create-buyers-profile"
   },
   {
     "question": "My order has payment issues",
     "answer":
-    "If you have any issues relating to making payments on our platform, please reach out to our customer support representatives for immediate assistance through our website's chat box. You can locate the chat box via the chat icon at the bottom right-hand corner of your screen. Once you click on the icon, a chat window will open up, and you'll be connected with one of our support agents.\n\nFor further assistance with this issue, please send an email to support@saleko.ng.",
+    "If you have any issues relating to making payments on our platform, please reach out to our customer support representatives for immediate assistance through our website's chat box. You can locate the chat box via the chat icon at the bottom right-hand corner of your screen. Once you click on the icon, a chat window will open up, and you'll be connected with one of our support agents.\n\nFor further assistance with this issue, please send an email to support@te_find.ng.",
     "color": Colors.purple
   },
   {
-    "question": "I would like to advertise my product on Saleko",
+    "question": "I would like to advertise my product on te_find",
     "answer":
-    "To advertise your products on Saleko, please reach out to us at info@saleko.ng or call 07000SALEKO.",
+    "To advertise your products on te_find, please reach out to us at info@te_find.ng or call 07000te_find.",
     "color": Colors.black
   },
   {
     "question": "Order cancellation issue",
     "answer":
-    "If your order was cancelled or if you would like to cancel your order, please reach out to our customer support representatives for immediate assistance through our website's chat box. You can locate the chat box via the chat icon at the bottom right-hand corner of your screen. Once you click on the icon, a chat window will open up, and you'll be connected with one of our support agents.\n\nFor further assistance call 07000SALEKO or email the support team at support@saleko.ng.",
+    "If your order was cancelled or if you would like to cancel your order, please reach out to our customer support representatives for immediate assistance through our website's chat box. You can locate the chat box via the chat icon at the bottom right-hand corner of your screen. Once you click on the icon, a chat window will open up, and you'll be connected with one of our support agents.\n\nFor further assistance call 07000te_find or email the support team at support@te_find.ng.",
     "color": Colors.deepOrange
   },
   {
     "question": "I need help tracking my order",
     "answer": "Need help tracking an order? Click here for more information",
     "color": Colors.purple,
-    "url": "https://saleko.ng/track-my-order"
+    "url": "https://te_find.ng/track-my-order"
   },
   {
     "question": "I have issues with my Delivered Product",
     "answer":
     "Please know that we take all customer complaints seriously and we're here to help resolve this issue for you as quickly as possible. We want you to have the best experience possible with our service, and we're committed to making it right. Let's work together to figure out what went wrong and how we can fix it.\n\nClick here to find out how to resolve issues you may have with your order.",
     "color": AppColors.primaryColor,
-    "url": "https://saleko.ng/disputes"
+    "url": "https://te_find.ng/disputes"
   },
   {
     "question": "Order returns & refunds",
     "answer":
     "We're truly sorry to hear that you're not satisfied with your order and that you're considering a refund. We take all customer feedback seriously, and we want to make sure that we do everything we can to address your concerns and make things right.\nClick here to find out how to go about returns and refunds.",
     "color": Colors.deepOrange,
-    "url": "https://saleko.ng/disputes"
+    "url": "https://te_find.ng/disputes"
   },
   {
     "question": "Pickup Locations",
     "answer":
     "We currently have multiple pickup locations available for your convenience, and we are always looking to expand our network to better serve our customers.\nClick here to find out more about our pickup locations.",
     "color": Colors.black,
-    "url": "https://saleko.ng/pickup-locations"
+    "url": "https://te_find.ng/pickup-locations"
   },
 ];
 
@@ -278,7 +278,7 @@ class _FaqPageState extends ConsumerState<FaqPage> {
           child: Column(
             children: [
               Text(
-                "We’re here to help you with anything and everything on Saleko.",
+                "We’re here to help you with anything and everything on te_find.",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
               ),
               // SizedBox(height: 20.h),
@@ -436,7 +436,7 @@ class _WebViewPageState extends State<WebViewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Saleko")),
+      appBar: AppBar(title: const Text("te_find")),
       body: Stack(
         children: [
           WebViewWidget(controller: _controller),

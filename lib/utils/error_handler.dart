@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:saleko/services/dialog_service.dart';
-import 'package:saleko/utils/enums.dart';
+import 'package:te_find/services/dialog_service.dart';
+import 'package:te_find/utils/enums.dart';
 
 class DioErrorHandler {
   handleStringError(String errorMessage) {

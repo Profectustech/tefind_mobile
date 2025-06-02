@@ -2,14 +2,14 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:saleko/models/util_model.dart';
-import 'package:saleko/services/navigation/navigator_service.dart';
-import 'package:saleko/services/navigation/route_names.dart';
-import 'package:saleko/utils/constants.dart';
-import 'package:saleko/utils/enums.dart';
-import 'package:saleko/utils/error_handler.dart';
-import 'package:saleko/utils/http.dart';
-import 'package:saleko/utils/storage_util.dart';
+import 'package:te_find/models/util_model.dart';
+import 'package:te_find/services/navigation/navigator_service.dart';
+import 'package:te_find/services/navigation/route_names.dart';
+import 'package:te_find/utils/constants.dart';
+import 'package:te_find/utils/enums.dart';
+import 'package:te_find/utils/error_handler.dart';
+import 'package:te_find/utils/http.dart';
+import 'package:te_find/utils/storage_util.dart';
 
 class NetworkHelper {
   final Dio _dio = Dio();

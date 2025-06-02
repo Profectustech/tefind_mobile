@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:saleko/app/bottom_nav/nav_service.dart';
-import 'package:saleko/app/home/cart_page.dart';
-import 'package:saleko/app/home/categories_page.dart';
-import 'package:saleko/app/home/home_page.dart';
-import 'package:saleko/app/home/market/market_page.dart';
-import 'package:saleko/app/profile/profile_page.dart';
-import 'package:saleko/providers/product_provider.dart';
-import 'package:saleko/providers/provider.dart';
-import 'package:saleko/utils/app_colors.dart';
+import 'package:te_find/app/bottom_nav/nav_service.dart';
+import 'package:te_find/app/home/cart_page.dart';
+import 'package:te_find/app/home/categories_page.dart';
+import 'package:te_find/app/home/home_page.dart';
+import 'package:te_find/app/home/market/market_page.dart';
+import 'package:te_find/app/profile/profile_page.dart';
+import 'package:te_find/providers/product_provider.dart';
+import 'package:te_find/providers/provider.dart';
+import 'package:te_find/utils/app_colors.dart';
 
 class BottomNav extends ConsumerStatefulWidget {
   const BottomNav({Key? key}) : super(key: key);

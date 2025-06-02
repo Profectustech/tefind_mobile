@@ -2,15 +2,15 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:saleko/app/widgets/pin_input_field.dart';
-import 'package:saleko/providers/account_provider.dart';
-import 'package:saleko/providers/provider.dart';
-import 'package:saleko/services/navigation/navigator_service.dart';
-import 'package:saleko/services/navigation/route_names.dart';
-import 'package:saleko/utils/app_colors.dart';
-import 'package:saleko/app/widgets/custom_button.dart';
-import 'package:saleko/utils/helpers.dart';
-import 'package:saleko/utils/progress_bar_manager/appbar.dart';
+import 'package:te_find/app/widgets/pin_input_field.dart';
+import 'package:te_find/providers/account_provider.dart';
+import 'package:te_find/providers/provider.dart';
+import 'package:te_find/services/navigation/navigator_service.dart';
+import 'package:te_find/services/navigation/route_names.dart';
+import 'package:te_find/utils/app_colors.dart';
+import 'package:te_find/app/widgets/custom_button.dart';
+import 'package:te_find/utils/helpers.dart';
+import 'package:te_find/utils/progress_bar_manager/appbar.dart';
 
 class VerifyEmailOrPassword extends ConsumerStatefulWidget {
 

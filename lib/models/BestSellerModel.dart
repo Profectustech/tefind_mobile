@@ -50,9 +50,9 @@
 /// identity_document_number_type : 9
 /// is_mro_assigned : 0
 /// orders_count : 20
-/// logo_image_url : "https://saleko.ng/themes/msmarvel/assets/images/store-banner.png"
-/// banner_image_url : "https://saleko.ng/themes/msmarvel/assets/images/store-banner.png"
-/// market_info : {"id":4,"name":"idumota","image":"markets/idumota.png","image_url":"https://saleko.ng/storage/markets/idumota.png"}
+/// logo_image_url : "https://te_find.ng/themes/msmarvel/assets/images/store-banner.png"
+/// banner_image_url : "https://te_find.ng/themes/msmarvel/assets/images/store-banner.png"
+/// market_info : {"id":4,"name":"idumota","image":"markets/idumota.png","image_url":"https://te_find.ng/storage/markets/idumota.png"}
 
 class BestSellerModel {
   BestSellerModel({
@@ -514,7 +514,7 @@ BestSellerModel copyWith({  num? id,
 /// id : 4
 /// name : "idumota"
 /// image : "markets/idumota.png"
-/// image_url : "https://saleko.ng/storage/markets/idumota.png"
+/// image_url : "https://te_find.ng/storage/markets/idumota.png"
 
 class MarketInfo {
   MarketInfo({

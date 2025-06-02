@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:saleko/app/change_password.dart';
-import 'package:saleko/utils/app_colors.dart';
+import 'package:te_find/app/change_password.dart';
+import 'package:te_find/utils/app_colors.dart';
 
 class SignInButton extends StatelessWidget {
   final String text;

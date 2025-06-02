@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:saleko/app/widgets/market_widget.dart';
-import 'package:saleko/models/MarketListModel.dart';
+import 'package:te_find/app/widgets/market_widget.dart';
+import 'package:te_find/models/MarketListModel.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:saleko/providers/provider.dart';
-import 'package:saleko/app/widgets/search_box.dart';
-import 'package:saleko/providers/product_provider.dart';
-import 'package:saleko/utils/app_colors.dart';
+import 'package:te_find/providers/provider.dart';
+import 'package:te_find/app/widgets/search_box.dart';
+import 'package:te_find/providers/product_provider.dart';
+import 'package:te_find/utils/app_colors.dart';
 
 class MarketPage extends ConsumerStatefulWidget {
   MarketPage({super.key});
