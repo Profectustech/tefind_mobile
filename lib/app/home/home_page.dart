@@ -488,13 +488,72 @@ class _HomePageState extends ConsumerState<HomePage> {
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                         )),
-                    Text('See All',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: AppColors.primaryColor,
-                          fontWeight: FontWeight.w500,
-                        )),
+                    Row(
+                      spacing: 8.w,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 5.h),
+                          // height: 26,
+                          // width: 64,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(16)),
+                          child:  Row(
+                            spacing: 4,
+                            children: [
+                              Icon(Icons.filter_list, size: 15,),
+                              Text('Filter',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                  )),
+                            ],
+                          ),
+
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 5.h),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: Transform.scale(
+                                  scale: 0.7,
+                                  child: Radio<int>(
+                                    value: 1,
+                                    activeColor: AppColors.primaryColor,
+                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                    groupValue: selectedOption,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        selectedOption = value!;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 4),
+                              Text(
+                                'Sort',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+
+                      ],
+                    ),
                   ],
                 ),
                 SizedBox(
