@@ -80,7 +80,7 @@ class _SellerAccountgState extends ConsumerState<SellerAccount> {
                       ),
                     ),
                     SizedBox(
-                      height: 30.h,
+                      height: 10.h,
                     ),
                     CustomTextFormField(
                       //controller: accountProvider.lastNameController,
