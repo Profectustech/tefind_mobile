@@ -5,12 +5,12 @@ import 'package:te_find/app/bottom_nav/bottom_nav.dart';
 import 'package:te_find/app/bottom_nav/nav.dart';
 import 'package:te_find/app/forgotPassword/email_input_screen.dart';
 import 'package:te_find/app/forgotPassword/set_new_password.dart';
+import 'package:te_find/app/home/Sell/sell_items.dart';
 import 'package:te_find/app/home/categories_page.dart';
 import 'package:te_find/app/home/products/all_fashion_product.dart';
 import 'package:te_find/app/home/check_out.dart';
 import 'package:te_find/app/home/confirmed_payment.dart';
 import 'package:te_find/app/home/products/fashion_page.dart';
-import 'package:te_find/app/home/market/all_market_page.dart';
 import 'package:te_find/app/home/pay_with_wallet.dart';
 import 'package:te_find/app/home/products/product_detail.dart';
 import 'package:te_find/app/home/products/view_all_products.dart';
@@ -209,6 +209,14 @@ Route<dynamic> generateRoute(RouteSettings settings) {
          // newProducts: newProducts,
         ),
       );
+      case sellItemScreens:
+  //    Products newProducts = settings.arguments! as Products;
+      return _getPageRoute(
+        routeName: settings.name!,
+        viewToShow: SellItems(
+         // newProducts: newProducts,
+        ),
+      );
 
     case allFashionScreenRoute:
       return _getPageRoute(
@@ -308,13 +316,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         viewToShow: Negotiations(),
       );
 
-    case allMarketPage:
-      MarketListModel model = settings.arguments! as MarketListModel;
-
-      return _getPageRoute(
-        routeName: settings.name!,
-        viewToShow: AllMarketPage(model: model),
-      );
 
     default:
       return MaterialPageRoute(

@@ -5,12 +5,13 @@ import 'package:te_find/app/bottom_nav/nav_service.dart';
 import 'package:te_find/app/home/cart_page.dart';
 import 'package:te_find/app/home/categories_page.dart';
 import 'package:te_find/app/home/home_page.dart';
-import 'package:te_find/app/home/market/market_page.dart';
 import 'package:te_find/app/profile/profile_page.dart';
 import 'package:te_find/providers/product_provider.dart';
 import 'package:te_find/providers/provider.dart';
 import 'package:te_find/utils/app_colors.dart';
 
+import '../home/Sell/sell-stepper.dart';
+import '../home/Sell/sell_onboarding.dart';
 import '../search/search_page.dart';
 
 class BottomNav extends ConsumerStatefulWidget {
@@ -28,7 +29,7 @@ class _NavState extends ConsumerState<BottomNav> {
   final pages = [
     HomePage(),
     SearchPage(),
-    MarketPage(),
+    SteperExistingCustomer(),
     CartPage(),
     ProfilePage(),
   ];
@@ -50,24 +51,28 @@ class _NavState extends ConsumerState<BottomNav> {
             currentIndex: navStateProvider.currentTabIndex,
             items: [
               BottomNavigationBarItem(
+                activeIcon:  SvgPicture.asset(
+                    "assets/images/activeHome.svg") ,
                 icon: SvgPicture.asset(
-                  "assets/images/home.svg",
-                  color: navStateProvider.currentTabIndex == 0
-                      ? AppColors.primaryColor
-                      : AppColors.grey,
+                  "assets/images/inactiveHome.svg",
+                  // color: navStateProvider.currentTabIndex == 0
+                  //     ? AppColors.primaryColor
+                  //     : AppColors.grey,
                   width: 23.0,
                 ),
-                label: '',
+                label: 'Home',
               ),
               BottomNavigationBarItem(
+                activeIcon:  SvgPicture.asset(
+                    "assets/images/activeSearch.svg") ,
                 icon: SvgPicture.asset(
-                  "assets/images/dashboard.svg",
-                  color: navStateProvider.currentTabIndex == 1
-                      ? AppColors.primaryColor
-                      : null,
+                  "assets/images/inactiveSearch.svg",
+                  // color: navStateProvider.currentTabIndex == 1
+                  //     ? AppColors.primaryColor
+                  //     : null,
                   width: 23.0,
                 ),
-                label: '',
+                label: 'Search',
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset(
@@ -77,15 +82,17 @@ class _NavState extends ConsumerState<BottomNav> {
                       : null,
                   width: 23.0,
                 ),
-                label: '',
+                label: 'Sell',
               ),
               BottomNavigationBarItem(
+                activeIcon:  SvgPicture.asset(
+                    "assets/images/activeOrder.svg") ,
                 icon: productProvider.cartModel?.data?.isEmpty ?? true
                     ? SvgPicture.asset(
-                        "assets/images/cart.svg",
-                        color: navStateProvider.currentTabIndex == 3
-                            ? AppColors.primaryColor
-                            : null,
+                        "assets/images/inactiveOrder.svg",
+                        // color: navStateProvider.currentTabIndex == 3
+                        //     ? AppColors.primaryColor
+                        //     : null,
                         width: 23.0,
                       )
                     : Badge(
@@ -99,17 +106,20 @@ class _NavState extends ConsumerState<BottomNav> {
                               : null,
                           width: 23.0,
                         )),
-                label: '',
+                label: 'Orders',
               ),
               BottomNavigationBarItem(
+                activeIcon:  SvgPicture.asset(
+                    "assets/images/user.svg") ,
                 icon: SvgPicture.asset(
                   "assets/images/profile.svg",
-                  color: navStateProvider.currentTabIndex == 4
-                      ? AppColors.primaryColor
-                      : null,
+                  // color: navStateProvider.currentTabIndex == 4
+                  //     ? AppColors.primaryColor
+                  //     : null,
                   width: 23.0,
                 ),
-                label: '',
+                label: 'Profile',
+
               ),
             ]));
   }

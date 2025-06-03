@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:te_find/app/home/market/seller_filter.dart';
 import 'package:te_find/app/profile/sellers/sellers_option.dart';
 import 'package:te_find/app/widgets/search_box.dart';
 import 'package:te_find/providers/product_provider.dart';

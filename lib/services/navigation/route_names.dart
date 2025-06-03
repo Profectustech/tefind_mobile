@@ -48,3 +48,4 @@ const String negotiationScreenRoute = "negotiationScreenRoute";
 const String productDetailScreenRoute = "productDetailScreenRoute";
 const String categories = "categories";
 const String carouselContent = "carouselContent";
+const String sellItemScreens = "sellItemScreens";

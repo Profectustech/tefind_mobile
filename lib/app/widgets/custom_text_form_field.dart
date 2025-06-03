@@ -19,6 +19,7 @@ class CustomTextFormField extends StatelessWidget {
   final Widget? suffixIcon;
   final List<TextInputFormatter>? inputFormatters;
   final Color? color;
+  final double? borderRadius;
 
   const CustomTextFormField({
     super.key,
@@ -34,7 +35,7 @@ class CustomTextFormField extends StatelessWidget {
     this.controller,
     this.suffixIcon,
     this.inputFormatters,
-    this.color = AppColors.white,
+    this.color = AppColors.white, this.borderRadius,
   });
 
   @override
@@ -79,7 +80,7 @@ class CustomTextFormField extends StatelessWidget {
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(8)),
           borderSide: BorderSide(
-            color: AppColors.grey,
+            color: AppColors.greyLight,
             width: 1.h,
           ),
         ),
