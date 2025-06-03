@@ -11,6 +11,8 @@ import 'package:te_find/providers/product_provider.dart';
 import 'package:te_find/providers/provider.dart';
 import 'package:te_find/utils/app_colors.dart';
 
+import '../search/search_page.dart';
+
 class BottomNav extends ConsumerStatefulWidget {
   const BottomNav({Key? key}) : super(key: key);
 
@@ -25,7 +27,7 @@ class _NavState extends ConsumerState<BottomNav> {
   int pageIndex = 0;
   final pages = [
     HomePage(),
-    CategoriesPage(),
+    SearchPage(),
     MarketPage(),
     CartPage(),
     ProfilePage(),

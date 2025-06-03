@@ -46,3 +46,5 @@ const String FaqScreenRoute = "FAQPage";
 const String allMarketPage = "AllMarketPage";
 const String negotiationScreenRoute = "negotiationScreenRoute";
 const String productDetailScreenRoute = "productDetailScreenRoute";
+const String categories = "categories";
+const String carouselContent = "carouselContent";

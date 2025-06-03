@@ -21,6 +21,7 @@ import 'package:te_find/app/widgets/search_box.dart';
 import 'package:te_find/providers/product_provider.dart';
 import 'package:te_find/services/navigation/navigator_service.dart';
 import 'package:te_find/utils/app_colors.dart';
+import 'package:te_find/utils/locator.dart';
 import 'package:te_find/utils/progress_bar_manager/appbar.dart';
 import '../../models/BestSellerModel.dart';
 import '../../models/CategoriesModel.dart';
@@ -85,7 +86,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         child: SingleChildScrollView(
           child: Padding(
             padding:
-                EdgeInsets.only(bottom: 30, top: 20.h, left: 20.w, right: 20.w),
+                EdgeInsets.only(bottom: 30, top: 20.h, left: 15.w, right: 15.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -376,13 +377,18 @@ class _HomePageState extends ConsumerState<HomePage> {
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                         )),
-                    Text('See All',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: AppColors.primaryColor,
-                          fontWeight: FontWeight.w500,
-                        )),
+                    GestureDetector(
+                      onTap: (){
+                        NavigatorService().navigateTo(categories);
+                      },
+                      child: Text('See All',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.w500,
+                          )),
+                    ),
                   ],
                 ),
                 SizedBox(
@@ -455,10 +461,15 @@ class _HomePageState extends ConsumerState<HomePage> {
                           int pageViewIndex) =>
                       ClipRRect(
                           borderRadius: BorderRadius.all(Radius.circular(10.r)),
-                          child: Container(
-                            color: Colors.red,
-                            height: 50.h,
-                            width: double.infinity,
+                          child: InkWell(
+                            onTap: (){
+                              NavigatorService().navigateTo(carouselContent);
+                            },
+                            child: Container(
+                              color: AppColors.orange,
+                              height: 50.h,
+                              width: double.infinity,
+                            ),
                           )),
                 ),
                 SizedBox(

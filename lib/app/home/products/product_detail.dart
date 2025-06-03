@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -58,6 +59,8 @@ String formatDate(String? dateString) {
   }
 }
 
+int expandedIndex = -1;
+
 class _ProductDetailState extends ConsumerState<ProductDetail>
     with SingleTickerProviderStateMixin {
   late AccountProvider accountProvider;
@@ -65,6 +68,159 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
   final NavigatorService _navigation = NavigatorService();
   late TabController _tabController;
   int quantity = 1;
+  void showMakeOfferDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) {
+        return Dialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Close Icon
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Make an Offer',
+                      style: GoogleFonts.roboto(
+                          fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.close),
+                      onPressed: () => Navigator.of(context).pop(),
+                    )
+                  ],
+                ),
+                SizedBox(height: 12.h),
+                Row(
+                  spacing: 5.w,
+                  children: [
+                    Container(
+                      height: 64.h,
+                      width: 64.w,
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryColor,
+                        borderRadius: BorderRadius.circular(8.r),
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/gown.png'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Floral Summer Dress",
+                          style: GoogleFonts.roboto(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.black),
+                        ),
+                        Row(
+                          spacing: 2.w,
+                          children: [
+                            Text(
+                              "Listed Price:",
+                              style: GoogleFonts.roboto(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.grey),
+                            ),
+                            Text(
+                              "₦45,000",
+                              style: GoogleFonts.roboto(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.primaryColor),
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                SizedBox(height: 15.h),
+                Text(
+                  'Your Offer (₦)',
+                  style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.w500, fontSize: 11),
+                ),
+                SizedBox(height: 6.h),
+                // Offer Input
+                TextFormField(
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    //LengthLimitingTextInputFormatter(10),
+                  ],
+                  decoration: InputDecoration(
+                    fillColor:
+                        Color.fromRGBO(249, 250, 251, 1), //AppColors.greyLight,
+                    hintStyle:
+                        TextStyle(color: AppColors.grey, fontSize: 12.sp),
+                    hintText: 'Enter amount in Naira',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide(color: AppColors.grey, width: 1.0),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 5.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                  Text(
+                    "Minimum: ₦45,000",
+                    style: TextStyle(
+                        fontSize: 12.sp,
+                        color: AppColors.grey,
+                        fontWeight: FontWeight.w400),
+                  ),
+                  Text(
+                    "Maximum: ₦45,000",
+                    style: TextStyle(
+                        fontSize: 12.sp,
+                        color: AppColors.grey,
+                        fontWeight: FontWeight.w400),
+                  ),
+
+                ],),
+                SizedBox(height: 20.h),
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryColor,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+                  child: Row(
+                    spacing: 6.w,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Send Offer",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: AppColors.white,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   addQuantity() {
     setState(() {
@@ -97,6 +253,10 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
     super.dispose();
   }
 
+  bool isExpanded = false;
+  bool isDescriptionExpanded = false;
+  bool isDeliveryExpanded = false;
+  bool isSafetyTips = false;
   @override
   Widget build(BuildContext context) {
     accountProvider = ref.watch(RiverpodProvider.accountProvider);
@@ -115,12 +275,12 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
             Stack(
               children: [
                 Container(
-                  height: 280.h,
+                  height: 300.h,
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: AppColors.primaryColor,
                     image: DecorationImage(
-                      image: AssetImage('assets/images/bag.png'),
+                      image: AssetImage('assets/images/gown.png'),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -147,12 +307,12 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
                   left: 10,
                   child: Container(
                     padding:
-                        EdgeInsets.symmetric(horizontal: 25.w, vertical: 5.h),
+                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),
                     decoration: BoxDecoration(
-                        color: AppColors.primaryColor,
+                        color: AppColors.yellow,
                         borderRadius: BorderRadius.circular(28.r)),
                     child: Text(
-                      "New",
+                      "Good",
                       overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.roboto(
                           fontSize: 12,
@@ -180,10 +340,10 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
               ],
             ),
             SizedBox(
-              height: 20.h,
+              height: 5.h,
             ),
             Container(
-              height: 164.h,
+              height: 124.h,
               width: double.infinity,
               decoration: BoxDecoration(
                   color: AppColors.white,
@@ -193,16 +353,8 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Luxury Leather Handbag",
-                      style: GoogleFonts.roboto(
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.black),
-                    ),
-                    SizedBox(height: 5.h),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           "₦45,000",
@@ -211,23 +363,388 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
                               fontWeight: FontWeight.w700,
                               color: AppColors.primaryColor),
                         ),
+                      ],
+                    ),
+                    Text(
+                      "Floral Summer Dress",
+                      style: GoogleFonts.roboto(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.black),
+                    ),
+                    SizedBox(height: 5.h),
+                    Row(
+                      spacing: 15.w,
+                      children: [
+                        Row(
+                          spacing: 2.w,
+                          children: [
+                            SvgPicture.asset(Assets.location),
+                            Text(
+                              "Lagos, Nigeria",
+                              style: GoogleFonts.roboto(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.black),
+                            )
+                          ],
+                        ),
+                        Row(
+                          spacing: 2.w,
+                          children: [
+                            SvgPicture.asset(Assets.timeIcon),
+                            Text(
+                              "Posted on ${formatDate("2023-10-01")}",
+                              style: GoogleFonts.roboto(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.black),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            Container(
+              height: 100.h,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.circular(16.r)),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      spacing: 10.w,
+                      children: [
+                        Text(
+                          "Condition",
+                          style: GoogleFonts.roboto(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.black),
+                        ),
+                        Row(
+                          children: [
+                            SvgPicture.asset(
+                              Assets.conditionIcon,
+                              color: AppColors.yellow,
+                            ),
+                            SizedBox(width: 5.w),
+                            Text(
+                              "Good",
+                              style: GoogleFonts.roboto(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.black),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 5.h),
+                    Text(
+                      "Gently used with minor signs of wear. No stains or damages.",
+                      style: GoogleFonts.roboto(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.black),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  isExpanded = !isExpanded;
+                });
+              },
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppColors.white,
+                ),
+                child: AnimatedSize(
+                  duration: Duration(milliseconds: 300),
+                  curve: Curves.fastOutSlowIn,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Sized and Measurements',
+                            style: GoogleFonts.roboto(
+                                fontSize: 16.sp, fontWeight: FontWeight.w500),
+                          ),
+                          Icon(
+                            isExpanded ? Icons.expand_less : Icons.expand_more,
+                            color: Colors.black,
+                          ),
+                        ],
+                      ),
+                      if (isExpanded) ...[
+                        SizedBox(height: 16),
+                        Text(
+                          'Sizes and Measurement comes in Here',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ]
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  isDescriptionExpanded = !isDescriptionExpanded;
+                });
+              },
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppColors.white,
+                ),
+                child: AnimatedSize(
+                  duration: Duration(milliseconds: 300),
+                  curve: Curves.fastOutSlowIn,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Description',
+                            style: GoogleFonts.roboto(
+                                fontSize: 16.sp, fontWeight: FontWeight.w500),
+                          ),
+                          Icon(
+                            isDescriptionExpanded
+                                ? Icons.expand_less
+                                : Icons.expand_more,
+                            color: Colors.black,
+                          ),
+                        ],
+                      ),
+                      if (isDescriptionExpanded) ...[
+                        SizedBox(height: 16.h),
+                        Text(
+                          'Beautiful floral summer dress perfect for casual outings or beach days. The vibrant floral pattern adds a touch of elegance to this comfortable piece. ',
+                          style: GoogleFonts.roboto(
+                              color: AppColors.lightTextBlack),
+                        ),
+                        SizedBox(height: 16.h),
+                      ]
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  isDeliveryExpanded = !isDeliveryExpanded;
+                });
+              },
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppColors.white,
+                ),
+                child: AnimatedSize(
+                  duration: Duration(milliseconds: 300),
+                  curve: Curves.fastOutSlowIn,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Delivery and Payment',
+                            style: GoogleFonts.roboto(
+                                fontSize: 16.sp, fontWeight: FontWeight.w500),
+                          ),
+                          Icon(
+                            isDeliveryExpanded
+                                ? Icons.expand_less
+                                : Icons.expand_more,
+                            color: Colors.black,
+                          ),
+                        ],
+                      ),
+                      if (isDeliveryExpanded) ...[
+                        SizedBox(height: 16.h),
+                        Column(
+                          children: [
+                            DeliveryPaymentOptions(
+                              title: 'Delivery Available',
+                              value: 'Within Lagos: ₦1,500',
+                              image: 'delivery',
+                              color: AppColors.lightGreen,
+                            ),
+                            SizedBox(height: 15.h),
+                            DeliveryPaymentOptions(
+                              title: 'Pickup Available',
+                              value: 'Lekki, Nigeria',
+                              image: 'delivery location',
+                              color: AppColors.cyan,
+                            ),
+                            SizedBox(height: 15.h),
+                            DeliveryPaymentOptions(
+                              title: 'Payment Method',
+                              value:
+                                  'Cash, Bank Transfer, Secure In-App Payment',
+                              image: 'delivery wallet',
+                              color: AppColors.lightPurple,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10.h),
+                      ]
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
+            Container(
+              height: 182.h,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.circular(16.r)),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Seller Information",
+                      style: GoogleFonts.roboto(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.black),
+                    ),
+                    SizedBox(height: 10.h),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      spacing: 15.w,
+                      children: [
+                        Container(
+                          height: 48.h,
+                          width: 48.w,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: AssetImage('assets/images/amara.png'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Amara Johnson",
+                                  style: GoogleFonts.roboto(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.black),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 5.h),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                // Stars
+                                Row(
+                                  children: List.generate(5, (index) {
+                                    if (index < 4) {
+                                      return const Icon(Icons.star,
+                                          color: Colors.amber, size: 18);
+                                    } else {
+                                      return const Icon(Icons.star_half,
+                                          color: Colors.amber, size: 18);
+                                    }
+                                  }),
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  '4.8',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  '(36 reviews)',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey[600],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Text(
+                              "Member since May 2023",
+                              style: GoogleFonts.roboto(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.greyText),
+                            ),
+                          ],
+                        ),
+                        Spacer(),
                         InkWell(
-                          onTap: () {
-                            // productProvider.addToCart(
-                            //     widget.newProducts.sku ?? '', 1);
-                          },
+                          onTap: () {},
                           child: Center(
                               child: Container(
-                            width: 66.w,
-                            height: 20.h,
+                            width: 53.w,
+                            height: 26.h,
                             decoration: BoxDecoration(
-                                color: AppColors.containerWhite,
+                                border: Border.all(
+                                    width: 1, color: AppColors.primaryColor),
+                                color: AppColors.white,
                                 borderRadius: BorderRadius.circular(10)),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  "Add To Cart",
+                                  "View",
                                   style: GoogleFonts.roboto(
                                       fontSize: 10,
                                       fontWeight: FontWeight.w600,
@@ -239,291 +756,63 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
                         )
                       ],
                     ),
-                    SizedBox(height: 10.h),
+                    SizedBox(
+                      height: 20.h,
+                    ),
                     Row(
-                      spacing: 15.w,
+                      spacing: 30.w,
                       children: [
-                        Row(
-                          spacing: 2.w,
-                          children: [
-                            SvgPicture.asset(Assets.conditionIcon),
-                            Text(
-                              "Like New",
-                              style: GoogleFonts.roboto(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.black),
-                            )
-                          ],
-                        ),
-                        Row(
-                          spacing: 2.w,
-                          children: [
-                            SvgPicture.asset(Assets.location),
-                            Text(
-                              "Lekki, Lagos",
-                              style: GoogleFonts.roboto(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.black),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10.h),
-                    Row(
-                      spacing: 2.w,
-                      children: [
-                        SvgPicture.asset(Assets.timeIcon),
-                        Text(
-                          "Posted on ${formatDate("2023-10-01")}",
-                          style: GoogleFonts.roboto(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.black),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 20.h,
-            ),
-            Container(
-              height: 97.h,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.circular(16.r)),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  spacing: 15.w,
-                  children: [
-                    Container(
-                      height: 48.h,
-                      width: 48.w,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          image: AssetImage('assets/images/bag.png'),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Amara Johnson",
-                          style: GoogleFonts.roboto(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.black),
-                        ),
-                        SizedBox(height: 5.h),
-                        Row(
-                          spacing: 5.w,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Joined",
-                              style: GoogleFonts.roboto(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.greyText),
+                              "87",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                             Text(
-                              "March 2023",
-                              style: GoogleFonts.roboto(
-                                  fontSize: 14.sp,
+                              "Items",
+                              style: TextStyle(
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w400,
-                                  color: AppColors.black),
-                            )
+                                  color: AppColors.grey),
+                            ),
                           ],
                         ),
-                      ],
-                    ),
-                    Spacer(),
-                    InkWell(
-                      onTap: () {},
-                      child: Center(
-                          child: Container(
-                        width: 73.w,
-                        height: 28.h,
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                width: 1, color: AppColors.primaryColor),
-                            color: AppColors.white,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "View Profile",
-                              style: GoogleFonts.roboto(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.primaryColor),
-                            )
+                              "187",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            Text(
+                              "Sales",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.grey),
+                            ),
                           ],
-                        ),
-                      )),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 20.h,
-            ),
-            Container(
-              height: 410.h,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.circular(16.r)),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Description",
-                      style: GoogleFonts.roboto(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.black),
-                    ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    Text(
-                      "Authentic luxury leather handbag in excellent condition. This elegant piece features premium full-grain leather with minimal signs of use.",
-                      style: GoogleFonts.roboto(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ProductInformation(
-                          subject: "Brand",
-                          value: "Milano Luxury",
-                        ),
-                        ProductInformation(
-                          subject: "Material",
-                          value: "Genuine Leather",
-                        ),
-                        ProductInformation(
-                          subject: "Color",
-                          value: "Rich Brown",
-                        ),
-                        ProductInformation(
-                          subject: "Dimensions",
-                          value: "30cm x 22cm x 12cm",
-                        ),
-                        ProductInformation(
-                          subject: "Hardware",
-                          value: "Gold-tone",
-                        ),
-                        ProductInformation(
-                          subject: "Condition",
-                          value: "Like new, minimal wear",
                         ),
                       ],
                     ),
-                    Text(
-                      "Includes original dust bag and authenticity card. Perfect for both casual and formal occasions. This timeless piece will elevate any outfit.",
-                      style: GoogleFonts.roboto(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    Text(
-                      "No trades. Serious inquiries only.",
-                      style: GoogleFonts.roboto(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
                   ],
                 ),
               ),
             ),
             SizedBox(
-              height: 20.h,
-            ),
-            Container(
-              height: 192.h,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.circular(16.r)),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Item Location",
-                      style: GoogleFonts.roboto(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.black),
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Container(
-                        height: 120.h,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            color: AppColors.greenLightest,
-                            borderRadius: BorderRadius.circular(16.r)),
-                        child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20.w, vertical: 20.h),
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Container(
-                                    padding:
-                                    EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
-                                    decoration: BoxDecoration(
-                                        color: AppColors.white,
-                                        borderRadius: BorderRadius.circular(28.r)),
-                                    child: Text(
-                                      "Lekki, Lagos",
-                                      overflow: TextOverflow.ellipsis,
-                                      style: GoogleFonts.roboto(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400,
-                                          color: AppColors.black),
-                                    ),
-                                  ),
-                                ]))),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 20.h,
+              height: 10.h,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0.w, vertical: 20.h),
+              padding: EdgeInsets.symmetric(
+                horizontal: 20.0.w,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -536,7 +825,7 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
                   ),
                   SizedBox(
                     width: double.infinity,
-                    height: 241.h,
+                    height: 238.h,
                     child: ListView.builder(
                       padding: EdgeInsets.only(left: 5),
                       scrollDirection: Axis.horizontal,
@@ -545,47 +834,245 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
                         // Products negotiableProducts =
                         // productProvider
                         //     .negotiableProduct![index];
-                        return OtherItems();;
+                        return OtherItems();
+                        ;
                       },
                     ),
                   ),
                 ],
               ),
             ),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  isSafetyTips = !isSafetyTips;
+                });
+              },
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppColors.white,
+                ),
+                child: AnimatedSize(
+                  duration: Duration(milliseconds: 300),
+                  curve: Curves.fastOutSlowIn,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Safety Tips',
+                            style: GoogleFonts.roboto(
+                                fontSize: 16.sp, fontWeight: FontWeight.w500),
+                          ),
+                          Icon(
+                            isSafetyTips
+                                ? Icons.expand_less
+                                : Icons.expand_more,
+                            color: Colors.black,
+                          ),
+                        ],
+                      ),
+                      if (isSafetyTips) ...[
+                        SizedBox(height: 16.h),
+                        Column(
+                          children: [
+                            Row(
+                              spacing: 10.w,
+                              children: [
+                                Icon(
+                                  Icons.check,
+                                  color: AppColors.primaryColor,
+                                  size: 20,
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    'Meet in a public place for item inspection and exchange',
+                                    style: GoogleFonts.roboto(
+                                        color: AppColors.lightTextBlack,
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 15.h),
+                            Row(
+                              spacing: 10.w,
+                              children: [
+                                Icon(
+                                  Icons.check,
+                                  color: AppColors.primaryColor,
+                                  size: 20,
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    'Inspect the item thoroughly before making payment',
+                                    style: GoogleFonts.roboto(
+                                        color: AppColors.lightTextBlack,
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 15.h),
+                            Row(
+                              spacing: 10.w,
+                              children: [
+                                Icon(
+                                  Icons.check,
+                                  color: AppColors.primaryColor,
+                                  size: 20,
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    'Use secure payment methods available in the app',
+                                    style: GoogleFonts.roboto(
+                                        color: AppColors.lightTextBlack,
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 15.h),
+                            Row(
+                              spacing: 10.w,
+                              children: [
+                                Icon(
+                                  Icons.check,
+                                  color: AppColors.primaryColor,
+                                  size: 20,
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    'Be wary of deals that seem too good to be true',
+                                    style: GoogleFonts.roboto(
+                                        color: AppColors.lightTextBlack,
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 15.h),
+                            Center(
+                              child: GestureDetector(
+                                child: Row(
+                                  spacing: 5.w,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset('assets/images/flag.svg'),
+                                    Text(
+                                      'Report This Item',
+                                      style: TextStyle(color: AppColors.red),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ]
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 20.h),
           ]),
         ),
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(bottom: 30.0, left: 20, right: 20),
-        child: Container(
-          decoration: BoxDecoration(
-            color: AppColors.primaryColor,
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black12,
-                blurRadius: 10,
-                offset: Offset(0, -2), // Giving shadow above the container
-              ),
-            ],
-          ),
-          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 16),
-          child: Row(
-            spacing: 6.w,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SvgPicture.asset(Assets.offerIcon),
-              Text(
-                "Make Offer",
-                style: TextStyle(
-                    fontSize: 14,
-                    color: AppColors.white,
-                    fontWeight: FontWeight.w400),
-              ),
-            ],
+        child: GestureDetector(
+          onTap: () => showMakeOfferDialog(context),
+          child: Container(
+            decoration: BoxDecoration(
+              color: AppColors.primaryColor,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 10,
+                  offset: Offset(0, -2), // Giving shadow above the container
+                ),
+              ],
+            ),
+            padding: EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+            child: Row(
+              spacing: 6.w,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(Assets.offerIcon),
+                Text(
+                  "Make Offer",
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: AppColors.white,
+                      fontWeight: FontWeight.w400),
+                ),
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class DeliveryPaymentOptions extends StatelessWidget {
+  final String title;
+  final String value;
+  final Color color;
+  final String image;
+  const DeliveryPaymentOptions({
+    super.key,
+    required this.title,
+    required this.value,
+    required this.color,
+    required this.image,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      spacing: 5.w,
+      children: [
+        Container(
+            height: 32.h,
+            width: 32.w,
+            decoration: BoxDecoration(
+              color: color,
+              shape: BoxShape.circle,
+            ),
+            child: Center(
+              child: SvgPicture.asset(
+                'assets/images/$image.svg',
+                width: 18.w,
+                height: 18.h,
+              ),
+            )),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: GoogleFonts.roboto(
+                  fontSize: 14.sp, fontWeight: FontWeight.w500),
+            ),
+            Text(
+              value,
+              style: GoogleFonts.roboto(
+                  color: AppColors.lightTextBlack, fontSize: 12.sp),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

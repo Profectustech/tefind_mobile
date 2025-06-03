@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:te_find/app/home/products/selectedProduct.dart';
+import 'package:te_find/app/home/top_deal_fashion.dart';
 import 'package:te_find/app/widgets/see_all_product.dart';
 import 'package:te_find/providers/provider.dart';
 import 'package:te_find/app/widgets/search_box.dart';
@@ -16,6 +17,7 @@ import '../../models/CategoriesModel.dart';
 import '../../providers/account_provider.dart';
 import '../../utils/assets_manager.dart';
 import '../../utils/progress_bar_manager/appbar.dart';
+import '../../utils/progress_bar_manager/utility_app_bar.dart';
 
 // // Create a provider to manage the current page index
 // final currentIndexProvider = StateProvider<int>((ref) => 0);
@@ -67,25 +69,9 @@ class _HomePageState extends ConsumerState<CategoriesPage> {
     productProvider = ref.watch(RiverpodProvider.productProvider);
     accountProvider = ref.watch(RiverpodProvider.accountProvider);
     return Scaffold(
-      appBar: AppBar(
-        leading: Icon(Icons.arrow_back_ios, size: 15,),
+      appBar: UtilityAppBar(
         centerTitle: false,
-        actions: [
-          SvgPicture.asset(
-            "assets/images/searchIcon.svg",
-            color: AppColors.black,
-          ),
-          SizedBox(width: 10.w,),
-        ],
-        title: Text(
-          'Categories',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: AppColors.black,
-          ),
-        ),
-
+        text: "Categoiries",
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -113,53 +99,59 @@ class _HomePageState extends ConsumerState<CategoriesPage> {
                       // Products negotiableProducts =
                       // productProvider
                       //     .negotiableProduct![index];
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: Container(
-                          width: 103.66.w,
-                          height: 132.h,
-                          decoration: BoxDecoration(
-                              color: AppColors.white,
-                              borderRadius: BorderRadius.circular(16)),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              GestureDetector(
-                                onDoubleTap: () {},
-                                child: Container(
-                                  height: 64.h,
-                                  width: 64.w,
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image:
-                                            AssetImage('assets/images/men.png'),
-                                        fit: BoxFit.cover,
-                                      ),
-                                      shape: BoxShape.circle,
-                                      color: AppColors.white,
-                                      boxShadow: [
-                                        BoxShadow(
-                                            color: Colors.black
-                                                .withValues(alpha: 0.1),
-                                            spreadRadius: 0.1,
-                                            blurRadius: 0.1,
-                                            offset: Offset(0, 1))
-                                      ]),
+                      return GestureDetector(
+                        onTap: (){
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => TopDealFashion()));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Container(
+                            width: 103.66.w,
+                            height: 132.h,
+                            decoration: BoxDecoration(
+                                color: AppColors.white,
+                                borderRadius: BorderRadius.circular(16)),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                GestureDetector(
+                                  onDoubleTap: () {},
+                                  child: Container(
+                                    height: 64.h,
+                                    width: 64.w,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image:
+                                              AssetImage('assets/images/men.png'),
+                                          fit: BoxFit.cover,
+                                        ),
+                                        shape: BoxShape.circle,
+                                        color: AppColors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                              color: Colors.black
+                                                  .withValues(alpha: 0.1),
+                                              spreadRadius: 0.1,
+                                              blurRadius: 0.1,
+                                              offset: Offset(0, 1))
+                                        ]),
+                                  ),
                                 ),
-                              ),
-                              SizedBox(
-                                height: 15.h,
-                              ),
-                              Text(
-                                "Men's",
-                                overflow: TextOverflow.ellipsis,
-                                style: GoogleFonts.roboto(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w500,
+                                SizedBox(
+                                  height: 15.h,
                                 ),
-                              ),
-                            ],
+                                Text(
+                                  "Men's",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       );

@@ -350,7 +350,12 @@ class _FeaturedProductDetailState extends ConsumerState<FeaturedProductDetail>
                     ),
                     Spacer(),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        NavigatorService().navigateTo(
+                          productBySeller,
+                          // arguments: widget.newProducts,
+                        );
+                      },
                       child: Center(
                           child: Container(
                             width: 73.w,

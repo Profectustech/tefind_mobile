@@ -5,6 +5,7 @@ import 'package:te_find/app/bottom_nav/bottom_nav.dart';
 import 'package:te_find/app/bottom_nav/nav.dart';
 import 'package:te_find/app/forgotPassword/email_input_screen.dart';
 import 'package:te_find/app/forgotPassword/set_new_password.dart';
+import 'package:te_find/app/home/categories_page.dart';
 import 'package:te_find/app/home/products/all_fashion_product.dart';
 import 'package:te_find/app/home/check_out.dart';
 import 'package:te_find/app/home/confirmed_payment.dart';
@@ -14,6 +15,7 @@ import 'package:te_find/app/home/pay_with_wallet.dart';
 import 'package:te_find/app/home/products/product_detail.dart';
 import 'package:te_find/app/home/products/view_all_products.dart';
 import 'package:te_find/app/home/top_deal_fashion.dart';
+import 'package:te_find/app/home/widgets/carousel_content.dart';
 import 'package:te_find/app/login/login_screen.dart';
 import 'package:te_find/app/negotiation%20screen/negotiations.dart';
 import 'package:te_find/app/notification.dart';
@@ -177,15 +179,33 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         ),
       );
     case productBySeller:
-      final product = settings.arguments! as Products;
+    //  final product = settings.arguments! as Products;
       return _getPageRoute(
           routeName: settings.name!,
-          viewToShow: ProductBySeller(product: product));
+          viewToShow: ProductBySeller(
+             // product: product
+          ));
     case productDetailScreenRoute:
   //    Products newProducts = settings.arguments! as Products;
       return _getPageRoute(
         routeName: settings.name!,
         viewToShow: ProductDetail(
+         // newProducts: newProducts,
+        ),
+      );
+    case categories:
+  //    Products newProducts = settings.arguments! as Products;
+      return _getPageRoute(
+        routeName: settings.name!,
+        viewToShow: CategoriesPage(
+         // newProducts: newProducts,
+        ),
+      );
+      case carouselContent:
+  //    Products newProducts = settings.arguments! as Products;
+      return _getPageRoute(
+        routeName: settings.name!,
+        viewToShow: CarouselContent(
          // newProducts: newProducts,
         ),
       );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:te_find/app/bottom_nav/nav_service.dart';
 import 'package:te_find/providers/product_provider.dart';
 import 'package:te_find/providers/provider.dart';
@@ -47,15 +48,16 @@ class _UtilityAppBarState extends ConsumerState<UtilityAppBar> {
           Navigator.pop(context);
         },
         icon: Icon(
-          Icons.arrow_back,
+          Icons.arrow_back_ios,
           color: AppColors.black,
+          size: 15,
         ),
       ),
       title: Text(
         widget.text,
-        style: const TextStyle(
+        style:  GoogleFonts.roboto(
           color: Colors.black,
-          fontSize: 14,
+          fontSize: 18,
           fontWeight: FontWeight.w600,
         ),
       ),
