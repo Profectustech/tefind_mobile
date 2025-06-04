@@ -60,7 +60,7 @@ class CustomTextFormField extends StatelessWidget {
         labelText: label,
         hintText: hint,
         suffixIcon: suffixIcon ?? null,
-        hintStyle: TextStyle(
+        hintStyle: GoogleFonts.roboto(
           fontSize: 14,
           color: Color(0xff8391A1),
         ),

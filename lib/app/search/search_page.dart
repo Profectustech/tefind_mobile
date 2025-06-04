@@ -128,7 +128,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
           title: Text(
             'Search',
             style: GoogleFonts.roboto(
-              fontSize: 16,
+              fontSize: 16.sp,
               fontWeight: FontWeight.w500,
             ),
           ),

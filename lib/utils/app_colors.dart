@@ -46,6 +46,7 @@ class AppColors {
   static const Color greyButton = Color (0xFFDADADA);
   // static const Color greyText = Color(0xFF4F4F4F);
   static  Color greyText = HexColor.fromHex("#6B7280");
+  static  Color greyLight2 = HexColor.fromHex("#F9FAFB");
   static  Color orange = HexColor.fromHex("#FF7D54");
   static  Color yellow = HexColor.fromHex("#EAB308");
   static const Color greyButtonText = Color (0xFF6B6B6B);

@@ -268,7 +268,7 @@ class BottomModals {
                       TextFormField(
                           decoration: InputDecoration(
                             hintStyle:
-                            const TextStyle(color: AppColors.greyLight),
+                             TextStyle(color: AppColors.greyLight),
                             hintText: 'Summer Dress',
                             fillColor: Colors.transparent,
                             filled: true,
@@ -278,7 +278,7 @@ class BottomModals {
                               borderSide: BorderSide(
                                   width: 1, color: AppColors.primaryColor),
                             ),
-                            disabledBorder: const OutlineInputBorder(
+                            disabledBorder:  OutlineInputBorder(
                               borderRadius:
                               BorderRadius.all(Radius.circular(16)),
                               borderSide: BorderSide(
