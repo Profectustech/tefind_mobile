@@ -24,6 +24,8 @@ import 'package:html/parser.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:insta_image_viewer/insta_image_viewer.dart';
 
+import '../../widgets/custom_button.dart';
+import '../../widgets/custom_text_form_field.dart';
 import '../../widgets/other_items.dart';
 import '../widgets/product_gridview.dart';
 
@@ -71,7 +73,7 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
   void showMakeOfferDialog(BuildContext context) {
     showDialog(
       context: context,
-      barrierDismissible: true,
+      barrierDismissible: false,
       builder: (context) {
         return Dialog(
           shape:
@@ -193,26 +195,31 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
                   ),
 
                 ],),
+                SizedBox(height: 5.h,),
+                Text(
+                  'Message (Optional)',
+                  style: GoogleFonts.roboto(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                  ),
+                ),
+                SizedBox(
+                  height: 5.h,
+                ),
+                CustomTextFormField(
+                  maxLines: 3,
+                  //controller: accountProvider.lastNameController,
+                  hint: 'Add a Message to the seller...',
+                  // validator: Validators().isSignUpEmpty,
+                ),
                 SizedBox(height: 20.h),
-                Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryColor,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 16),
-                  child: Row(
-                    spacing: 6.w,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Send Offer",
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: AppColors.white,
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ],
-                  ),
+                CustomButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  fillColor: AppColors.primaryColor,
+                  label: 'Send Offer',
+                  buttonTextColor: AppColors.white,
                 )
               ],
             ),
@@ -962,6 +969,7 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
                             SizedBox(height: 15.h),
                             Center(
                               child: GestureDetector(
+                                onTap: ()=>_leaveReport(context),
                                 child: Row(
                                   spacing: 5.w,
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -1024,6 +1032,70 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
     );
   }
 }
+
+
+void _leaveReport(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) {
+      return Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Padding(
+          padding: const EdgeInsets.all(14.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Report This Item',
+                    style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18,
+                    ),
+                  ),
+                  IconButton(onPressed: () {
+                    Navigator.pop(context);
+                  }, icon: Icon(Icons.close))
+                ],
+              ),
+              Divider(thickness: 0.5,),
+              Text(
+                'Message',
+                style: GoogleFonts.roboto(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                ),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              CustomTextFormField(
+                maxLines: 6,
+                //controller: accountProvider.lastNameController,
+                hint: 'Type your message here',
+                // validator: Validators().isSignUpEmpty,
+              ),
+              SizedBox(height: 20.h),
+              CustomButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                fillColor: AppColors.primaryColor,
+                label: 'Send Report',
+                buttonTextColor: AppColors.white,
+              )
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
 
 class DeliveryPaymentOptions extends StatelessWidget {
   final String title;

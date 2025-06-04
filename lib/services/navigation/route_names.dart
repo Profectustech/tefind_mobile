@@ -49,3 +49,6 @@ const String productDetailScreenRoute = "productDetailScreenRoute";
 const String categories = "categories";
 const String carouselContent = "carouselContent";
 const String sellItemScreens = "sellItemScreens";
+const String orderDetailScreen = "orderDetailScreen";
+const String cartPageScreen = "cartPageScreen";
+const String successfulTransactionscreen = "successfulTransactionscreen";

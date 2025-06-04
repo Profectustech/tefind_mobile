@@ -10,9 +10,11 @@ import 'package:te_find/providers/product_provider.dart';
 import 'package:te_find/providers/provider.dart';
 import 'package:te_find/utils/app_colors.dart';
 
+import '../cart/cart_drawer.dart';
 import '../home/Sell/sell-stepper.dart';
 import '../home/Sell/sell_onboarding.dart';
 import '../search/search_page.dart';
+import '../widgets/global.dart';
 
 class BottomNav extends ConsumerStatefulWidget {
   const BottomNav({Key? key}) : super(key: key);
@@ -42,7 +44,9 @@ class _NavState extends ConsumerState<BottomNav> {
     return Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         backgroundColor: Colors.white,
+        key: globalScaffoldKey,
         body: pages[navStateProvider.currentTabIndex],
+        endDrawer: CartDrawer(),
         bottomNavigationBar: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
             onTap: (newTab) {

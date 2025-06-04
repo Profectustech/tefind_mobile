@@ -43,6 +43,7 @@ class AppColors {
   static const Color containerWhite = Color.fromRGBO(250, 250, 250, 1);
   static const Color grey = Color(0xFF8E8E8E);
   static const Color greyLight = Color(0xFFE7E9EA);
+
   static const Color greyButton = Color (0xFFDADADA);
   // static const Color greyText = Color(0xFF4F4F4F);
   static  Color greyText = HexColor.fromHex("#6B7280");

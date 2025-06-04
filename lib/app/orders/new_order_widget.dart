@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../utils/app_colors.dart';
@@ -10,12 +11,14 @@ class NewOrderWidget extends StatelessWidget {
     super.key,
   });
 
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-      height: 411.h,
-      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 7.w, vertical: 5.h),
+      // height: 411.h,
+      // width: double.infinity,
       decoration: BoxDecoration(
           color: AppColors.white, borderRadius: BorderRadius.circular(16)),
       child: Column(
@@ -77,10 +80,10 @@ class NewOrderWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                    "Hi, I'm interested in this lamp. Would you consider offering a discount if I order two units? I really love the design.",
-                style: GoogleFonts.roboto(
-                  fontWeight: FontWeight.w400, fontSize: 12.sp
-                ),),
+                  "Hi, I'm interested in this lamp. Would you consider offering a discount if I order two units? I really love the design.",
+                  style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.w400, fontSize: 12.sp),
+                ),
                 SizedBox(
                   height: 30.h,
                 ),
@@ -88,29 +91,39 @@ class NewOrderWidget extends StatelessWidget {
                   spacing: 8,
                   children: [
                     Text(
-                        "Original:",
-                    style: GoogleFonts.roboto(
-                      fontWeight: FontWeight.w400, fontSize: 14.sp, color: AppColors.grey
-                    ),),
+                      "Original:",
+                      style: GoogleFonts.roboto(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14.sp,
+                          color: AppColors.grey),
+                    ),
                     Text(
                       "₦22,500",
                       style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.w400, fontSize: 14.sp, color: AppColors.black
-                      ),),
-                    Icon(Icons.arrow_forward, color: AppColors.grey,),
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14.sp,
+                          color: AppColors.black),
+                    ),
+                    Icon(
+                      Icons.arrow_forward,
+                      color: AppColors.grey,
+                    ),
                     Text(
                       "Offered:",
                       style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.w400, fontSize: 14.sp, color: AppColors.grey
-                      ),),
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14.sp,
+                          color: AppColors.grey),
+                    ),
                     Text(
                       "₦22,500",
                       style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.w400, fontSize: 14.sp, color: AppColors.primaryColor
-                      ),),
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14.sp,
+                          color: AppColors.primaryColor),
+                    ),
                   ],
                 ),
-
               ],
             ),
           ),
@@ -199,10 +212,25 @@ class NewOrderWidget extends StatelessWidget {
                 SizedBox(
                   height: 10.h,
                 ),
-                CustomButton(
-                  label: 'View Details',
-                  buttonTextColor: Colors.black,
-                  fillColor: AppColors.greyLight,
+                Row(
+                  spacing: 5.w,
+                  children: [
+                    Expanded(
+                      child: CustomButton(
+                        label: 'Decline',
+                        buttonTextColor: Colors.black,
+                        fillColor: AppColors.greyLight,
+                      ),
+                    ),
+                    Expanded(
+                      child: CustomButton(
+                        onPressed: () => _acceptOrder(context),
+                        label: 'Accept',
+                        buttonTextColor: Colors.white,
+                        fillColor: AppColors.primaryColor,
+                      ),
+                    ),
+                  ],
                 )
               ],
             ),
@@ -211,4 +239,108 @@ class NewOrderWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+void _acceptOrder(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) {
+      return Dialog(
+        shape:
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SvgPicture.asset('assets/images/sucessListing.svg'),
+              SizedBox(height: 10.h),
+              Text(
+                'Order Approved',
+                style: GoogleFonts.roboto(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20,
+                ),
+              ),
+              SizedBox(height: 10.h),
+              Row(
+                spacing: 7.w,
+                children: [
+                  Container(
+                    height: 64.h,
+                    width: 64.w,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      image: DecorationImage(
+                        image: AssetImage('assets/images/cloth.png'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Floral Summer Dress',
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.roboto(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Text(
+                        'Quantity: 1',
+                        style: GoogleFonts.roboto(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.grey),
+                      ),
+                      Text(
+                        '₦22,500',
+                        style: GoogleFonts.roboto(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              SizedBox(height: 10.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Order #ORD-2025052502",
+                    style: GoogleFonts.roboto(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14.sp,
+                        color: AppColors.lightTextBlack),
+                  ),
+                  Text(
+                    'May 25, 2025',
+                    style: GoogleFonts.roboto(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 14,
+                        color: AppColors.lightTextBlack),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20.h),
+              CustomButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                fillColor: AppColors.primaryColor,
+                label: 'Send Package',
+                buttonTextColor: AppColors.white,
+              )
+            ],
+          ),
+        ),
+      );
+    },
+  );
 }

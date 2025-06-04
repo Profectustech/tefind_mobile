@@ -135,10 +135,10 @@ class _HomePageState extends ConsumerState<HomePage> {
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
-                                    color: Colors.black.withValues(alpha: 0.5),
-                                    spreadRadius: 0.5,
-                                    blurRadius: 0.5,
-                                    offset: Offset(0, 0.5))
+                                    color: Colors.black.withValues(alpha: 0.2),
+                                    spreadRadius: 0.2,
+                                    blurRadius: 0.2,
+                                    offset: Offset(0, 0.2))
                               ]),
                           child: Center(
                             child: SvgPicture.asset(Assets.notificationIcon)
@@ -152,10 +152,10 @@ class _HomePageState extends ConsumerState<HomePage> {
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
-                                    color: Colors.black.withValues(alpha: 0.5),
-                                    spreadRadius: 0.5,
-                                    blurRadius: 0.5,
-                                    offset: Offset(0, 0.5))
+                                    color: Colors.black.withValues(alpha: 0.2),
+                                    spreadRadius: 0.2,
+                                    blurRadius: 0.2,
+                                    offset: Offset(0, 0.2))
                               ]),
                           child: Center(
                             child: SvgPicture.asset(Assets.cart),

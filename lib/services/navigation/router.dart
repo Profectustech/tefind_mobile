@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:te_find/app/bottom_nav/bottom_nav.dart';
 import 'package:te_find/app/bottom_nav/nav.dart';
+import 'package:te_find/app/cart/cart_page.dart';
 import 'package:te_find/app/forgotPassword/email_input_screen.dart';
 import 'package:te_find/app/forgotPassword/set_new_password.dart';
 import 'package:te_find/app/home/Sell/sell_items.dart';
@@ -17,9 +18,9 @@ import 'package:te_find/app/home/products/view_all_products.dart';
 import 'package:te_find/app/home/top_deal_fashion.dart';
 import 'package:te_find/app/home/widgets/carousel_content.dart';
 import 'package:te_find/app/login/login_screen.dart';
-import 'package:te_find/app/negotiation%20screen/negotiations.dart';
 import 'package:te_find/app/notification.dart';
 import 'package:te_find/app/onboarding/onboarding_screen_view.dart';
+import 'package:te_find/app/orders/order_detail_page.dart';
 import 'package:te_find/app/profile/add_new_address.dart';
 import 'package:te_find/app/profile/faq_page.dart';
 import 'package:te_find/app/profile/help_page.dart';
@@ -47,6 +48,7 @@ import 'package:te_find/services/navigation/route_names.dart';
 import 'package:te_find/utils/base_model.dart';
 import 'package:te_find/utils/locator.dart';
 
+import '../../app/cart/successful_transaction.dart';
 import '../../app/forgotPassword/successful_reset_page.dart';
 import '../../app/home/all_brand_page.dart';
 import '../../app/home/products/product_by_seller.dart';
@@ -217,6 +219,30 @@ Route<dynamic> generateRoute(RouteSettings settings) {
          // newProducts: newProducts,
         ),
       );
+      case orderDetailScreen:
+  //    Products newProducts = settings.arguments! as Products;
+      return _getPageRoute(
+        routeName: settings.name!,
+        viewToShow: OrderDetailPage(
+         // newProducts: newProducts,
+        ),
+      );
+
+      case cartPageScreen:
+  //    Products newProducts = settings.arguments! as Products;
+      return _getPageRoute(
+        routeName: settings.name!,
+        viewToShow: CartPage(
+         // newProducts: newProducts,
+        ),
+      );  case successfulTransactionscreen:
+  //    Products newProducts = settings.arguments! as Products;
+      return _getPageRoute(
+        routeName: settings.name!,
+        viewToShow: SuccessfulTransaction(
+         // newProducts: newProducts,
+        ),
+      );
 
     case allFashionScreenRoute:
       return _getPageRoute(
@@ -310,13 +336,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         routeName: settings.name!,
         viewToShow: FaqPage(),
       );
-    case negotiationScreenRoute:
-      return _getPageRoute(
-        routeName: settings.name!,
-        viewToShow: Negotiations(),
-      );
-
-
     default:
       return MaterialPageRoute(
         builder: (_) => Scaffold(

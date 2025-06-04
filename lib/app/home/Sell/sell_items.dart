@@ -27,6 +27,7 @@ class _SellItemsState extends ConsumerState<SellItems> {
     {'label': 'Fair', 'icon': 'handLove.svg', 'color': AppColors.orange},
   ];
 
+
   void showMakeOfferDialog(BuildContext context) {
     showDialog(
       context: context,

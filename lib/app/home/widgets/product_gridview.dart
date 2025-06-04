@@ -15,6 +15,7 @@ import 'package:te_find/utils/app_colors.dart';
 import 'package:te_find/utils/assets_manager.dart';
 import 'package:te_find/utils/helpers.dart';
 import '../../../services/navigation/navigator_service.dart';
+import '../../widgets/global.dart';
 
 class ProductGridview extends ConsumerStatefulWidget {
   ProductGridview({
@@ -33,6 +34,11 @@ class _PostTileState extends ConsumerState<ProductGridview>
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   late Animation<double> _fadeAnimation;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void openCartDrawer() {
+    _scaffoldKey.currentState?.openEndDrawer();
+  }
 
   @override
   void initState() {
@@ -165,6 +171,7 @@ class _PostTileState extends ConsumerState<ProductGridview>
                                 ),
                                 InkWell(
                                   onTap: () {
+                                    globalScaffoldKey.currentState?.openEndDrawer();
                                     // productProvider.addToCart(
                                     //     widget.newProducts.sku ?? '', 1);
                                   },

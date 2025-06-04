@@ -2,7 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:te_find/services/navigation/navigator_service.dart';
 
+import '../../services/navigation/route_names.dart';
 import '../../utils/app_colors.dart';
 import '../widgets/custom_button.dart';
 
@@ -121,6 +123,9 @@ class ActiveOrderWidget extends StatelessWidget {
             height: 10.h,
           ),
           CustomButton(
+            onPressed: (){
+              NavigatorService().navigateTo(orderDetailScreen);
+            },
             label: 'View Details',
             buttonTextColor: Colors.black,
             fillColor: AppColors.greyLight,
