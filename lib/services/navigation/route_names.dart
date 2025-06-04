@@ -52,3 +52,5 @@ const String sellItemScreens = "sellItemScreens";
 const String orderDetailScreen = "orderDetailScreen";
 const String cartPageScreen = "cartPageScreen";
 const String successfulTransactionscreen = "successfulTransactionscreen";
+const String notificationPage = "notificationPage";
+const String stepperExistingCustomer = "stepperExistingCustomer";

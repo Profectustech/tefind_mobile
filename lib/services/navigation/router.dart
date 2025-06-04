@@ -50,6 +50,7 @@ import 'package:te_find/utils/locator.dart';
 
 import '../../app/cart/successful_transaction.dart';
 import '../../app/forgotPassword/successful_reset_page.dart';
+import '../../app/home/Sell/sell-stepper.dart';
 import '../../app/home/all_brand_page.dart';
 import '../../app/home/products/product_by_seller.dart';
 import '../../app/profile/sellers/seller_store_page.dart';
@@ -235,11 +236,27 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         viewToShow: CartPage(
          // newProducts: newProducts,
         ),
-      );  case successfulTransactionscreen:
+      );
+      case successfulTransactionscreen:
   //    Products newProducts = settings.arguments! as Products;
       return _getPageRoute(
         routeName: settings.name!,
         viewToShow: SuccessfulTransaction(
+         // newProducts: newProducts,
+        ),
+      );
+      case notificationPage:
+  //    Products newProducts = settings.arguments! as Products;
+      return _getPageRoute(
+        routeName: settings.name!,
+        viewToShow: NotificationPage(
+         // newProducts: newProducts,
+        ),
+      ); case stepperExistingCustomer:
+  //    Products newProducts = settings.arguments! as Products;
+      return _getPageRoute(
+        routeName: settings.name!,
+        viewToShow: SteperExistingCustomer(
          // newProducts: newProducts,
         ),
       );

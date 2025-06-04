@@ -127,36 +127,83 @@ class _HomePageState extends ConsumerState<HomePage> {
                     Row(
                       spacing: 8.w,
                       children: [
-                        Container(
-                          height: 32,
-                          width: 32,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Colors.black.withValues(alpha: 0.2),
-                                    spreadRadius: 0.2,
-                                    blurRadius: 0.2,
-                                    offset: Offset(0, 0.2))
-                              ]),
-                          child: Center(
-                            child: SvgPicture.asset(Assets.notificationIcon)
+                        InkWell(
+                          onTap: () {
+                            NavigatorService().navigateTo(notificationPage);
+                          },
+                          child: Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              Container(
+                                height: 32,
+                                width: 32,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black
+                                          .withOpacity(0.2), // corrected method
+                                      spreadRadius: 0.2,
+                                      blurRadius: 0.2,
+                                      offset: Offset(0, 0.2),
+                                    ),
+                                  ],
+                                ),
+                                child: Center(
+                                  child:
+                                      SvgPicture.asset(Assets.notificationIcon),
+                                ),
+                              ),
+                              // Badge positioned at the top right corner
+                              Positioned(
+                                top: -4,
+                                right: -4,
+                                child: Container(
+                                  padding: EdgeInsets.all(
+                                      4), // Padding inside badge circle
+                                  decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                        color: Colors.white, width: 1.5),
+                                  ),
+                                  constraints: BoxConstraints(
+                                    minWidth: 16,
+                                    minHeight: 16,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      '3',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         Container(
                           height: 32,
                           width: 32,
                           decoration: BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Colors.black.withValues(alpha: 0.2),
-                                    spreadRadius: 0.2,
-                                    blurRadius: 0.2,
-                                    offset: Offset(0, 0.2))
-                              ]),
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black
+                                    .withOpacity(0.2), // corrected method
+                                spreadRadius: 0.2,
+                                blurRadius: 0.2,
+                                offset: Offset(0, 0.2),
+                              ),
+                            ],
+                          ),
                           child: Center(
                             child: SvgPicture.asset(Assets.cart),
                           ),
@@ -216,18 +263,17 @@ class _HomePageState extends ConsumerState<HomePage> {
                       return Padding(
                         padding: const EdgeInsets.only(left: 5, right: 5),
                         child: GestureDetector(
-                            onDoubleTap: () {
-
-                            },
-                            onTap: (){
+                            onDoubleTap: () {},
+                            onTap: () {
                               // NavigatorService().navigateTo(
                               //   productDetailScreenRoute,
                               //   // arguments: widget.newProducts,
                               // );
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) => FeaturedProductDetail()));
-
-
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          FeaturedProductDetail()));
                             },
                             child:
                                 Stack(alignment: Alignment.center, children: [
@@ -378,7 +424,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                           fontWeight: FontWeight.w600,
                         )),
                     GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         NavigatorService().navigateTo(categories);
                       },
                       child: Text('See All',
@@ -462,7 +508,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                       ClipRRect(
                           borderRadius: BorderRadius.all(Radius.circular(10.r)),
                           child: InkWell(
-                            onTap: (){
+                            onTap: () {
                               NavigatorService().navigateTo(carouselContent);
                             },
                             child: Container(
@@ -503,16 +549,20 @@ class _HomePageState extends ConsumerState<HomePage> {
                       spacing: 8.w,
                       children: [
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 5.h),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 6.w, vertical: 5.h),
                           // height: 26,
                           // width: 64,
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(16)),
-                          child:  Row(
+                          child: Row(
                             spacing: 4,
                             children: [
-                              Icon(Icons.filter_list, size: 15,),
+                              Icon(
+                                Icons.filter_list,
+                                size: 15,
+                              ),
                               Text('Filter',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
@@ -521,10 +571,10 @@ class _HomePageState extends ConsumerState<HomePage> {
                                   )),
                             ],
                           ),
-
                         ),
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 5.h),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 8.w, vertical: 5.h),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(16),
@@ -540,7 +590,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                                   child: Radio<int>(
                                     value: 1,
                                     activeColor: AppColors.primaryColor,
-                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                    materialTapTargetSize:
+                                        MaterialTapTargetSize.shrinkWrap,
                                     groupValue: selectedOption,
                                     onChanged: (value) {
                                       setState(() {
@@ -562,7 +613,6 @@ class _HomePageState extends ConsumerState<HomePage> {
                             ],
                           ),
                         )
-
                       ],
                     ),
                   ],
@@ -573,8 +623,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                 GridView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
-                  gridDelegate:
-                  const SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     mainAxisSpacing: 9,
                     crossAxisSpacing: 6,
