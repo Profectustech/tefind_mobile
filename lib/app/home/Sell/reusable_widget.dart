@@ -27,7 +27,7 @@ AppBar buildAppBarCustom({
     automaticallyImplyLeading: false,
     centerTitle: true,
     leading: IconButton(
-      icon: SvgPicture.asset('images/arrow_left.svg'),
+      icon: Icon(Icons.arrow_back_ios, size: 18,), //SvgPicture.asset('images/arrow_left.svg'),
       onPressed: () {
         if (onTap != null) {
           onTap();

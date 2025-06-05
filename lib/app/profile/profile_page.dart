@@ -70,8 +70,48 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
         title: Text(
           'Profile',
           style:
-              GoogleFonts.roboto(fontSize: 18.sp, fontWeight: FontWeight.w800),
+              GoogleFonts.roboto(fontSize: 18.sp, fontWeight: FontWeight.w500),
         ),
+        actions: [
+          InkWell(
+            onTap: () {
+              NavigatorService().navigateTo(notificationPage);
+            },
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Container(
+                  height: 32,
+                  width: 32,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black
+                            .withOpacity(0.2), // corrected method
+                        spreadRadius: 0.2,
+                        blurRadius: 0.2,
+                        offset: Offset(0, 0.2),
+                      ),
+                    ],
+                  ),
+                  child: Center(
+                    child:
+                    SvgPicture.asset(
+                     "assets/images/settingsIcon.svg",
+                      color: AppColors.black,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            width: 16.w,
+          ),
+        ],
+
         centerTitle: false,
       ),
       body: SafeArea(

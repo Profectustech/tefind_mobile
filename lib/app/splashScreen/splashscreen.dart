@@ -1,3 +1,4 @@
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -11,6 +12,8 @@ import 'package:te_find/services/navigation/animated_navigation.dart';
 import 'package:te_find/utils/app_colors.dart';
 import 'package:te_find/utils/storage_util.dart';
 
+import '../../utils/assets_manager.dart';
+
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
 
@@ -23,15 +26,12 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   late AccountProvider accountProvider;
   final AnimatedNavigation _navigation = AnimatedNavigation();
   late AnimationController animationController;
-  late Animation<double> animation;
+  late Animation<Offset> topBounceAnimation;
+  late Animation<Offset> bottomSlideAnimation;
+
   Future<void> init() async {
     await Future.delayed(const Duration(seconds: 4));
     navigationPage();
-  }
-
-  startTime() async {
-    var _duration = const Duration(seconds: 4);
-    return Timer(_duration, navigationPage);
   }
 
   void navigationPage() async {
@@ -58,39 +58,77 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   void initState() {
     super.initState();
     init();
-    animationController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 2));
-    animation =
-        CurvedAnimation(parent: animationController, curve: Curves.easeOut);
 
-    animation.addListener(() => setState(() {}));
+    animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    );
+
+    // Bounce in from top
+    topBounceAnimation = Tween<Offset>(
+      begin: const Offset(0, -1.5),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: animationController,
+      curve: Curves.bounceOut,
+    ));
+
+    // Slide in from bottom
+    bottomSlideAnimation = Tween<Offset>(
+      begin: const Offset(0, 1.5),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: animationController,
+      curve: Curves.easeOut,
+    ));
+
     animationController.forward();
-
-    // setState(() {
-    //   _visible = !_visible;
-    // });
-    startTime();
   }
 
   @override
   Widget build(BuildContext context) {
     accountProvider = ref.watch(RiverpodProvider.accountProvider);
+
     return Scaffold(
       backgroundColor: AppColors.white,
       body: Stack(
         children: [
           Image.asset(
             'assets/images/teFindBackground.png',
-            fit: BoxFit.cover, // Ensures it covers the screen
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
           ),
           Center(
-            child: Image.asset(
-              'assets/images/app_icon.png',
-              scale: 5.0,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SlideTransition(
+                  position: topBounceAnimation,
+                  child: Image.asset(
+                    'assets/images/app_icon.png',
+                    scale: 5.0,
+                  ),
+                ),
+                SizedBox(height: 10.h),
+                SlideTransition(
+                  position: bottomSlideAnimation,
+                  child: Image.asset(
+                    Assets.te_findLogo2,
+                    height: 45.h,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
   }
 }

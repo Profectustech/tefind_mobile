@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:te_find/utils/assets_manager.dart';
 import 'package:te_find/utils/progress_bar_manager/utility_app_bar.dart';
 
 import '../../../utils/app_colors.dart';
@@ -25,6 +26,7 @@ class _CarouselContentState extends ConsumerState<CarouselContent> {
       appBar: UtilityAppBar(
         text: 'Sustainable Fashion',
         centerTitle: false,
+        hasActions: false,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -262,51 +264,67 @@ class _CarouselContentState extends ConsumerState<CarouselContent> {
                           IndexedStack(index: current, children: [
                             Column(
                               children: [
-                                SizedBox(height: 15.h,),
+                                SizedBox(
+                                  height: 15.h,
+                                ),
                                 EnvironmentImpactChart(),
-                                SizedBox(height: 5.h,),
-                                Text('Compared to fast fashion, our marketplace has saved the, equivalent of planting 1,250 trees. '
-                                  , style: GoogleFonts.roboto(
+                                SizedBox(
+                                  height: 5.h,
+                                ),
+                                Text(
+                                  'Compared to fast fashion, our marketplace has saved the, equivalent of planting 1,250 trees. ',
+                                  style: GoogleFonts.roboto(
                                       fontSize: 12.sp,
                                       fontWeight: FontWeight.w400,
-                                      color: AppColors.lightTextBlack
-                                  ),),
+                                      color: AppColors.lightTextBlack),
+                                ),
                               ],
                             ),
                             //---water----//
                             Column(
                               children: [
-                                SizedBox(height: 15.h,),
+                                SizedBox(
+                                  height: 15.h,
+                                ),
                                 EnvironmentImpactChart(),
-                                SizedBox(height: 5.h,),
-                                Text('Compared to fast fashion, our marketplace has saved the, equivalent of planting 1,250 trees. '
-                                  , style: GoogleFonts.roboto(
+                                SizedBox(
+                                  height: 5.h,
+                                ),
+                                Text(
+                                  'Compared to fast fashion, our marketplace has saved the, equivalent of planting 1,250 trees. ',
+                                  style: GoogleFonts.roboto(
                                       fontSize: 12.sp,
                                       fontWeight: FontWeight.w400,
-                                      color: AppColors.lightTextBlack
-                                  ),),
+                                      color: AppColors.lightTextBlack),
+                                ),
                               ],
                             ),
                             //---Waste----//
                             Column(
                               children: [
-                                SizedBox(height: 15.h,),
+                                SizedBox(
+                                  height: 15.h,
+                                ),
                                 EnvironmentImpactChart(),
-                                SizedBox(height: 5.h,),
-                                Text('Compared to fast fashion, our marketplace has saved the, equivalent of planting 1,250 trees. '
-                                  , style: GoogleFonts.roboto(
+                                SizedBox(
+                                  height: 5.h,
+                                ),
+                                Text(
+                                  'Compared to fast fashion, our marketplace has saved the, equivalent of planting 1,250 trees. ',
+                                  style: GoogleFonts.roboto(
                                       fontSize: 12.sp,
                                       fontWeight: FontWeight.w400,
-                                      color: AppColors.lightTextBlack
-                                  ),),
+                                      color: AppColors.lightTextBlack),
+                                ),
                               ],
                             ),
                           ]),
-
                         ],
                       ),
                     ),
-                    SizedBox(height: 20.h,),
+                    SizedBox(
+                      height: 20.h,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -317,8 +335,8 @@ class _CarouselContentState extends ConsumerState<CarouselContent> {
                               fontWeight: FontWeight.w600,
                             )),
                         GestureDetector(
-                          onTap: (){
-                           // NavigatorService().navigateTo(categories);
+                          onTap: () {
+                            // NavigatorService().navigateTo(categories);
                           },
                           child: Text('View All',
                               textAlign: TextAlign.center,
@@ -330,7 +348,544 @@ class _CarouselContentState extends ConsumerState<CarouselContent> {
                         ),
                       ],
                     ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Stack(alignment: Alignment.center, children: [
+                      Container(
+                        height: 216.h,
+                        width: 165.w,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: AppColors.white),
+                        child: Stack(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  height: 100.h,
+                                  //    width: 240.w,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(12),
+                                        topRight: Radius.circular(12)),
+                                    color: AppColors.primaryColor,
+                                    image: DecorationImage(
+                                      image:
+                                          AssetImage('assets/images/bag.png'),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 5.h),
+                                Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 5.w),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Amara's Eco\nCollection",
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            color: AppColors.black),
+                                      ),
+                                      SizedBox(height: 5.h),
+                                      Row(
+                                        children: [
+                                          Row(
+                                            children: List.generate(5, (index) {
+                                              if (index < 4) {
+                                                return const Icon(Icons.star,
+                                                    color: Colors.amber,
+                                                    size: 18);
+                                              } else {
+                                                return const Icon(
+                                                    Icons.star_half,
+                                                    color: Colors.amber,
+                                                    size: 18);
+                                              }
+                                            }),
+                                          ),
+                                          Text(
+                                            '(4.8)',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 5.h),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              SvgPicture.asset(
+                                                'assets/images/recycle.svg',
+                                                color: AppColors.green,
+                                              ),
+                                              Text(
+                                                "120 items recycled",
+                                                overflow: TextOverflow.ellipsis,
+                                                style: GoogleFonts.roboto(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: AppColors.green),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Positioned(
+                              top: 8,
+                              right: 8,
+                              child: InkWell(
+                                onTap: () {},
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 8.w, vertical: 2.h),
+                                  decoration: BoxDecoration(
+                                    color: Colors.green,
+                                    borderRadius: BorderRadius.circular(16.r),
+                                  ),
+                                  child: Center(
+                                    child: Row(
+                                      children: [
+                                        SvgPicture.asset(
+                                            'assets/images/leaf.svg'),
+                                        Text('Verified',
+                                            style: GoogleFonts.roboto(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w500,
+                                              color: AppColors.white,
+                                            )),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ]),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Text('Success Stories',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.roboto(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        )),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                          vertical: 10.h, horizontal: 10.w),
+                      height: 300.h,
+                      width: 312.w,
+                      decoration: BoxDecoration(
+                          color: AppColors.white,
+                          borderRadius: BorderRadius.circular(8)),
+                      child: Center(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              spacing: 10,
+                              children: [
+                                Container(
+                                  height: 48.h,
+                                  width: 48.w,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: AppColors.primaryColor,
+                                    image: DecorationImage(
+                                      image:
+                                          AssetImage('assets/images/bag.png'),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Folake Adeyemi',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Fashion Designer',
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400,
+                                          color: AppColors.grey),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 15.h,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              spacing: 10.w,
+                              children: [
+                                Container(
+                                  height: 100.h,
+                                  width: 128.w,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8.r),
+                                    color: AppColors.primaryColor,
+                                    image: DecorationImage(
+                                      image:
+                                          AssetImage('assets/images/bag.png'),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Container(
+                                        height: 24.h,
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                            color: AppColors.black
+                                                .withOpacity(0.4),
+                                            borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(4),
+                                              bottomRight: Radius.circular(4),
+                                            )),
+                                        child: Center(
+                                          child: Text(
+                                            'Before',
+                                            style: GoogleFonts.roboto(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400,
+                                              color: AppColors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 100.h,
+                                  width: 128.w,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8.r),
+                                    color: AppColors.primaryColor,
+                                    image: DecorationImage(
+                                      image:
+                                          AssetImage('assets/images/bag.png'),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Container(
+                                        height: 24.h,
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                            color: AppColors.black
+                                                .withOpacity(0.4),
+                                            borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(4),
+                                              bottomRight: Radius.circular(4),
+                                            )),
+                                        child: Center(
+                                          child: Text(
+                                            'After',
+                                            style: GoogleFonts.roboto(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400,
+                                              color: AppColors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 15.h,
+                            ),
+                            Column(
+                              children: [
+                                Text(
+                                  "I source materials from the platform to create upcycled fashion pieces. It's reduced my material costs by 60% while helping me create truly unique designs.",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColors.lightTextBlack),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Row(
+                                  spacing: 5.w,
+                                  children: [
+                                    SvgPicture.asset(
+                                      'assets/images/recycle.svg',
+                                      color: AppColors.green,
+                                    ),
+                                    Text(
+                                      "Saved 45kg of texttile waste",
+                                      overflow: TextOverflow.ellipsis,
+                                      style: GoogleFonts.roboto(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400,
+                                          color: AppColors.green),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30.h,
+                    ),
+                    Container(
+                      height: 151.h,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryColor,
+                        borderRadius: BorderRadius.circular(16.r),
+                      ),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          Text(
+                            'Start Your Sustainable Journey',
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.roboto(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.white,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Text(
+                            'Every purchase makes a difference to our planet',
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.roboto(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.white,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 15.w, vertical: 10.h),
+                            decoration: BoxDecoration(
+                                color: AppColors.white,
+                                borderRadius: BorderRadius.circular(16.r)),
+                            child: Text(
+                              'Start Shopping',
+                              style: GoogleFonts.roboto(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.primaryColor,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Container(
+                      height: 151.h,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: AppColors.white,
+                        borderRadius: BorderRadius.circular(16.r),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black
+                                .withOpacity(0.2), // corrected method
+                            spreadRadius: 0.2,
+                            blurRadius: 0.2,
+                            offset: Offset(0, 0.2),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          Text(
+                            'Our Environmental Commitment',
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.roboto(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          Text(
+                            "We're dedicated to reducing fashion's environmental",
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.roboto(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.lightTextBlack,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            spacing: 7.w,
+                            children: [
+                              Container(
+                                  height: 40.h,
+                                  width: 40.w,
+                                  decoration: BoxDecoration(
+                                      color: AppColors.greyLight,
+                                      shape: BoxShape.circle),
+                                  child: Center(
+                                    child: SvgPicture.asset(
+                                      Assets.instagramIcon,
+                                      color: AppColors.lightTextBlack,
+                                    ),
+                                  )),
+                              Container(
+                                  height: 40.h,
+                                  width: 40.w,
+                                  decoration: BoxDecoration(
+                                      color: AppColors.greyLight,
+                                      shape: BoxShape.circle),
+                                  child: Center(
+                                    child: SvgPicture.asset(
+                                      Assets.facebookIcon,
+                                      color: AppColors.lightTextBlack,
+                                    ),
+                                  )),
+                              Container(
+                                  height: 40.h,
+                                  width: 40.w,
+                                  decoration: BoxDecoration(
+                                      color: AppColors.greyLight,
+                                      shape: BoxShape.circle),
+                                  child: Center(
+                                    child: SvgPicture.asset(
+                                      Assets.twitterIcon,
+                                      color: AppColors.lightTextBlack,
+                                    ),
+                                  )),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      spacing: 5.w,
+                      children: [
 
+                        Text(
+                          "Privacy Policy",
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.roboto(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.lightTextBlack,
+                          ),
+                        ),
+
+                        VerticalDivider(
+                          color: AppColors.lightTextBlack,
+                          thickness: 1,
+                          width: 1.w,
+                        ),
+
+                        Text(
+                          "Terms of Service",
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.roboto(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.lightTextBlack,
+                          ),
+                        ),
+
+                        VerticalDivider(
+                          color: AppColors.lightTextBlack,
+                          thickness: 1,
+                          width: 1.w,
+                        ),
+
+                        Text(
+                          "Contact us ",
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.roboto(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.lightTextBlack,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height:5.h), 
+                    Center(
+                      child: Text(
+                        "© 2025 . All rights reserved. ",
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.roboto(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.lightTextBlack,
+                        ),
+                      ),
+                    ),
+
+
+
+                    SizedBox(
+                      height: 50.h,
+                    ),
                   ],
                 ),
               ),

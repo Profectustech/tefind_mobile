@@ -27,6 +27,7 @@ import 'package:insta_image_viewer/insta_image_viewer.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_text_form_field.dart';
 import '../../widgets/other_items.dart';
+import '../widgets/make_offer_dialog.dart';
 import '../widgets/product_gridview.dart';
 
 // Create a provider to manage the current page index
@@ -70,164 +71,7 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
   final NavigatorService _navigation = NavigatorService();
   late TabController _tabController;
   int quantity = 1;
-  void showMakeOfferDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return Dialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Close Icon
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Make an Offer',
-                      style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.bold, fontSize: 18),
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.close),
-                      onPressed: () => Navigator.of(context).pop(),
-                    )
-                  ],
-                ),
-                SizedBox(height: 12.h),
-                Row(
-                  spacing: 5.w,
-                  children: [
-                    Container(
-                      height: 64.h,
-                      width: 64.w,
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryColor,
-                        borderRadius: BorderRadius.circular(8.r),
-                        image: DecorationImage(
-                          image: AssetImage('assets/images/gown.png'),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Floral Summer Dress",
-                          style: GoogleFonts.roboto(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.black),
-                        ),
-                        Row(
-                          spacing: 2.w,
-                          children: [
-                            Text(
-                              "Listed Price:",
-                              style: GoogleFonts.roboto(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.grey),
-                            ),
-                            Text(
-                              "₦45,000",
-                              style: GoogleFonts.roboto(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.primaryColor),
-                            ),
-                          ],
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-                SizedBox(height: 15.h),
-                Text(
-                  'Your Offer (₦)',
-                  style: GoogleFonts.roboto(
-                      fontWeight: FontWeight.w500, fontSize: 11),
-                ),
-                SizedBox(height: 6.h),
-                // Offer Input
-                TextFormField(
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    //LengthLimitingTextInputFormatter(10),
-                  ],
-                  decoration: InputDecoration(
-                    fillColor:
-                        Color.fromRGBO(249, 250, 251, 1), //AppColors.greyLight,
-                    hintStyle:
-                        TextStyle(color: AppColors.grey, fontSize: 12.sp),
-                    hintText: 'Enter amount in Naira',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide(color: AppColors.grey, width: 1.0),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 5.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                  Text(
-                    "Minimum: ₦45,000",
-                    style: TextStyle(
-                        fontSize: 12.sp,
-                        color: AppColors.grey,
-                        fontWeight: FontWeight.w400),
-                  ),
-                  Text(
-                    "Maximum: ₦45,000",
-                    style: TextStyle(
-                        fontSize: 12.sp,
-                        color: AppColors.grey,
-                        fontWeight: FontWeight.w400),
-                  ),
 
-                ],),
-                SizedBox(height: 5.h,),
-                Text(
-                  'Message (Optional)',
-                  style: GoogleFonts.roboto(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14,
-                  ),
-                ),
-                SizedBox(
-                  height: 5.h,
-                ),
-                CustomTextFormField(
-                  maxLines: 3,
-                  //controller: accountProvider.lastNameController,
-                  hint: 'Add a Message to the seller...',
-                  // validator: Validators().isSignUpEmpty,
-                ),
-                SizedBox(height: 20.h),
-                CustomButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  fillColor: AppColors.primaryColor,
-                  label: 'Send Offer',
-                  buttonTextColor: AppColors.white,
-                )
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
 
   addQuantity() {
     setState(() {
@@ -274,6 +118,7 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
       appBar: UtilityAppBar(
         text: "Product Name",
         centerTitle: false,
+        hasActions: false,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -737,7 +582,12 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
                         ),
                         Spacer(),
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            NavigatorService().navigateTo(
+                              productBySeller,
+                              // arguments: widget.newProducts,
+                            );
+                          },
                           child: Center(
                               child: Container(
                             width: 53.w,

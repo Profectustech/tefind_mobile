@@ -23,8 +23,10 @@ import 'package:html/parser.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:insta_image_viewer/insta_image_viewer.dart';
 
+import '../../widgets/global.dart';
 import '../../widgets/other_items.dart';
 import '../widgets/product_gridview.dart';
+import 'make_offer_dialog.dart';
 
 // Create a provider to manage the current page index
 final currentIndexProvider = StateProvider<int>((ref) => 0);
@@ -37,7 +39,8 @@ class FeaturedProductDetail extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<FeaturedProductDetail> createState() => _FeaturedProductDetailState();
+  ConsumerState<FeaturedProductDetail> createState() =>
+      _FeaturedProductDetailState();
 }
 
 // to format html to flutter text
@@ -107,11 +110,12 @@ class _FeaturedProductDetailState extends ConsumerState<FeaturedProductDetail>
       appBar: UtilityAppBar(
         text: "Product Name",
         centerTitle: false,
+        hasActions: false,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
           child:
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Stack(
               children: [
                 Container(
@@ -147,7 +151,7 @@ class _FeaturedProductDetailState extends ConsumerState<FeaturedProductDetail>
                   left: 10,
                   child: Container(
                     padding:
-                    EdgeInsets.symmetric(horizontal: 25.w, vertical: 5.h),
+                        EdgeInsets.symmetric(horizontal: 25.w, vertical: 5.h),
                     decoration: BoxDecoration(
                         color: AppColors.primaryColor,
                         borderRadius: BorderRadius.circular(28.r)),
@@ -213,29 +217,28 @@ class _FeaturedProductDetailState extends ConsumerState<FeaturedProductDetail>
                         ),
                         InkWell(
                           onTap: () {
-                            // productProvider.addToCart(
-                            //     widget.newProducts.sku ?? '', 1);
+                            globalScaffoldKey.currentState?.openEndDrawer();
                           },
                           child: Center(
                               child: Container(
-                                width: 66.w,
-                                height: 20.h,
-                                decoration: BoxDecoration(
-                                    color: AppColors.containerWhite,
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "Add To Cart",
-                                      style: GoogleFonts.roboto(
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w600,
-                                          color: AppColors.primaryColor),
-                                    )
-                                  ],
-                                ),
-                              )),
+                            width: 66.w,
+                            height: 20.h,
+                            decoration: BoxDecoration(
+                                color: AppColors.containerWhite,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Add To Cart",
+                                  style: GoogleFonts.roboto(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.primaryColor),
+                                )
+                              ],
+                            ),
+                          )),
                         )
                       ],
                     ),
@@ -358,26 +361,26 @@ class _FeaturedProductDetailState extends ConsumerState<FeaturedProductDetail>
                       },
                       child: Center(
                           child: Container(
-                            width: 73.w,
-                            height: 28.h,
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    width: 1, color: AppColors.primaryColor),
-                                color: AppColors.white,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "View Profile",
-                                  style: GoogleFonts.roboto(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.primaryColor),
-                                )
-                              ],
-                            ),
-                          )),
+                        width: 73.w,
+                        height: 28.h,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                width: 1, color: AppColors.primaryColor),
+                            color: AppColors.white,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "View Profile",
+                              style: GoogleFonts.roboto(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.primaryColor),
+                            )
+                          ],
+                        ),
+                      )),
                     )
                   ],
                 ),
@@ -505,11 +508,12 @@ class _FeaturedProductDetailState extends ConsumerState<FeaturedProductDetail>
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   Container(
-                                    padding:
-                                    EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 15.w, vertical: 5.h),
                                     decoration: BoxDecoration(
                                         color: AppColors.white,
-                                        borderRadius: BorderRadius.circular(28.r)),
+                                        borderRadius:
+                                            BorderRadius.circular(28.r)),
                                     child: Text(
                                       "Lekki, Lagos",
                                       overflow: TextOverflow.ellipsis,
@@ -550,7 +554,8 @@ class _FeaturedProductDetailState extends ConsumerState<FeaturedProductDetail>
                         // Products negotiableProducts =
                         // productProvider
                         //     .negotiableProduct![index];
-                        return OtherItems();;
+                        return OtherItems();
+                        ;
                       },
                     ),
                   ),
@@ -562,32 +567,35 @@ class _FeaturedProductDetailState extends ConsumerState<FeaturedProductDetail>
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(bottom: 30.0, left: 20, right: 20),
-        child: Container(
-          decoration: BoxDecoration(
-            color: AppColors.primaryColor,
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black12,
-                blurRadius: 10,
-                offset: Offset(0, -2), // Giving shadow above the container
-              ),
-            ],
-          ),
-          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 16),
-          child: Row(
-            spacing: 6.w,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SvgPicture.asset(Assets.offerIcon),
-              Text(
-                "Make Offer",
-                style: TextStyle(
-                    fontSize: 14,
-                    color: AppColors.white,
-                    fontWeight: FontWeight.w400),
-              ),
-            ],
+        child: GestureDetector(
+          onTap: () => showMakeOfferDialog(context),
+          child: Container(
+            decoration: BoxDecoration(
+              color: AppColors.primaryColor,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 10,
+                  offset: Offset(0, -2), // Giving shadow above the container
+                ),
+              ],
+            ),
+            padding: EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+            child: Row(
+              spacing: 6.w,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(Assets.offerIcon),
+                Text(
+                  "Make Offer",
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: AppColors.white,
+                      fontWeight: FontWeight.w400),
+                ),
+              ],
+            ),
           ),
         ),
       ),

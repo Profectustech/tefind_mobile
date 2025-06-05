@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:te_find/app/home/widgets/property_filter.dart';
 import 'package:te_find/app/widgets/custom_button.dart';
 import 'package:te_find/app/widgets/pin_input_field.dart';
 import 'package:te_find/utils/assets_manager.dart';
 
 import '../../utils/app_colors.dart';
+import '../home/filter_page.dart';
 import '../home/widgets/category_filter.dart';
 import '../home/widgets/item_condition.dart';
 import '../home/widgets/price_range.dart';
@@ -709,4 +711,77 @@ class BottomModals {
         );
       },
     );
-  }}
+  }
+  static homePageFilter({required BuildContext context}) {
+    return showModalBottomSheet(
+      context: context,
+      isDismissible: true,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) => Container(
+        width: double.infinity,
+        height: 700.h,
+        padding: EdgeInsets.symmetric(horizontal: 0.w),
+        margin: EdgeInsets.only(bottom: 4.h, left: 0.w, right: 0.w),
+        decoration: BoxDecoration(
+          color: Colors.white, //ColorThemes.normalBorderColor50,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20.r),
+            topRight: Radius.circular(20.r),
+          ),
+        ),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              vertical: 10.0.h,
+              horizontal: 20.0.w,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [FilterPage()],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+  static propertyFilter({required BuildContext context}) {
+    return showModalBottomSheet(
+      context: context,
+      isDismissible: true,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) => Container(
+        width: double.infinity,
+        height: 450.h,
+        padding: EdgeInsets.symmetric(horizontal: 0.w),
+        margin: EdgeInsets.only(bottom: 4.h, left: 0.w, right: 0.w),
+        decoration: BoxDecoration(
+          color: Colors.white, //ColorThemes.normalBorderColor50,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20.r),
+            topRight: Radius.circular(20.r),
+          ),
+        ),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              vertical: 10.0.h,
+              horizontal: 20.0.w,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [PropertyFilter()],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+
+}
+
+

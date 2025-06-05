@@ -188,24 +188,29 @@ class _HomePageState extends ConsumerState<HomePage> {
                             ],
                           ),
                         ),
-                        Container(
-                          height: 32,
-                          width: 32,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black
-                                    .withOpacity(0.2), // corrected method
-                                spreadRadius: 0.2,
-                                blurRadius: 0.2,
-                                offset: Offset(0, 0.2),
-                              ),
-                            ],
-                          ),
-                          child: Center(
-                            child: SvgPicture.asset(Assets.cart),
+                        InkWell(
+                          onTap: (){
+                            NavigatorService().navigateTo(cartPageScreen);
+                          },
+                          child: Container(
+                            height: 32,
+                            width: 32,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black
+                                      .withOpacity(0.2), // corrected method
+                                  spreadRadius: 0.2,
+                                  blurRadius: 0.2,
+                                  offset: Offset(0, 0.2),
+                                ),
+                              ],
+                            ),
+                            child: Center(
+                              child: SvgPicture.asset(Assets.cart),
+                            ),
                           ),
                         ),
                       ],
@@ -512,9 +517,57 @@ class _HomePageState extends ConsumerState<HomePage> {
                               NavigatorService().navigateTo(carouselContent);
                             },
                             child: Container(
-                              color: AppColors.orange,
                               height: 50.h,
                               width: double.infinity,
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: AssetImage(
+                                        'assets/images/carouselImage.png',
+                                      ),
+                                      fit: BoxFit.cover)),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10.w, vertical: 10.w),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text('Shop Sustainably',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: AppColors.white)),
+                                    Row(
+                                      children: [
+                                        Text(
+                                            'Give fashion a second life &\nsave the planet',
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400,
+                                                color: AppColors.white)),
+                                        Spacer(),
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10.w, vertical: 5.w),
+                                          decoration: BoxDecoration(
+                                              color: AppColors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(16)),
+                                          child: Center(
+                                            child: Text(
+                                                'Learn More',
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: AppColors.primaryColor)),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           )),
                 ),

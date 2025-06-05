@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:te_find/app/widgets/bottom_modals.dart';
 import 'package:te_find/utils/app_colors.dart';
 import 'package:te_find/utils/assets_manager.dart';
 
@@ -77,7 +78,11 @@ class SearchBox extends StatelessWidget {
               ),
             ),
           ),
-          SvgPicture.asset(Assets.filter),
+          GestureDetector(
+            onTap: (){
+              BottomModals.homePageFilter(context: context);
+            },
+              child: SvgPicture.asset(Assets.filter)),
         ],
       ),
     );

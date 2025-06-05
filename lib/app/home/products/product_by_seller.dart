@@ -201,7 +201,8 @@ class _ProductBySellerState extends ConsumerState<ProductBySeller> {
     return Scaffold(
         appBar: UtilityAppBar(
           centerTitle: false,
-          text: "Seller Name", //${widget.product.seller?.shopTitle??""}",
+          text: "Seller Name",
+          hasActions: false,
         ),
         body: SafeArea(
           child: SingleChildScrollView(
@@ -319,45 +320,6 @@ class _ProductBySellerState extends ConsumerState<ProductBySeller> {
                 SizedBox(
                   height: 20.h,
                 ),
-                Padding(
-                  padding:
-                      const EdgeInsets.only(bottom: 30.0, left: 20, right: 20),
-                  child: GestureDetector(
-                         onTap: () => showMakeOfferDialog(context),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryColor,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: 10,
-                            offset: Offset(
-                                0, -2), // Giving shadow above the container
-                          ),
-                        ],
-                      ),
-                      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 16),
-                      child: Row(
-                        spacing: 6.w,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset(Assets.offerIcon),
-                          Text(
-                            "Make Offer",
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: AppColors.white,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
                 DefaultTabController(
                   length: 3,
                   child: Column(
@@ -369,7 +331,7 @@ class _ProductBySellerState extends ConsumerState<ProductBySeller> {
                         ),
                         child: TabBar(
                           labelColor: AppColors.primaryColor,
-                          unselectedLabelColor: AppColors.grey,
+                          unselectedLabelColor: AppColors.lightTextBlack,
                           indicatorColor: AppColors.primaryColor,
                           tabs: const [
                             Tab(text: 'Listings'),
@@ -594,32 +556,38 @@ class _ProductBySellerState extends ConsumerState<ProductBySeller> {
                                             height: 10.h,
                                           ),
                                           Wrap(
-                                            spacing: 10, // space between items
-                                            runSpacing: 10, // space between lines
-                                            children: paymentMethod.map((tag) {
+                                            spacing: 10,
+                                            runSpacing: 10,
+                                            children: paymentMethods.map((method) {
                                               return Container(
                                                 padding: EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                                                 decoration: BoxDecoration(
-                                                  color: AppColors.greyLight,
+                                                  color: AppColors.greyLight3,
                                                   borderRadius: BorderRadius.circular(30),
-                                                  border: Border.all(color: Colors.grey.shade300),
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Colors.black12,
-                                                      blurRadius: 2,
-                                                      offset: Offset(0, 1),
-                                                    )
+                                                ),
+                                                child: Row(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: [
+                                                    SvgPicture.asset(
+                                                      method.iconPath,
+                                                      width: 18,
+                                                      height: 18,
+                                                      color: AppColors.lightTextBlack,
+                                                    ),
+                                                    SizedBox(width: 8),
+                                                    Text(
+                                                      method.name,
+                                                      style: TextStyle(
+                                                        fontSize: 12.sp,
+                                                        fontWeight: FontWeight.w500,
+                                                      ),
+                                                    ),
                                                   ],
                                                 ),
-                                                child: Text(
-                                                  tag,
-                                                  style: TextStyle(
-                                                    fontSize: 12.sp,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
                                               );
-                                            }).toList(),),
+                                            }).toList(),
+                                          ),
+
                                           SizedBox(
                                             height: 10.h,
                                           ),
@@ -1131,3 +1099,16 @@ class ProfileReviewWidget extends StatelessWidget {
     );
   }
 }
+
+class PaymentMethod {
+  final String name;
+  final String iconPath;
+
+  PaymentMethod({required this.name, required this.iconPath});
+}
+
+final List<PaymentMethod> paymentMethods = [
+  PaymentMethod(name: 'Bank Transfer', iconPath: 'assets/images/bankTransfer.svg'),
+  PaymentMethod(name: 'Paypal', iconPath: 'assets/images/paypalIcon.svg'),
+  PaymentMethod(name: 'Cash on Delivery', iconPath: 'assets/images/cashIcon.svg'),
+];

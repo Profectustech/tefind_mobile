@@ -1,256 +1,201 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:te_find/app/widgets/search_box.dart';
-import 'package:te_find/providers/provider.dart';
-import 'package:te_find/utils/assets_manager.dart';
-import 'package:te_find/utils/app_colors.dart';
-import '../../providers/account_provider.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../../../utils/app_colors.dart';
+import '../widgets/custom_button.dart';
 
-class FilterPage extends ConsumerStatefulWidget {
-  FilterPage({super.key});
+class FilterPage extends StatefulWidget {
+  const FilterPage({super.key});
 
   @override
-  ConsumerState<FilterPage> createState() => FilterPageState();
+  State<FilterPage> createState() => _CategoryFilterState();
 }
 
-class FilterPageState extends ConsumerState<FilterPage> {
-  late AccountProvider accountProvider;
-  bool isSelected = false;
-  bool _isChecked = false;
+class _CategoryFilterState extends State<FilterPage> {
+  RangeValues _priceRange = const RangeValues(0, 50000);
+  final double _minPrice = 0;
+  final double _maxPrice = 100000;
+
+  final Set<String> selectedCategories = {'Tops'};
+
+  final Map<String, List<String>> categoryGroups = {
+    "Condition's": [
+      'New with Tags',
+      'New without tags',
+      'Very good',
+      'Good',
+      'Good',
+    ],
+    "Categories": ["Women's", "Men's", 'Shoes', 'Bags', 'Jewelry', 'Kids'],
+    // "Shoes": ["Women's Shoes", "Men's Shoes", 'Athletic Shoes', 'Boots'],
+    // "Accessories": [
+    //   'Bags',
+    //   'Jewelry',
+    //   'Watches',
+    //   'Hats',
+    //   'Sunglasses',
+    //   'Belts'
+    // ],
+  };
 
   @override
   Widget build(BuildContext context) {
-    accountProvider = ref.watch(RiverpodProvider.accountProvider);
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Filters',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.black)),
+                IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(Icons.close),
+                )
+              ],
+            ),
 
-    return Scaffold(
-
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 30.h),
-              Container(
-                padding: EdgeInsets.only(left: 10, right: 10),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.circular(30.r)
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10, top: 10, right: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Filter ",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 16),
-                          ),
-                          IconButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              icon: Icon(Icons.close))
-                        ],
-                      ),
-                      SizedBox(height: 20.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Category",
-                            style: TextStyle(
-                                fontSize: 19, fontWeight: FontWeight.w600),
-                          ),
-                          isSelected
-                              ? Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 7),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.primaryColor,
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  child: Text(
-                                    "Clear all",
-                                    style: TextStyle(
-                                        color: AppColors.white,
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 16),
-                                  ),
-                                )
-                              : SizedBox.shrink(),
-                        ],
-                      ),
-                      SizedBox(height: 20.h),
-
-                      Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Electronics",
-                              style: TextStyle(color: AppColors.primaryColor),
-                            ),
-                            ListView.builder(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              padding: EdgeInsets.zero,
-                              itemCount: 10,
-                              itemBuilder: (context, index) {
-                                return CheckboxListTile(
-                                  value: _isChecked,
-                                  onChanged: (bool? newValue) {
-                                    setState(() {
-                                      _isChecked = newValue ?? false;
-                                    });
-                                  },
-                                  controlAffinity:
-                                      ListTileControlAffinity.leading,
-                                  activeColor: AppColors.black,
-                                  checkColor: AppColors.white,
-                                  tristate: true,
-                                  contentPadding: EdgeInsets.zero,
-                                  title: Text("SmartPhones"),
-                                );
-                              },
-                            ),
-                            Divider(),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-
-                      // Brands section
-                      Text(
-                        "Brands",
-                        style: TextStyle(
-                            fontSize: 19, fontWeight: FontWeight.w600),
-                      ),
-                      SizedBox(height: 10.h),
-
-                      Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(right: 90),
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      width: 1, color: AppColors.grey),
-                                  color: Colors.transparent,
-                                  borderRadius: BorderRadius.circular(9)),
-                              child: SearchBox(hint: "Search"),
-                            ),
-                            Container(
-                              padding: EdgeInsets.symmetric(vertical: 20),
-                              height: 250.h,
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                padding: EdgeInsets.zero,
-                                itemCount: 20,
-                                itemBuilder: (context, index) {
-                                  return CheckboxListTile(
-                                    value: _isChecked,
-                                    onChanged: (bool? newValue) {
-                                      setState(() {
-                                        _isChecked = newValue ?? false;
-                                      });
-                                    },
-                                    controlAffinity:
-                                        ListTileControlAffinity.leading,
-                                    activeColor: AppColors.black,
-                                    checkColor: AppColors.white,
-                                    tristate: true,
-                                    contentPadding: EdgeInsets.zero,
-                                    title: Text("Golden Penny"),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(height: 10.h),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            Divider(),
+            Text("Price Range", style: GoogleFonts.roboto(color: Colors.black)),
+            SizedBox(height: 5.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildPriceBox("₦ ${_priceRange.start.toInt()}"),
+                _buildPriceBox("₦ ${_priceRange.end.toInt()}"),
+              ],
+            ),
+            SizedBox(height: 5.h),
+            RangeSlider(
+              values: _priceRange,
+              min: _minPrice,
+              max: _maxPrice,
+              divisions: 100,
+              activeColor: AppColors.primaryColor,
+              inactiveColor: Colors.grey.shade300,
+              onChanged: (RangeValues values) {
+                setState(() {
+                  _priceRange = values;
+                });
+              },
+            ),
+            // Category Groups
+            ...categoryGroups.entries.map((entry) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Divider(),
+                    Text(entry.key,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 14.sp)),
                     SizedBox(height: 10.h),
-                    Text(
-                      "Stores",
-                      style:
-                          TextStyle(fontSize: 19, fontWeight: FontWeight.w600),
-                    ),
-                    SizedBox(height: 10.h),
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(right: 90),
+                    Wrap(
+                      spacing: 20,
+                      runSpacing: 20,
+                      children: entry.value.map((cat) {
+                        final isSelected = selectedCategories.contains(cat);
+                        return InkWell(
+                          onTap: () {
+                            setState(() {
+                              if (isSelected) {
+                                selectedCategories.remove(cat);
+                              } else {
+                                selectedCategories.add(cat);
+                              }
+                            });
+                          },
+                          borderRadius: BorderRadius.circular(16.r),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 12.w, vertical: 8.h),
                             decoration: BoxDecoration(
-                                border:
-                                    Border.all(width: 1, color: AppColors.grey),
-                                color: Colors.transparent,
-                                borderRadius: BorderRadius.circular(9)),
-                            child: SearchBox(hint: "Search"),
-                          ),
-                          Container(
-                            padding: EdgeInsets.symmetric(vertical: 20),
-                            height: 250.h,
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              padding: EdgeInsets.zero,
-                              itemCount: 20,
-                              itemBuilder: (context, index) {
-                                return CheckboxListTile(
-                                  value: _isChecked,
-                                  onChanged: (bool? newValue) {
-                                    setState(() {
-                                      _isChecked = newValue ?? false;
-                                    });
-                                  },
-                                  controlAffinity:
-                                      ListTileControlAffinity.leading,
-                                  activeColor: AppColors.black,
-                                  checkColor: AppColors.white,
-                                  tristate: true,
-                                  contentPadding: EdgeInsets.zero,
-                                  title: Text("Amala (1.5k orders)"),
-                                );
-                              },
+                              border: Border.all(
+                                color: isSelected
+                                    ? AppColors.primaryColor
+                                    : AppColors.greyLight,
+                              ),
+                              borderRadius: BorderRadius.circular(16.r),
+                              color: Colors.white,
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                // Icon(
+                                //   isSelected
+                                //       ? Icons.check_box
+                                //       : Icons.check_box_outline_blank,
+                                //   size: 18.sp,
+                                //   color: isSelected
+                                //       ? AppColors.primaryColor
+                                //       : Colors.grey,
+                                // ),
+                                SizedBox(width: 6.w),
+                                Text(
+                                  cat,
+                                  style: GoogleFonts.roboto(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
+                        );
+                      }).toList(),
                     ),
                   ],
                 ),
-              ),
-              SizedBox(height: 20.h),
-            ],
-          ),
+              );
+            }),
+
+            SizedBox(height: 30.h),
+
+            Row(
+              spacing: 10.w,
+              children: [
+                Expanded(
+                  child: CustomButton(
+                    onPressed: () {
+                      // Handle Apply
+                      Navigator.pop(context);
+                    },
+                    label: 'Reset',
+                  borderColor: AppColors.primaryColor,
+                    fillColor: AppColors.white,
+                    buttonTextColor: AppColors.primaryColor,
+                  ),
+                ),
+                Expanded(
+                  child: CustomButton(
+                    onPressed: () {
+                      // Handle Apply
+                      Navigator.pop(context);
+                    },
+                    label: 'Apply Filter',
+                    fillColor: AppColors.primaryColor,
+                    buttonTextColor: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
   }
+}
+
+Widget _buildPriceBox(String text) {
+  return Text(
+    text,
+    style:
+        GoogleFonts.roboto(fontWeight: FontWeight.w500, color: AppColors.black),
+  );
 }

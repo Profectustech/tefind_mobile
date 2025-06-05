@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:te_find/app/home/widgets/categoryTile.dart';
 import 'package:te_find/app/home/widgets/product_gridview.dart';
+import 'package:te_find/app/widgets/bottom_modals.dart';
 import 'package:te_find/providers/provider.dart';
 import 'package:te_find/services/navigation/route_names.dart';
 import 'package:te_find/utils/assets_manager.dart';
@@ -84,28 +85,33 @@ class _HomePageState extends ConsumerState<TopDealFashion> {
                   Row(
                     spacing: 8.w,
                     children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 6.w, vertical: 5.h),
-                        // height: 26,
-                        // width: 64,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16)),
-                        child: Row(
-                          spacing: 4,
-                          children: [
-                            Icon(
-                              Icons.filter_list,
-                              size: 15,
-                            ),
-                            Text('Filter',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                )),
-                          ],
+                      InkWell(
+                        onTap: (){
+                          BottomModals.propertyFilter(context: context);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 6.w, vertical: 5.h),
+                          // height: 26,
+                          // width: 64,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(16)),
+                          child: Row(
+                            spacing: 4,
+                            children: [
+                              Icon(
+                                Icons.filter_list,
+                                size: 15,
+                              ),
+                              Text('Filter',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                  )),
+                            ],
+                          ),
                         ),
                       ),
                       Container(
@@ -115,9 +121,8 @@ class _HomePageState extends ConsumerState<TopDealFashion> {
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(16),
                           ),
-                          child: Icon(
-                            Icons.menu,
-                          ))
+                          child: Center(child: SvgPicture.asset('assets/images/window.svg', height: 17.h,),)
+                          ),
                     ],
                   ),
                 ],

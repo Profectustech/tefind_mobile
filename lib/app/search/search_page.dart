@@ -7,6 +7,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:te_find/app/widgets/bottom_modals.dart';
 import 'package:te_find/utils/progress_bar_manager/utility_app_bar.dart';
 
+import '../../services/navigation/navigator_service.dart';
+import '../../services/navigation/route_names.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/assets_manager.dart';
 
@@ -131,7 +133,72 @@ class _SearchPageState extends ConsumerState<SearchPage> {
               fontSize: 16.sp,
               fontWeight: FontWeight.w500,
             ),
+
           ),
+          actions: [
+            InkWell(
+              onTap: () {
+                NavigatorService().navigateTo(notificationPage);
+              },
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Container(
+                    height: 32,
+                    width: 32,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black
+                              .withOpacity(0.2), // corrected method
+                          spreadRadius: 0.2,
+                          blurRadius: 0.2,
+                          offset: Offset(0, 0.2),
+                        ),
+                      ],
+                    ),
+                    child: Center(
+                      child:
+                      SvgPicture.asset(Assets.notificationIcon),
+                    ),
+                  ),
+                  // Badge positioned at the top right corner
+                  Positioned(
+                    top: -4,
+                    right: -4,
+                    child: Container(
+                      padding: EdgeInsets.all(
+                          4), // Padding inside badge circle
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                            color: Colors.white, width: 1.5),
+                      ),
+                      constraints: BoxConstraints(
+                        minWidth: 16,
+                        minHeight: 16,
+                      ),
+                      child: Center(
+                        child: Text(
+                          '3',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(width: 16.w),
+          ],
           centerTitle: false,
         ),
         body: SingleChildScrollView(

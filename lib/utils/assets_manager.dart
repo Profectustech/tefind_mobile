@@ -81,6 +81,7 @@ class Assets {
   static const String delete = "assets/images/delete.svg";
   static const String chatIcon = "assets/images/bubbleChat.svg";
   static const String twitterIcon = "assets/images/Twitter.svg";
+  static const String facebookIcon = "assets/images/facebook.svg";
   static const String smsIcon = "assets/images/mailIcon.svg";
   static const String instagramIcon = "assets/images/Instagram.svg";
   static const String legalTerms = "assets/images/legalterms.svg";

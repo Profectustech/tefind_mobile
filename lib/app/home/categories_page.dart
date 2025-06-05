@@ -71,7 +71,7 @@ class _HomePageState extends ConsumerState<CategoriesPage> {
     return Scaffold(
       appBar: UtilityAppBar(
         centerTitle: false,
-        text: "Categoiries",
+        text: "Categories",
       ),
       body: SafeArea(
         child: SingleChildScrollView(

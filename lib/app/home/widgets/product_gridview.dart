@@ -277,6 +277,7 @@ class _PostTileState extends ConsumerState<ProductGridview>
                         child: Center(
                           child: Icon(
                             Icons.favorite_border_outlined,
+                            color: AppColors.lightTextBlack,
                           ),
                         ),
                       ),
