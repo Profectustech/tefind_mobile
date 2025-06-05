@@ -42,10 +42,13 @@ class _SellerAccountgState extends ConsumerState<SellerAccount> {
                         width: double.infinity,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
+                          color: AppColors.criyon,
                         ),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
+                              spacing: 10.w,
                               children: [
                                 SvgPicture.asset(
                                     'assets/images/bankTransfer.svg'),
@@ -58,9 +61,7 @@ class _SellerAccountgState extends ConsumerState<SellerAccount> {
                                 ),
                               ],
                             ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
+
                             Text(
                               'Your earnings will be sent to this account',
                               style: GoogleFonts.roboto(
@@ -125,15 +126,17 @@ class _SellerAccountgState extends ConsumerState<SellerAccount> {
                     ),
                     Container(
                         padding: EdgeInsets.symmetric(
-                            horizontal: 10.h, vertical: 20.h),
+                            horizontal: 10.h, vertical: 10.h),
                         height: 88.h,
                         width: double.infinity,
                         decoration: BoxDecoration(
+                          color: AppColors.criyon,
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: Column(
                           children: [
                             Row(
+                              spacing: 10.w,
                               children: [
                                 SvgPicture.asset(
                                     'assets/images/bankTransfer.svg'),
@@ -145,9 +148,6 @@ class _SellerAccountgState extends ConsumerState<SellerAccount> {
                                   ),
                                 ),
                               ],
-                            ),
-                            SizedBox(
-                              height: 10.h,
                             ),
                             Text(
                               'Make sure your account details are correct. Wrong details may lead to failed transactions.',

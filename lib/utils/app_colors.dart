@@ -18,6 +18,7 @@ class AppColors {
   static  Color cyan =  HexColor.fromHex("#DBEAFE");
   static  Color lightPurple =  HexColor.fromHex("#F3E8FF");
   static  Color lightYellow =  HexColor.fromHex("#FEF3C7");
+  static  Color criyon =  HexColor.fromHex("#F8F7FF");
   static  Color scaffoldBackgroundColor =  HexColor.fromHex("#FAFAFA");
 
   static const Color faintBlack = Color.fromRGBO(75, 85, 99, 1);

@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:te_find/app/widgets/custom_button.dart';
 import 'package:te_find/utils/assets_manager.dart';
 
@@ -20,6 +23,34 @@ class SellOnboarding extends ConsumerStatefulWidget {
 
 class _SellOnboardingState extends ConsumerState<SellOnboarding> {
   late OtherProvider otherProvider;
+  String? dp;
+  String? dpName;
+  String? dpSize;
+
+  takePicture() async {
+    final imagePicker = ImagePicker();
+    File file = File(await imagePicker
+        .pickImage(
+          source: ImageSource.gallery,
+        )
+        .then((pickedFile) => pickedFile!.path));
+
+    setState(() {
+      dp = file.path;
+      dpName = file.path.split('/').last;
+      dpSize = getFileSize(file);
+    });
+  }
+
+  String getFileSize(File dp) {
+    int sizeInBytes = dp.lengthSync();
+    double sizeInKB = sizeInBytes / 1024;
+    double sizeInMB = sizeInKB / 1024;
+    return sizeInMB > 1
+        ? "${sizeInMB.toStringAsFixed(2)} MB"
+        : "${sizeInKB.toStringAsFixed(2)} KB";
+  }
+
   @override
   Widget build(BuildContext context) {
     otherProvider = ref.watch(RiverpodProvider.otherProvider);
@@ -36,18 +67,27 @@ class _SellOnboardingState extends ConsumerState<SellOnboarding> {
                       height: 80.h,
                       width: 80.w,
                       decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: AppColors.greyLight),
-                      child: Center(
-                          child: SvgPicture.asset(
-                        Assets.userProfile,
-                        color: AppColors.grey,
-                      ))),
+                          image: dp != null
+                              ? DecorationImage(
+                                  image: FileImage(File(dp!)),
+                                  fit: BoxFit.cover,
+                                )
+                              : null,
+                          shape: BoxShape.circle,
+                          color: AppColors.greyLight),
+                      child: dp == null
+                          ? Center(
+                              child: SvgPicture.asset(
+                              Assets.userProfile,
+                              color: AppColors.grey,
+                            ))
+                          : null),
                   Positioned(
                     bottom: 0,
                     right: 0,
                     child: GestureDetector(
                       onTap: () {
-                        //   takePicture();
+                        takePicture();
                       },
                       child: Container(
                         height: 32.h,
@@ -138,7 +178,8 @@ class _SellOnboardingState extends ConsumerState<SellOnboarding> {
               //controller: accountProvider.lastNameController,
               hint: "Enter your phone number",
               // validator: Validators().isSignUpEmpty,
-            ), SizedBox(
+            ),
+            SizedBox(
               height: 20.h,
             ),
             Text(
@@ -155,7 +196,8 @@ class _SellOnboardingState extends ConsumerState<SellOnboarding> {
               //controller: accountProvider.lastNameController,
               hint: "Enter your bvn number",
               // validator: Validators().isSignUpEmpty,
-            ),  SizedBox(
+            ),
+            SizedBox(
               height: 20.h,
             ),
             Text(
@@ -169,7 +211,6 @@ class _SellOnboardingState extends ConsumerState<SellOnboarding> {
               height: 10.h,
             ),
             CustomTextFormField(
-
               maxLines: 5,
 
               //controller: accountProvider.lastNameController,
@@ -187,7 +228,6 @@ class _SellOnboardingState extends ConsumerState<SellOnboarding> {
               fillColor: AppColors.primaryColor,
               buttonTextColor: Colors.white,
             )
-
           ],
         ),
       ),

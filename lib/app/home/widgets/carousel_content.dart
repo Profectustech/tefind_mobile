@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:te_find/utils/progress_bar_manager/utility_app_bar.dart';
 
 import '../../../utils/app_colors.dart';
+import 'fl_chart.dart';
 
 class CarouselContent extends ConsumerStatefulWidget {
   const CarouselContent({super.key});
@@ -191,11 +192,20 @@ class _CarouselContentState extends ConsumerState<CarouselContent> {
                     ),
                     Container(
                       padding: EdgeInsets.symmetric(
-                          horizontal: 10.w, vertical: 20.h),
+                          horizontal: 10.w, vertical: 10.h),
                       height: 360.h,
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: AppColors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black
+                                .withOpacity(0.2), // corrected method
+                            spreadRadius: 0.2,
+                            blurRadius: 0.2,
+                            offset: Offset(0, 0.2),
+                          ),
+                        ],
                         borderRadius: BorderRadius.circular(16.r),
                       ),
                       child: Column(
@@ -252,19 +262,23 @@ class _CarouselContentState extends ConsumerState<CarouselContent> {
                           IndexedStack(index: current, children: [
                             Column(
                               children: [
-                                SizedBox(height: 20.h,),
+                                SizedBox(height: 15.h,),
+                                EnvironmentImpactChart(),
+                                SizedBox(height: 5.h,),
                                 Text('Compared to fast fashion, our marketplace has saved the, equivalent of planting 1,250 trees. '
-                                , style: GoogleFonts.roboto(
-                                    fontSize: 12.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: AppColors.lightTextBlack
+                                  , style: GoogleFonts.roboto(
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColors.lightTextBlack
                                   ),),
                               ],
                             ),
                             //---water----//
                             Column(
                               children: [
-                                SizedBox(height: 20.h,),
+                                SizedBox(height: 15.h,),
+                                EnvironmentImpactChart(),
+                                SizedBox(height: 5.h,),
                                 Text('Compared to fast fashion, our marketplace has saved the, equivalent of planting 1,250 trees. '
                                   , style: GoogleFonts.roboto(
                                       fontSize: 12.sp,
@@ -276,7 +290,9 @@ class _CarouselContentState extends ConsumerState<CarouselContent> {
                             //---Waste----//
                             Column(
                               children: [
-                                SizedBox(height: 20.h,),
+                                SizedBox(height: 15.h,),
+                                EnvironmentImpactChart(),
+                                SizedBox(height: 5.h,),
                                 Text('Compared to fast fashion, our marketplace has saved the, equivalent of planting 1,250 trees. '
                                   , style: GoogleFonts.roboto(
                                       fontSize: 12.sp,
