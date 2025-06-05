@@ -33,7 +33,8 @@ class _SetNewPasswordState extends ConsumerState<SetNewPassword> {
 
   // A boolean to check if the email field is not emptys
   bool get isEmailFilled => accountProvider.usernameController.text.isNotEmpty;
-
+  bool passwordVisible = true;
+  bool confPasswordVisible = true;
   @override
   void initState() {
     super.initState();
@@ -104,16 +105,130 @@ class _SetNewPasswordState extends ConsumerState<SetNewPassword> {
                           SizedBox(
                             height: 35.h,
                           ),
-                          CustomTextFormField(
-                            label: 'Enter New Password',
-                            controller: accountProvider.signInPhoneOrEmailController,
-                            validator: Validators().isEmail,
+                          TextFormField(
+                            validator: Validators().isEmpty,
+                            controller: accountProvider.signInPasswordController,
+                            decoration: InputDecoration(
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  // Based on passwordVisible state choose the icon
+                                  passwordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: AppColors.fadedBlack.withOpacity(0.4),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    passwordVisible = !passwordVisible;
+                                  });
+                                },
+                              ),
+                              hintText: 'Password',
+                              hintStyle: const TextStyle(
+                                color: Colors.grey,
+                              ),
+                              labelText: "Password",
+                              labelStyle: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xff8391A1),
+                              ),
+                              fillColor: AppColors.white,
+                              filled: true,
+                              focusedBorder: const OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(5)),
+                                borderSide: BorderSide(
+                                    width: 1, color: AppColors.primaryColor),
+                              ),
+                              disabledBorder: const OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(5)),
+                                borderSide:
+                                BorderSide(width: 1, color: AppColors.greyLight),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(5)),
+                                borderSide: BorderSide(
+                                  color: AppColors.greyLight,
+                                  width: 1.w,
+                                ),
+                              ),
+                              errorStyle: const TextStyle(color: AppColors.red),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: const BorderSide(),
+                              ),
+                            ),
+                            onChanged: (v) {},
+                            obscureText: passwordVisible,
+                            keyboardType: TextInputType.text,
+                            style: const TextStyle(color: Colors.black),
+                            cursorColor: Colors.black,
                           ),
                           SizedBox(height: 40.h,),
-                          CustomTextFormField(
-                            label: 'Confirm Password',
-                            controller: accountProvider.signInPhoneOrEmailController,
-                            validator: Validators().isEmail,
+                          TextFormField(
+                            validator: Validators().isEmpty,
+                            controller: accountProvider.signInPasswordController,
+                            decoration: InputDecoration(
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  // Based on passwordVisible state choose the icon
+                                  confPasswordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: AppColors.fadedBlack.withOpacity(0.4),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    confPasswordVisible = !confPasswordVisible;
+                                  });
+                                },
+                              ),
+                              hintText: 'Confirm Password',
+                              hintStyle: const TextStyle(
+                                color: Colors.grey,
+                              ),
+                              labelText: "Confirm Password",
+                              labelStyle: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xff8391A1),
+                              ),
+                              fillColor: AppColors.white,
+                              filled: true,
+                              focusedBorder: const OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(5)),
+                                borderSide: BorderSide(
+                                    width: 1, color: AppColors.primaryColor),
+                              ),
+                              disabledBorder: const OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(5)),
+                                borderSide:
+                                BorderSide(width: 1, color: AppColors.greyLight),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(5)),
+                                borderSide: BorderSide(
+                                  color: AppColors.greyLight,
+                                  width: 1.w,
+                                ),
+                              ),
+                              errorStyle: const TextStyle(color: AppColors.red),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: const BorderSide(),
+                              ),
+                            ),
+                            onChanged: (v) {},
+                            obscureText: confPasswordVisible,
+                            keyboardType: TextInputType.text,
+                            style: const TextStyle(color: Colors.black),
+                            cursorColor: Colors.black,
                           ),
                           SizedBox(height: 100.h),
                           CustomButton(
@@ -124,6 +239,7 @@ class _SetNewPasswordState extends ConsumerState<SetNewPassword> {
                               // : Colors.grey,
                               onPressed: () {
                                 BottomModals.validatePasswordPin(context: context);
+                                NavigatorService().navigateReplacementTo(loginScreenRoute);
                               }),
 
                         ],

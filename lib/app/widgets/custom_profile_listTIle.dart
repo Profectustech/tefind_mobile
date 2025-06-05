@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-Widget profileListTile(String image, String title, Function()? onPressed, {bool addSpacer = true,} ) {
+import '../../utils/app_colors.dart';
+
+Widget profileListTile(
+  String image,
+  String title,
+  Function()? onPressed, {
+  bool addSpacer = true,
+}) {
   return GestureDetector(
     onTap: onPressed,
     child: Container(
@@ -12,23 +20,28 @@ Widget profileListTile(String image, String title, Function()? onPressed, {bool 
         children: [
           Row(
             children: [
-              SvgPicture.asset(image),
-              SizedBox(width: 20.w),
+              Container(
+                  height: 32.h,
+                  width: 32.w,
+                  decoration: BoxDecoration(
+                      color: Color.fromRGBO(64, 210, 161, 0.1), shape: BoxShape.circle),
+                  child: Center(child: SvgPicture.asset(image, color: AppColors.primaryColor, height: 15,))),
+              SizedBox(width: 15.w),
               Text(
                 title,
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                style: GoogleFonts.roboto(fontSize: 14, fontWeight: FontWeight.w400),
               ),
-               Spacer(),
+              Spacer(),
               IconButton(
                 onPressed: onPressed,
                 icon: const Icon(
                   Icons.arrow_forward_ios,
-                  size: 18,
+                  size: 15,
+                  color: AppColors.grey,
                 ),
               ),
             ],
           ),
-
         ],
       ),
     ),

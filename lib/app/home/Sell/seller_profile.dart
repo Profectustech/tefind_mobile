@@ -70,7 +70,8 @@ class _SellerProfileState extends ConsumerState<SellerProfile> {
                       //controller: accountProvider.lastNameController,
                       hint: "Enter your City",
                       // validator: Validators().isSignUpEmpty,
-                    ), SizedBox(
+                    ),
+                    SizedBox(
                       height: 20.h,
                     ),
                     Text(
@@ -83,7 +84,6 @@ class _SellerProfileState extends ConsumerState<SellerProfile> {
                     SizedBox(
                       height: 10.h,
                     ),
-
                     CustomTextFormField(
                       //controller: accountProvider.lastNameController,
                       hint: "Select your State",
@@ -107,8 +107,10 @@ class _SellerProfileState extends ConsumerState<SellerProfile> {
                         Checkbox(
                           activeColor: AppColors.primaryColor,
                           value: isChecked,
-                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, // 👈 makes it compact
-                          visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
+                          materialTapTargetSize: MaterialTapTargetSize
+                              .shrinkWrap, // 👈 makes it compact
+                          visualDensity:
+                              const VisualDensity(horizontal: -4, vertical: -4),
                           onChanged: (val) {
                             setState(() {
                               isChecked = val ?? false;
@@ -120,8 +122,7 @@ class _SellerProfileState extends ConsumerState<SellerProfile> {
                           child: Text(
                             'In-person Meetup',
                             style: GoogleFonts.roboto(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w400),
+                                fontSize: 14.sp, fontWeight: FontWeight.w400),
                           ),
                         ),
                       ],
@@ -134,8 +135,10 @@ class _SellerProfileState extends ConsumerState<SellerProfile> {
                         Checkbox(
                           activeColor: AppColors.primaryColor,
                           value: isChecked1,
-                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
+                          materialTapTargetSize:
+                              MaterialTapTargetSize.shrinkWrap,
+                          visualDensity:
+                              const VisualDensity(horizontal: -4, vertical: -4),
                           onChanged: (val) {
                             setState(() {
                               isChecked1 = val ?? false;
@@ -147,13 +150,11 @@ class _SellerProfileState extends ConsumerState<SellerProfile> {
                           child: Text(
                             'Shipping',
                             style: GoogleFonts.roboto(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w400),
+                                fontSize: 14.sp, fontWeight: FontWeight.w400),
                           ),
                         ),
                       ],
                     ),
-
                   ],
                 ),
               ),
@@ -164,27 +165,24 @@ class _SellerProfileState extends ConsumerState<SellerProfile> {
             spacing: 12.w,
             children: [
               Expanded(
-                  child:  CustomButton(
-                    onPressed: () {
-                      otherProvider.regPosition(0);
-                    },
-                    borderColor: AppColors.primaryColor,
-                    label: 'Previous',
-                    fillColor: AppColors.white,
-                    buttonTextColor: AppColors.primaryColor,
-                  )
-              ),
-
+                  child: CustomButton(
+                onPressed: () {
+                  otherProvider.regPosition(0);
+                },
+                borderColor: AppColors.primaryColor,
+                label: 'Previous',
+                fillColor: AppColors.white,
+                buttonTextColor: AppColors.primaryColor,
+              )),
               Expanded(
-                  child:  CustomButton(
-                    onPressed: () {
-                        otherProvider.regPosition(2);
-                    },
-                    label: 'Next',
-                    fillColor: AppColors.primaryColor,
-                    buttonTextColor: Colors.white,
-                  )
-              ),
+                  child: CustomButton(
+                onPressed: () {
+                  otherProvider.regPosition(2);
+                },
+                label: 'Next',
+                fillColor: AppColors.primaryColor,
+                buttonTextColor: Colors.white,
+              )),
             ],
           ),
         ],

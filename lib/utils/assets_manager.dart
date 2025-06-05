@@ -98,4 +98,11 @@ class Assets {
   static const String offerIcon = "assets/images/offerIcon.svg";
   static const String conditionIcon = "assets/images/conditionIcon.svg";
   static const String timeIcon = "assets/images/time.svg";
+  static const String favorite = "assets/images/favorite.svg";
+  static const String privacyIcon = "assets/images/privacyIcon.svg";
+  static const String support = "assets/images/question.svg";
+  static const String about = "assets/images/about.svg";
+  static const String paymentIssues = "assets/images/paymentIssues.svg";
+  static const String shippingIcon = "assets/images/shippingIcon.svg";
+  static const String returnIcon = "assets/images/dollarIcon2.svg";
 }

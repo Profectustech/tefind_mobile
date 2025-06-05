@@ -193,13 +193,13 @@ class _SignupState extends ConsumerState<Signup> {
                                       borderRadius:
                                       BorderRadius.all(Radius.circular(5)),
                                       borderSide:
-                                      BorderSide(width: 1, color: AppColors.grey),
+                                      BorderSide(width: 1, color: AppColors.greyLight),
                                     ),
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius:
                                       BorderRadius.all(Radius.circular(5)),
                                       borderSide: BorderSide(
-                                        color: AppColors.grey,
+                                        color: AppColors.greyLight,
                                         width: 1.w,
                                       ),
                                     ),

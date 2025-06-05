@@ -17,6 +17,7 @@ import '../../../providers/account_provider.dart';
 import '../../../providers/product_provider.dart';
 import '../../../utils/assets_manager.dart';
 import '../../widgets/see_all_product.dart';
+import '../widgets/listings_gride_view.dart';
 import '../widgets/product_gridview.dart';
 
 class ProductBySeller extends ConsumerStatefulWidget {
@@ -398,7 +399,7 @@ class _ProductBySellerState extends ConsumerState<ProductBySeller> {
                                 ),
                                 itemBuilder: (context, index) {
                                   //  final product = productProvider.myProductByMerchant[index];
-                                  return ProductGridview(
+                                  return ListingsGrideView(
                                       //  product: product
                                       ); // Custom widget
                                 },

@@ -22,19 +22,14 @@ import 'package:te_find/app/notification.dart';
 import 'package:te_find/app/onboarding/onboarding_screen_view.dart';
 import 'package:te_find/app/orders/order_detail_page.dart';
 import 'package:te_find/app/profile/add_new_address.dart';
-import 'package:te_find/app/profile/faq_page.dart';
-import 'package:te_find/app/profile/help_page.dart';
-import 'package:te_find/app/profile/legal_terms_page.dart';
-import 'package:te_find/app/profile/privacy_policy_page.dart';
-import 'package:te_find/app/profile/term_of_use.dart';
+import 'package:te_find/app/profile/listing_view_all.dart';
+
 import 'package:te_find/app/settings/change_password_page.dart';
 import 'package:te_find/app/settings/change_transaction_pin.dart';
 import 'package:te_find/app/settings/delete_account.dart';
-import 'package:te_find/app/profile/delivery_address.dart';
+
 import 'package:te_find/app/profile/orders/my_oders_page.dart';
-import 'package:te_find/app/profile/personal_detail_page.dart';
-import 'package:te_find/app/settings/setting_page.dart';
-import 'package:te_find/app/profile/wallet_page.dart';
+
 import 'package:te_find/app/profile/wishlight_page.dart';
 import 'package:te_find/app/sign_up/set_password.dart';
 import 'package:te_find/app/sign_up/set_up_profile.dart';
@@ -53,9 +48,11 @@ import '../../app/forgotPassword/successful_reset_page.dart';
 import '../../app/home/Sell/sell-stepper.dart';
 import '../../app/home/all_brand_page.dart';
 import '../../app/home/products/product_by_seller.dart';
-import '../../app/profile/sellers/seller_store_page.dart';
-import '../../app/profile/sellers/sellers_page.dart';
+import '../../app/profile/about_us.dart';
+import '../../app/profile/help_and_support.dart';
+import '../../app/profile/widgets/edit_dialog.dart';
 import '../../app/settings/notifications_page.dart';
+import '../../app/settings/setting_page.dart';
 import '../../models/BestSellerModel.dart';
 import '../../models/CategoriesModel.dart';
 import '../../models/MarketListModel.dart';
@@ -117,32 +114,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         routeName: settings.name!,
         viewToShow: VerifyEmailOrPassword(),
       );
-    case PersonalDetail:
-      return _getPageRoute(
-        routeName: settings.name!,
-        viewToShow: PersonalDetailPage(),
-      );
+
     case MyOrdersScreenRoute:
       return _getPageRoute(
         routeName: settings.name!,
         viewToShow: MyOdersPage(),
       );
-    case WalletPageScreenRoute:
-      return _getPageRoute(
-        routeName: settings.name!,
-        viewToShow: WalletPage(),
-      );
-    case WishlistScreenRoute:
-      return _getPageRoute(
-        routeName: settings.name!,
-        viewToShow: WishlistPage(),
-      );
-    case deliveryAddressScreenRoute:
-      return _getPageRoute(
-        routeName: settings.name!,
-        viewToShow: DeliveryAddress(),
-      );
-    //
+
 
       case successfulResetPageScreenRoute:
       return _getPageRoute(
@@ -245,6 +223,45 @@ Route<dynamic> generateRoute(RouteSettings settings) {
          // newProducts: newProducts,
         ),
       );
+      case listingviewallProducts:
+  //    Products newProducts = settings.arguments! as Products;
+      return _getPageRoute(
+        routeName: settings.name!,
+        viewToShow: ListingViewAll(
+         // newProducts: newProducts,
+        ),
+      );
+      case favouriteScreen:
+  //    Products newProducts = settings.arguments! as Products;
+      return _getPageRoute(
+        routeName: settings.name!,
+        viewToShow: WishlistPage(
+         // newProducts: newProducts,
+        ),
+      );
+      case editProfileRoute:
+  //    Products newProducts = settings.arguments! as Products;
+      return _getPageRoute(
+        routeName: settings.name!,
+        viewToShow: EditProfileDialog(
+         // newProducts: newProducts,
+        ),
+      );
+      case aboutUs:
+  //    Products newProducts = settings.arguments! as Products;
+      return _getPageRoute(
+        routeName: settings.name!,
+        viewToShow: AboutUs(
+         // newProducts: newProducts,
+        ),
+      );   case helpAndSupport:
+  //    Products newProducts = settings.arguments! as Products;
+      return _getPageRoute(
+        routeName: settings.name!,
+        viewToShow: HelpAndSupport(
+         // newProducts: newProducts,
+        ),
+      );
       case notificationPage:
   //    Products newProducts = settings.arguments! as Products;
       return _getPageRoute(
@@ -314,45 +331,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         routeName: settings.name!,
         viewToShow: const ChangeTransactionPin(),
       );
-    case helpScreenRoute:
-      return _getPageRoute(
-        routeName: settings.name!,
-        viewToShow: const HelpPage(),
-      );
-    case legalTermsScreenRoute:
-      return _getPageRoute(
-        routeName: settings.name!,
-        viewToShow: const LegalTermsPage(),
-      );
-    case privacyPolicyScreenRoute:
-      return _getPageRoute(
-        routeName: settings.name!,
-        viewToShow: PrivacyPolicyPage(),
-      );
 
-    case termsOfUseScreenRoute:
-      return _getPageRoute(
-        routeName: settings.name!,
-        viewToShow: TermOfUse(),
-      );
-
-    case sellersPageScreenRoute:
-      return _getPageRoute(
-        routeName: settings.name!,
-        viewToShow: SellersPage(),
-      );
-
-      case sellersStorePage:
-        final product = settings.arguments! as BestSellerModel;
-      return _getPageRoute(
-        routeName: settings.name!,
-        viewToShow: SellerStorePage(product: product),
-      );
-    case FaqScreenRoute:
-      return _getPageRoute(
-        routeName: settings.name!,
-        viewToShow: FaqPage(),
-      );
     default:
       return MaterialPageRoute(
         builder: (_) => Scaffold(

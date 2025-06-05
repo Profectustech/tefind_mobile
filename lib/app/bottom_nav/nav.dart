@@ -3,18 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:te_find/app/bottom_nav/nav_service.dart';
 import 'package:te_find/app/orders/my_orders.dart';
-import 'package:te_find/app/home/categories_page.dart';
 import 'package:te_find/app/home/home_page.dart';
 import 'package:te_find/app/profile/profile_page.dart';
 import 'package:te_find/providers/product_provider.dart';
 import 'package:te_find/providers/provider.dart';
-import 'package:te_find/services/navigation/navigator_service.dart';
 import 'package:te_find/utils/app_colors.dart';
-
-import '../../services/navigation/route_names.dart';
 import '../cart/cart_drawer.dart';
 import '../home/Sell/sell-stepper.dart';
-import '../home/Sell/sell_onboarding.dart';
 import '../search/search_page.dart';
 import '../widgets/global.dart';
 

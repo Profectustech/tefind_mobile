@@ -35,7 +35,41 @@ class _SellerAccountgState extends ConsumerState<SellerAccount> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
+                    Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 10.h, vertical: 20.h),
+                        height: 88.h,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                SvgPicture.asset(
+                                    'assets/images/bankTransfer.svg'),
+                                Text(
+                                  'Bank Account Details',
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            Text(
+                              'Your earnings will be sent to this account',
+                              style: GoogleFonts.roboto(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.lightTextBlack),
+                            ),
+                          ],
+                        )),
                     Text(
                       'Bank Name',
                       style: GoogleFonts.roboto(
@@ -83,12 +117,47 @@ class _SellerAccountgState extends ConsumerState<SellerAccount> {
                       height: 10.h,
                     ),
                     CustomTextFormField(
-                      //controller: accountProvider.lastNameController,
-                      // validator: Validators().isSignUpEmpty,
+                        //controller: accountProvider.lastNameController,
+                        // validator: Validators().isSignUpEmpty,
+                        ),
+                    SizedBox(
+                      height: 30.h,
                     ),
-
-
-
+                    Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 10.h, vertical: 20.h),
+                        height: 88.h,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                SvgPicture.asset(
+                                    'assets/images/bankTransfer.svg'),
+                                Text(
+                                  'Important Notice',
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            Text(
+                              'Make sure your account details are correct. Wrong details may lead to failed transactions.',
+                              style: GoogleFonts.roboto(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.lightTextBlack),
+                            ),
+                          ],
+                        )),
                   ],
                 ),
               ),
@@ -99,31 +168,72 @@ class _SellerAccountgState extends ConsumerState<SellerAccount> {
             spacing: 12.w,
             children: [
               Expanded(
-                child:  CustomButton(
-                  onPressed: () {
-                    otherProvider.regPosition(1);
-                  },
-                  borderColor: AppColors.primaryColor,
-                  label: 'Previous',
-                  fillColor: AppColors.white,
-                  buttonTextColor: AppColors.primaryColor,
-                )
-              ),
-
+                  child: CustomButton(
+                onPressed: () {
+                  otherProvider.regPosition(1);
+                },
+                borderColor: AppColors.primaryColor,
+                label: 'Previous',
+                fillColor: AppColors.white,
+                buttonTextColor: AppColors.primaryColor,
+              )),
               Expanded(
-                child:  CustomButton(
-                  onPressed: () {
-                   NavigatorService().navigateTo(sellItemScreens);
-                  },
-                  label: 'Complete Setup',
-                  fillColor: AppColors.primaryColor,
-                  buttonTextColor: Colors.white,
-                )
-              ),
+                  child: CustomButton(
+                onPressed: () {
+                  sellerProfileComp(context);
+                },
+                label: 'Complete Setup',
+                fillColor: AppColors.primaryColor,
+                buttonTextColor: Colors.white,
+              )),
             ],
           ),
         ],
       ),
     );
   }
+}
+
+
+void sellerProfileComp(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) {
+      return Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SvgPicture.asset('assets/images/sucessListing.svg'),
+              SizedBox(height: 10.h),
+              Text(
+                'Profile Complete!',
+                style: GoogleFonts.roboto(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+              SizedBox(height: 10.h),
+              Text(
+                textAlign: TextAlign.center,
+                'Your seller profile has been created\nsuccessfully',
+                style: GoogleFonts.roboto(fontWeight: FontWeight.w400, fontSize: 14, color: AppColors.lightTextBlack),
+              ),
+              SizedBox(height: 20.h),
+              CustomButton(
+                onPressed: (){
+                  Navigator.pop(context);
+                  NavigatorService().navigateTo(sellItemScreens);
+                },
+                fillColor: AppColors.primaryColor,
+                label: 'Start Selling',
+                buttonTextColor: AppColors.white,
+              )
+            ],
+          ),
+        ),
+      );
+    },
+  );
 }

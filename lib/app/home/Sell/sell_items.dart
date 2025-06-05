@@ -68,33 +68,46 @@ class _SellItemsState extends ConsumerState<SellItems> {
       },
     );
   }
-  String? dp;
-  String? dpName;
-  String? dpSize;
+  List<File> selectedImages = [];
+  final ImagePicker _picker = ImagePicker();
 
-  takePicture() async {
-    final imagePicker = ImagePicker();
-    File file = File(await imagePicker
-        .pickImage(
-          source: ImageSource.gallery,
-        )
-        .then((pickedFile) => pickedFile!.path));
+  Future<void> takePicture() async {
+    final XFile? pickedFile = await _picker.pickImage(source: ImageSource.camera);
 
-    setState(() {
-      dp = file.path;
-      dpName = file.path.split('/').last;
-      dpSize = getFileSize(file);
-    });
+    if (pickedFile != null && selectedImages.length < 6) {
+      setState(() {
+        selectedImages.add(File(pickedFile.path));
+      });
+    }
   }
 
-  String getFileSize(File dp) {
-    int sizeInBytes = dp.lengthSync();
-    double sizeInKB = sizeInBytes / 1024;
-    double sizeInMB = sizeInKB / 1024;
-    return sizeInMB > 1
-        ? "${sizeInMB.toStringAsFixed(2)} MB"
-        : "${sizeInKB.toStringAsFixed(2)} KB";
-  }
+  // String? dp;
+  // String? dpName;
+  // String? dpSize;
+  //
+  // takePicture() async {
+  //   final imagePicker = ImagePicker();
+  //   File file = File(await imagePicker
+  //       .pickImage(
+  //         source: ImageSource.gallery,
+  //       )
+  //       .then((pickedFile) => pickedFile!.path));
+  //
+  //   setState(() {
+  //     dp = file.path;
+  //     dpName = file.path.split('/').last;
+  //     dpSize = getFileSize(file);
+  //   });
+  // }
+  //
+  // String getFileSize(File dp) {
+  //   int sizeInBytes = dp.lengthSync();
+  //   double sizeInKB = sizeInBytes / 1024;
+  //   double sizeInMB = sizeInKB / 1024;
+  //   return sizeInMB > 1
+  //       ? "${sizeInMB.toStringAsFixed(2)} MB"
+  //       : "${sizeInKB.toStringAsFixed(2)} KB";
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +142,6 @@ class _SellItemsState extends ConsumerState<SellItems> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                spacing: 5.w,
                 children: [
                   Text(
                     'Photo*',
@@ -138,18 +150,18 @@ class _SellItemsState extends ConsumerState<SellItems> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
+                  SizedBox(width: 5.w),
                   Text(
-                    '(0/6)',
+                    '(${selectedImages.length}/6)',
                     style: GoogleFonts.roboto(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.grey),
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.grey,
+                    ),
                   ),
                 ],
               ),
-              SizedBox(
-                height: 20.h,
-              ),
+              SizedBox(height: 20.h),
               GestureDetector(
                 onTap: () {
                   takePicture();
@@ -158,8 +170,9 @@ class _SellItemsState extends ConsumerState<SellItems> {
                   height: 160.h,
                   width: 343.w,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16.r),
-                      border: Border.all(color: AppColors.greyLight)),
+                    borderRadius: BorderRadius.circular(16.r),
+                    border: Border.all(color: AppColors.greyLight),
+                  ),
                   child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -168,8 +181,9 @@ class _SellItemsState extends ConsumerState<SellItems> {
                           height: 48.h,
                           width: 48.w,
                           decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppColors.greyLight),
+                            shape: BoxShape.circle,
+                            color: AppColors.greyLight,
+                          ),
                           child: Center(
                             child: Icon(
                               Icons.camera_alt_rounded,
@@ -177,71 +191,85 @@ class _SellItemsState extends ConsumerState<SellItems> {
                             ),
                           ),
                         ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
+                        SizedBox(height: 10.h),
                         Text(
                           'Add Photos',
                           style: GoogleFonts.roboto(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.grey),
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.grey,
+                          ),
                         ),
-                        SizedBox(
-                          height: 5.h,
-                        ),
+                        SizedBox(height: 5.h),
                         Text(
                           'Tap to upload',
                           style: GoogleFonts.roboto(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.grey),
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.grey,
+                          ),
                         ),
                       ],
                     ),
                   ),
                 ),
               ),
-              SizedBox(
-                height: 10.h,
-              ),
-              dp != null
-                  ? Stack(
-                    children: [
-                      Container(
-                        height: 70.h,
-                        width: 70.w,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          image: DecorationImage(
-                            image: FileImage(File(dp!)),
-                            fit: BoxFit.cover,
+              SizedBox(height: 10.h),
+
+              selectedImages.isNotEmpty
+                  ? SizedBox(
+                height: 80.h,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: selectedImages.length,
+                  itemBuilder: (context, index) {
+                    return Stack(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(right: 10.w),
+                          height: 70.h,
+                          width: 70.w,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            image: DecorationImage(
+                              image: FileImage(selectedImages[index]),
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
-                        child: GestureDetector(
-                          onTap: (){
-                            dp = null;
-                          },
-                          child: Align(
-                            alignment: Alignment.topRight,
+                        Positioned(
+                          top: 0,
+                          right: 0,
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                selectedImages.removeAt(index);
+                              });
+                            },
                             child: Container(
-                                padding: EdgeInsets.all(2),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Icon(Icons.close, size: 16,)),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                              ),
+                              padding: EdgeInsets.all(2),
+                              child: Icon(Icons.close, size: 16),
+                            ),
                           ),
                         ),
-                      ),
-                  ])
+                      ],
+                    );
+                  },
+                ),
+              )
                   : Text(
                 'First image will be the cover photo. You can add up to 6 photos.',
                 style: GoogleFonts.roboto(
-                    fontSize: 11.sp,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.grey),
+                  fontSize: 11.sp,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.grey,
+                ),
               ),
+
               SizedBox(
                 height: 15.h,
               ),

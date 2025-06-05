@@ -118,6 +118,7 @@ class _EmailInputScreenState extends ConsumerState<EmailInputScreen> {
                       // : Colors.grey,
                       onPressed: () {
                         BottomModals.validatePasswordPin(context: context);
+                        NavigatorService().navigateTo(setNewPasswordRoute);
                       }),
 
                 ],

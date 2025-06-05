@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:te_find/providers/account_provider.dart';
 import 'package:te_find/providers/provider.dart';
@@ -20,8 +21,8 @@ class AddNewAddress extends ConsumerStatefulWidget {
 }
 
 late AccountProvider accountProvider;
-TextEditingController _firstNameController = TextEditingController(text: accountProvider.currentUser.firstName);
-TextEditingController _lastNameController = TextEditingController(text: accountProvider.currentUser.lastName);
+TextEditingController _firstNameController = TextEditingController();
+TextEditingController _lastNameController = TextEditingController();
 TextEditingController _companyNameController = TextEditingController();
 TextEditingController _buildingNumber = TextEditingController();
 TextEditingController _streetNumber = TextEditingController();
@@ -41,10 +42,10 @@ class _AddNewAddressState extends ConsumerState<AddNewAddress> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
-      _firstNameController = TextEditingController(text: accountProvider.currentUser.firstName);
-      _lastNameController =  TextEditingController(text: accountProvider.currentUser.lastName);
-    });
+    // Future.microtask(() {
+    //   _firstNameController = TextEditingController(text: accountProvider.currentUser.firstName);
+    //   _lastNameController =  TextEditingController(text: accountProvider.currentUser.lastName);
+    // });
   }
 
   @override
@@ -68,117 +69,150 @@ class _AddNewAddressState extends ConsumerState<AddNewAddress> {
   Widget build(BuildContext context) {
     accountProvider = ref.watch(RiverpodProvider.accountProvider);
     return Scaffold(
+      backgroundColor: AppColors.white,
       appBar: UtilityAppBar(
-        text: "Add Delivery Address",
+        text: "Add New Address",
         hasActions: false,
+        centerTitle: false,
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(
+                'Full Name',
+                style: GoogleFonts.roboto(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
               CustomTextFormField(
                 color: Colors.transparent,
-                label: 'First Name*',
+                hint: 'Enter full name',
                 controller: _firstNameController,
                 validator: Validators().isEmpty,
               ),
+
               SizedBox(height: 13.h),
-              CustomTextFormField(
-                color: Colors.transparent,
-                label: 'Last Name*',
-                controller: _lastNameController,
-                validator: Validators().isEmpty,
-              ),
-              SizedBox(height: 13.h),
-              IntlPhoneField(
-                controller: _phoneController,
-                decoration: InputDecoration(
-                  labelText: 'Phone Number*',
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(width: 1.w, color: Colors.grey),
-                  ),
+              Text(
+                'Phone Number',
+                style: GoogleFonts.roboto(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w400,
                 ),
-                initialCountryCode: 'NG',
-                onChanged: (phone) {
-                  _phoneController.text = phone.number;
-                },
+              ),
+              SizedBox(
+                height: 10.h,
               ),
               CustomTextFormField(
                 color: Colors.transparent,
-                label: 'Company Name',
-                controller: _companyNameController,
-              ),
-              SizedBox(height: 13.h),
-              CustomTextFormField(
-                color: Colors.transparent,
-                label: 'Building Number',
-                controller: _buildingNumber,
-                inputType: TextInputType.number,
-              ),
-              SizedBox(height: 13.h),
-              CustomTextFormField(
-                color: Colors.transparent,
-                label: 'Street Address*',
-                controller: _streetNumber,
+                hint: 'Enter Phone Number',
+                controller: _firstNameController,
                 validator: Validators().isEmpty,
               ),
+              // IntlPhoneField(
+              //   controller: _phoneController,
+              //   decoration: InputDecoration(
+              //     labelText: 'Enter Phone Number',
+              //     border: OutlineInputBorder(
+              //       borderSide: BorderSide(width: 1.w, color: AppColors.greyLight),
+              //     ),
+              //   ),
+              //   initialCountryCode: 'NG',
+              //   onChanged: (phone) {
+              //     _phoneController.text = phone.number;
+              //   },
+              // ),
               SizedBox(height: 13.h),
+              Text(
+                'Address',
+                style: GoogleFonts.roboto(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            SizedBox(
+              height: 10.h,
+            ),
+            CustomTextFormField(
+              color: Colors.transparent,
+              hint: 'Enter Street address',
+              controller: _firstNameController,
+              validator: Validators().isEmpty,
+            ),
+              SizedBox(height: 13.h),
+              Text(
+                'City',
+                style: GoogleFonts.roboto(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
               CustomTextFormField(
                 color: Colors.transparent,
-                label: 'City*',
+                label: 'Enter City',
                 controller: _cityContrller,
                 validator: Validators().isEmpty,
               ),
               SizedBox(height: 13.h),
+              Text(
+                'State/Region',
+                style: GoogleFonts.roboto(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
               CustomTextFormField(
                 color: Colors.transparent,
-                label: 'State*',
+                label: 'Enter State/Region',
                 controller: _stateController,
                 validator: Validators().isEmpty,
               ),
               SizedBox(height: 13.h),
-              CustomTextFormField(
-                color: Colors.transparent,
-                label: 'Postal Code',
-                controller: _postalCode,
-                inputType: TextInputType.number,
+              Text(
+                'Enter Country',
+                style: GoogleFonts.roboto(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
-              SizedBox(height: 13.h),
-              CustomTextFormField(
-                color: Colors.transparent,
-                label: 'Address Title*',
-                controller: _addressTitleController,
-                validator: Validators().isEmpty,
+              SizedBox(
+                height: 10.h,
               ),
-              SizedBox(height: 13.h),
-              CustomTextFormField(
-                color: Colors.transparent,
-                label: 'Note to Driver',
-                controller: _noteToDriverController,
-              ),
+
               SizedBox(height: 13.h),
               CheckboxListTile(
                 side: BorderSide(color: Colors.grey),
                 value: _isChecked,
+                activeColor: AppColors.primaryColor,
                 onChanged: (bool? newValue) {
                   setState(() {
                     _isChecked = newValue ?? false;
                   });
                 },
                 controlAffinity: ListTileControlAffinity.leading,
-                activeColor: AppColors.black,
                 checkColor: AppColors.white,
                 tristate: true,
                 contentPadding: EdgeInsets.zero,
                 title: Text(
                   "Set as default",
-                  style: TextStyle(color: Colors.grey),
+                  style: GoogleFonts.roboto(color: Colors.grey),
                 ),
               ),
               SizedBox(height: 20.h),
               CustomButton(
-                  label: "Save Address",
+                  label: "Add Address",
                   fillColor: AppColors.primaryColor,
                   onPressed: () {
                     accountProvider.createCustomerAddress(

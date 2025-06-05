@@ -1,6 +1,14 @@
+import 'dart:core';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg_provider/flutter_svg_provider.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:te_find/app/profile/widgets/edit_dialog.dart';
+import 'package:te_find/app/widgets/custom_button.dart';
 import 'package:te_find/models/SignInResponse.dart';
 import 'package:te_find/providers/account_provider.dart';
 import 'package:te_find/providers/provider.dart';
@@ -11,7 +19,10 @@ import 'package:te_find/utils/app_colors.dart';
 import 'package:te_find/utils/helpers.dart';
 import 'package:te_find/utils/storage_util.dart';
 
+import '../home/widgets/listings_gride_view.dart';
+import '../home/widgets/product_gridview.dart';
 import '../widgets/custom_profile_listTIle.dart';
+import '../widgets/custom_text_form_field.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
   ProfilePage({super.key});
@@ -23,207 +34,1066 @@ class ProfilePage extends ConsumerStatefulWidget {
 class ProfilePageState extends ConsumerState<ProfilePage> {
   late AccountProvider accountProvider;
   final NavigatorService _navigation = NavigatorService();
+  String? dp;
+  String? dpName;
+  String? dpSize;
 
+  // takePicture() async {
+  //   final imagePicker = ImagePicker();
+  //   File file = File(await imagePicker
+  //       .pickImage(
+  //     source: ImageSource.gallery,
+  //   )
+  //       .then((pickedFile) => pickedFile!.path));
+  //
+  //   setState(() {
+  //     dp = file.path;
+  //     dpName = file.path.split('/').last;
+  //     dpSize = getFileSize(file);
+  //   });
+  // }
+  //
+  // String getFileSize(File dp) {
+  //   int sizeInBytes = dp.lengthSync();
+  //   double sizeInKB = sizeInBytes / 1024;
+  //   double sizeInMB = sizeInKB / 1024;
+  //   return sizeInMB > 1
+  //       ? "${sizeInMB.toStringAsFixed(2)} MB"
+  //       : "${sizeInKB.toStringAsFixed(2)} KB";
+  // }
   @override
   Widget build(BuildContext context) {
     accountProvider = ref.watch(RiverpodProvider.accountProvider);
     return Scaffold(
-      backgroundColor: AppColors.primaryColor,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text(
+          'Profile',
+          style:
+              GoogleFonts.roboto(fontSize: 18.sp, fontWeight: FontWeight.w800),
+        ),
+        centerTitle: false,
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           SizedBox(
-            height: 10,
+            height: 10.h,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-            child: Column(children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 20.h),
+            height: 438.h,
+            decoration: BoxDecoration(color: AppColors.white),
+            child: Center(
+              child: Column(
                 children: [
+                  Container(
+                    height: 96.h,
+                    width: 96.w,
+                    decoration: BoxDecoration(
+                      border:
+                          Border.all(width: 2.w, color: AppColors.primaryColor),
+                      shape: BoxShape.circle,
+                      color: AppColors.primaryColor,
+                      image: DecorationImage(
+                        image: AssetImage('assets/images/bag.png'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
                   Text(
-                    "Profile",
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.white),
+                    "Amara Okafor",
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.roboto(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Text(
+                    "Fashion enthusiast & sustainable shopper",
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.roboto(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.grey),
+                  ),
+                  SizedBox(
+                    height: 5.h,
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 10.h),
+                    height: 112.h,
+                    width: 343.w,
+                    decoration: BoxDecoration(
+                        color: AppColors.lightGreen2,
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Column(
+                      children: [
+                        Text(
+                          "Wallet",
+                          style: GoogleFonts.roboto(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.grey),
+                        ),
+                        SizedBox(
+                          height: 5.h,
+                        ),
+                        Text(
+                          "₦125,500",
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.roboto(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5.h,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          spacing: 7.w,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                addFunds(context);
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.add,
+                                    color: AppColors.primaryColor,
+                                  ),
+                                  Text(
+                                    'Top Up',
+                                    style: GoogleFonts.roboto(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: AppColors.primaryColor),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                withdrawFunds(context);
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.remove,
+                                    color: AppColors.red,
+                                  ),
+                                  Text(
+                                    'Withdraw',
+                                    style: GoogleFonts.roboto(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w500,
+                                        color: AppColors.red),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: 7.w,
+                    children: [
+                      Column(
+                        children: [
+                          Text(
+                            "42",
+                            style: GoogleFonts.roboto(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.primaryColor),
+                          ),
+                          Text(
+                            "Item Listed",
+                            style: GoogleFonts.roboto(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.lightTextBlack),
+                          ),
+                        ],
+                      ),
+                      VerticalDivider(
+                        color: AppColors.greenLighter,
+                        indent: 6,
+                        endIndent: 6,
+                        thickness: 1,
+                      ),
+                      Column(
+                        children: [
+                          Text(
+                            "18",
+                            style: GoogleFonts.roboto(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.primaryColor),
+                          ),
+                          Text(
+                            "Item Sold",
+                            style: GoogleFonts.roboto(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.lightTextBlack),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      NavigatorService().navigateTo(editProfileRoute);
+                    },
+                    child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 5.h),
+                        height: 38.h,
+                        width: 136.w,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                                color: AppColors.primaryColor, width: 1)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          spacing: 7.w,
+                          children: [
+                            SvgPicture.asset('assets/images/edit.svg'),
+                            Text(
+                              "Edit Profile",
+                              style: GoogleFonts.roboto(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.primaryColor),
+                            ),
+                          ],
+                        )),
                   ),
                 ],
               ),
-              if (accountProvider.currentUser.email != null) ...[
-                SizedBox(
-                  height: 16.h,
-                ),
-                Row(
-                  children: [
-                    Container(
-                      width: 62,
-                      height: 62,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.greenFade,
-                          image: DecorationImage(
-                              image: AssetImage(
-                                Assets.userImage,
-                              ),
-                              fit: BoxFit.cover)),
-                    ),
-                    SizedBox(
-                      width: 16.w,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "${accountProvider.currentUser.firstName} ${accountProvider.currentUser.lastName}",
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.white),
-                        ),
-                        Text(
-                          "${accountProvider.currentUser.email}",
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.white),
-                        ),
-                      ],
-                    )
-                  ],
-                )
-              ],
-            ]),
+            ),
           ),
+          SizedBox(
+            height: 10,
+          ),
+          Container(
+              padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
+              height: 508.h,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: AppColors.white,
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('My Listings',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.roboto(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          )),
+                      GestureDetector(
+                        onTap: () {
+                          NavigatorService().navigateTo(listingviewallProducts);
+                        },
+                        child: Text('View All',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: AppColors.primaryColor,
+                              fontWeight: FontWeight.w500,
+                            )),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  GridView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: 4, //productProvider.myProductByMerchant.length,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 7,
+                      crossAxisSpacing: 7,
+                      childAspectRatio: 0.80,
+                    ),
+                    itemBuilder: (context, index) {
+                      //  final product = productProvider.myProductByMerchant[index];
+                      return ListingsGrideView(
+                          //  product: product
+                          ); // Custom widget
+                    },
+                  ),
+                ],
+              )),
           SizedBox(
             height: 10.h,
           ),
           Container(
-              padding: EdgeInsets.only(left: 10, right: 10, bottom: 50.h),
-              width: double.infinity,
-              // height: 800,
-              decoration: BoxDecoration(
+            height: 413.h,
+            width: double.infinity,
+            decoration: BoxDecoration(
                 color: AppColors.white,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30)),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10, top: 30, right: 5),
-                child: Column(
+                borderRadius: BorderRadius.circular(16)),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.0.w, vertical: 20.h),
+              child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Personal",
-                      style: TextStyle(
-                          fontSize: 20,
-                          color: AppColors.primaryColor,
-                          fontWeight: FontWeight.w600),
+                    Text('Account Setting',
+                        style: GoogleFonts.roboto(
+                            fontWeight: FontWeight.w600, fontSize: 16)),
+                    SizedBox(
+                      height: 25.h,
                     ),
-                    profileListTile(Assets.userProfile, "Personal Details", () {
-                      if (accountProvider.currentUser.lastName != null) {
-                        accountProvider.onTapDetailPage();
-                      } else {
-                        showErrorToast(message: 'Kindly login first');
-                      }
+                    profileListTile(Assets.favorite, "Favourite", () {
+                      NavigatorService().navigateTo(favouriteScreen);
                     }),
-                    Divider(
-                      endIndent: 18,
-                    ),
-                    profileListTile(Assets.locationProfile, "Delivery Address",
+                    Divider(),
+                    profileListTile(Assets.location, "Shipping Addresses",
                         () {
-                      if (accountProvider.currentUser.email != null) {
-                        accountProvider.onTapDeliveryAddress();
-                      } else {
-                        showErrorToast(message: 'Kindly login first');
-                      }
+                      shippingAddress(context);
                     }),
-                    Divider(
-                      endIndent: 18,
-                    ),
-                    // profileListTile(Assets.walletProfile, "Wallet", () {
-                    //   accountProvider.onTapWallet();
-                    // }),
-                    // Divider(
-                    //   endIndent: 18,
-                    // ),
-                    // profileListTile(Assets.orderProfile, "My Orders", () {
-                    //   accountProvider.onTapMyOrder();
-                    // }),
-                    // Divider(
-                    //   endIndent: 18,
-                    // ),
-                    profileListTile(Assets.wishlistProfile, "My Wishlist", () {
-                      if (accountProvider.currentUser.email != null) {
-                        accountProvider.onTapWishlist();
-                      } else {
-                        showErrorToast(message: 'Kindly login first');
-                      }
-                    }),
-                    // Divider(
-                    //   endIndent: 18,
-                    // ),
-                    // profileListTile(Assets.negotiationProfile, "Negotiations",
-                    //     () {
-                    //   accountProvider.negotiationPage();
-                    // }),
-                    Divider(
-                      endIndent: 18,
-                    ),
-                    profileListTile(Assets.settingProfile, "Settings", () {
-                      if (accountProvider.currentUser.email != null) {
-                        accountProvider.onTapSettings();
-                      } else {
-                        showErrorToast(message: 'Kindly login first');
-                      }
+                    Divider(),
+                    profileListTile(Assets.privacyIcon, "Privacy and Security",
+                        () {
+                          privacyAndSecurity(context);
 
                     }),
-                    Divider(
-                      endIndent: 18,
-                    ),
-                    // profileListTile(Assets.sellerProfile, "Become a seller",
-                    //     () {
-                    //   accountProvider.sellersPage();
-                    // }),
-                    // Divider(
-                    //   endIndent: 18,
-                    // ),
-                    profileListTile(Assets.logOutIcon, "LogOut", () {
-                      StorageUtil.clearData();
-                      _navigation.pushNamedAndRemoveUntil(loginScreenRoute);
+                    Divider(),
+                    profileListTile(Assets.support, "Help and Support", () {
+                      NavigatorService().navigateTo(helpAndSupport);
                     }),
-                    Divider(
-                      endIndent: 18,
-                    ),
-                    SizedBox(height: 20.h),
-                    Text(
-                      "More",
-                      style: TextStyle(
-                          fontSize: 20,
-                          color: AppColors.primaryColor,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    profileListTile(Assets.FAQs, "FAQs", () {
-                      accountProvider.faqPage();
+                    Divider(),
+                    profileListTile(Assets.about, "About", () {
+                      NavigatorService().navigateTo(aboutUs);
+
                     }),
-                    Divider(
-                      endIndent: 18,
-                    ),
-                    profileListTile(Assets.helpProfile, "Help", () {
-                      accountProvider.helpPage();
-                    }),
-                    Divider(
-                      endIndent: 18,
-                    ),
-                    profileListTile(Assets.legalProfile, "Legal", () {
-                      accountProvider.legalTerms();
-                    }),
-                  ],
-                ),
-              )),
+                  ]),
+            ),
+          ),
+          SizedBox(
+            height: 20.h,
+          ),
+          Center(
+            child: CustomButton(
+              onPressed: (){
+                logout(context);
+              },
+              label: 'Log Out',
+              buttonTextColor: AppColors.red,
+              borderColor: AppColors.red,
+              fillColor: AppColors.white,
+            ),
+          ),
+          SizedBox(
+            height: 30.h,
+          ),
         ])),
       ),
     );
   }
+}
+
+void shippingAddress(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: true,
+    builder: (context) {
+      return Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Close Icon
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Shipping Address',
+                      style: GoogleFonts.roboto(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.close),
+                      onPressed: () => Navigator.of(context).pop(),
+                    )
+                  ],
+                ),
+                Divider(),
+                Container(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
+                  height: 110.h,
+                  width: 308.w,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: AppColors.greyLight)),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: 17.w,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            spacing: 5.w,
+                            children: [
+                              Text(
+                                "Amaka Okafor",
+                                style: GoogleFonts.roboto(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                    color: AppColors.lightGreen2,
+                                    borderRadius: BorderRadius.circular(8)),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 2, vertical: 2),
+                                child: Center(
+                                  child: Text(
+                                    'Default',
+                                    style: GoogleFonts.roboto(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                        color: AppColors.primaryColor),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          Text(
+                            "+234 812 345 6789",
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.roboto(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.lightTextBlack),
+                          ),
+                          Text(
+                            "123 Victoria Island Way",
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.roboto(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.lightTextBlack),
+                          ),
+                          Text(
+                            "Lagos, Nigeria",
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.roboto(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.lightTextBlack),
+                          ),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                        ],
+                      ),
+                      Row(
+                        spacing: 5.w,
+                        children: [
+                          Icon(
+                            Icons.edit,
+                            size: 18,
+                          ),
+                          SvgPicture.asset(
+                            Assets.deleteIcon,
+                            color: AppColors.red,
+                            height: 18,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 30.h,
+                ),
+
+                CustomButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    NavigatorService().navigateTo(addNewAddressScreenRoute);
+                  },
+                  label: 'Add New Address',
+                  fillColor: AppColors.primaryColor,
+                ),
+              ]),
+        ),
+      );
+    },
+  );
+}
+
+void addFunds(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: true,
+    builder: (context) {
+      return Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Close Icon
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Add Funds',
+                      style: GoogleFonts.roboto(
+                          fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.close),
+                      onPressed: () => Navigator.of(context).pop(),
+                    )
+                  ],
+                ),
+                Container(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
+                  height: 89.h,
+                  width: 308.w,
+                  decoration: BoxDecoration(
+                      color: AppColors.lightGreen2,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Current Balance",
+                        style: GoogleFonts.roboto(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.grey),
+                      ),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      Text(
+                        "₦125,500",
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.roboto(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 10.h),
+                Text(
+                  'Amount to Add',
+                  style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.w400, fontSize: 14),
+                ),
+                SizedBox(height: 5.h),
+                CustomTextFormField(
+                  //controller: accountProvider.lastNameController,
+                  hint: "Enter Amount to Add",
+                  // validator: Validators().isSignUpEmpty,
+                ),
+                Text(
+                  'Minimum amount: ₦1,000',
+                  style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12,
+                      color: AppColors.grey),
+                ),
+                SizedBox(height: 10.h),
+                Text(
+                  'Payment Method',
+                  style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.w400, fontSize: 14),
+                ),
+                SizedBox(height: 10.h),
+                PaymentMethodWidget(
+                  image: 'debitIcon',
+                  title: 'Debit/Credit Card',
+                  onPressed: () {},
+                ),
+                SizedBox(height: 5.h),
+                PaymentMethodWidget(
+                  image: 'bankTransfer',
+                  title: 'Bank Transfer',
+                  onPressed: () {},
+                ),
+                SizedBox(height: 10.h),
+                CustomButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    successFund(context);
+                  },
+                  label: 'Add Funds',
+                  fillColor: AppColors.primaryColor,
+                ),
+              ]),
+        ),
+      );
+    },
+  );
+}
+
+void withdrawFunds(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: true,
+    builder: (context) {
+      return Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Close Icon
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Withdraw Funds',
+                      style: GoogleFonts.roboto(
+                          fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.close),
+                      onPressed: () => Navigator.of(context).pop(),
+                    )
+                  ],
+                ),
+                Container(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
+                  height: 89.h,
+                  width: 308.w,
+                  decoration: BoxDecoration(
+                      color: AppColors.lightGreen2,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Available Balance",
+                        style: GoogleFonts.roboto(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.grey),
+                      ),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      Text(
+                        "₦125,500",
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.roboto(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 10.h),
+                Text(
+                  'Amount to Withdraw',
+                  style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.w400, fontSize: 14),
+                ),
+                SizedBox(height: 5.h),
+                CustomTextFormField(
+                  //controller: accountProvider.lastNameController,
+                  hint: "Enter Amount to Withdraw",
+                  // validator: Validators().isSignUpEmpty,
+                ),
+                Text(
+                  'Minimum amount to withdraw: ₦1,000',
+                  style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12,
+                      color: AppColors.grey),
+                ),
+                SizedBox(height: 10.h),
+                Text(
+                  'Select Bank Account',
+                  style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.w400, fontSize: 14),
+                ),
+                SizedBox(height: 10.h),
+                BankWidget(
+                  image: 'GTbank',
+                  title: 'GTBank',
+                  onPressed: () {},
+                ),
+                SizedBox(height: 5.h),
+                PaymentMethodWidget(
+                  image: 'addition',
+                  title: 'Add New Bank',
+                  onPressed: () {},
+                ),
+
+                SizedBox(height: 10.h),
+                CustomButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    successWithdrawFund(context);
+                  },
+                  label: 'Withdraw Funds',
+                  fillColor: AppColors.primaryColor,
+                ),
+              ]),
+        ),
+      );
+    },
+  );
+}
+
+void privacyAndSecurity(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: true,
+    builder: (context) {
+      return Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Close Icon
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Privacy & Security',
+                      style: GoogleFonts.roboto(
+                          fontWeight: FontWeight.w500, fontSize: 14),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.close),
+                      onPressed: () => Navigator.of(context).pop(),
+                    )
+                  ],
+                ),
+                SizedBox(height: 10.h),
+                Text(
+                  'Account and Security',
+                  style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.w400, fontSize: 14,
+                  color: AppColors.grey),
+                ),
+                SizedBox(height: 15.h),
+                PaymentMethodWidget(
+                  image: 'changePassword',
+                  title: 'Change Password',
+                  onPressed: () {},
+                ),
+                SizedBox(height: 30.h),
+                CustomButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+
+                  },
+                  label: 'Close',
+                  fillColor: AppColors.primaryColor,
+                ),
+              ]),
+        ),
+      );
+    },
+  );
+}
+
+class PaymentMethodWidget extends StatelessWidget {
+  final String image;
+  final String title;
+  final Function()? onPressed;
+  const PaymentMethodWidget({
+    super.key,
+    required this.image,
+    required this.title,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 10.w),
+        height: 47.h,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: AppColors.greyLight, width: 1),
+        ),
+        child: Row(
+          children: [
+            SvgPicture.asset('assets/images/$image.svg'),
+            SizedBox(width: 15.w),
+            Text(
+              title,
+              style:
+                  GoogleFonts.roboto(fontSize: 14, fontWeight: FontWeight.w400),
+            ),
+            Spacer(),
+            IconButton(
+              onPressed: onPressed,
+              icon: const Icon(
+                Icons.arrow_forward_ios,
+                size: 15,
+                color: AppColors.grey,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+void successFund(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) {
+      return Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SvgPicture.asset('assets/images/sucessListing.svg'),
+              SizedBox(height: 10.h),
+              Text(
+                'Top Up Successful!',
+                style: GoogleFonts.roboto(
+                    fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+              SizedBox(height: 10.h),
+              Text(
+                '₦100,000 has been added to your wallet',
+                style: GoogleFonts.roboto(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14,
+                    color: AppColors.lightTextBlack),
+              ),
+              SizedBox(height: 20.h),
+              CustomButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                fillColor: AppColors.primaryColor,
+                label: 'Done',
+                buttonTextColor: AppColors.white,
+              )
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
+void successWithdrawFund(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) {
+      return Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SvgPicture.asset('assets/images/sucessListing.svg'),
+              SizedBox(height: 10.h),
+              Text(
+                'Withdrawal Initiated!',
+                style: GoogleFonts.roboto(
+                    fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+              SizedBox(height: 10.h),
+              Text(
+                textAlign: TextAlign.center,
+                '₦5,000,000 will be sent to your bank account within 24 hours',
+                style: GoogleFonts.roboto(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14,
+                    color: AppColors.lightTextBlack),
+              ),
+              SizedBox(height: 20.h),
+              CustomButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                fillColor: AppColors.primaryColor,
+                label: 'Done',
+                buttonTextColor: AppColors.white,
+              )
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
+class BankWidget extends StatelessWidget {
+  final String image;
+  final String title;
+  final Function()? onPressed;
+  const BankWidget({
+    super.key,
+    required this.image,
+    required this.title,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 4.h),
+        height: 50.h,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: AppColors.greyLight, width: 1),
+        ),
+        child: Row(
+          children: [
+            Image.asset('assets/images/$image.png'),
+            SizedBox(width: 15.w),
+            Column(
+              children: [
+                Text(
+                  title,
+                  style: GoogleFonts.roboto(
+                      fontSize: 14, fontWeight: FontWeight.w500),
+                ),
+                Text(
+                  '*****1234',
+                  style: GoogleFonts.roboto(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.grey),
+                ),
+              ],
+            ),
+            Spacer(),
+            SvgPicture.asset(
+              'assets/images/selected.svg',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+void logout(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) {
+      return Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+
+              Text(
+                'Log Out',
+                style: GoogleFonts.roboto(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+              SizedBox(height: 10.h),
+              Text(
+                'Are you sure you want to log out?',
+                style: GoogleFonts.roboto(fontWeight: FontWeight.w400, fontSize: 14, color: AppColors.lightTextBlack),
+              ),
+              SizedBox(height: 20.h),
+              Row(
+                spacing: 5.w,
+                children: [
+                  Expanded(
+                    child: CustomButton(
+                      onPressed: (){
+                        Navigator.pop(context);
+                      },
+                      fillColor: AppColors.greyLight,
+                      label: 'Cancel',
+                      buttonTextColor: AppColors.lightTextBlack,
+                    ),
+                  ),
+                  Expanded(
+                    child: CustomButton(
+                      onPressed: (){
+                        Navigator.pop(context);
+                      },
+                      fillColor: AppColors.red,
+                      label: 'Log out',
+                      buttonTextColor: AppColors.white,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+      );
+    },
+  );
 }

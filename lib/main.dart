@@ -181,7 +181,7 @@ class _MyAppState extends State<MyApp> {
               bottomSheetTheme: const BottomSheetThemeData(
                 backgroundColor: Color(0xFFFFFF)
               ),
-              scaffoldBackgroundColor: Color.fromRGBO(250, 250, 250, 1),//Color(0xFAFAFA),
+              scaffoldBackgroundColor: AppColors.scaffoldBackgroundColor,
               bottomNavigationBarTheme:
                   BottomNavigationBarThemeData(backgroundColor: Colors.white),
               textTheme: GoogleFonts.poppinsTextTheme(

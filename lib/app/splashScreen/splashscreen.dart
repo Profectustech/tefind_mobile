@@ -83,11 +83,12 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
             'assets/images/teFindBackground.png',
             fit: BoxFit.cover, // Ensures it covers the screen
           ),
-          // Center(
-          //   child: Image.asset(
-          //     'assets/images/logo_white.gif',
-          //   ),
-          // ),
+          Center(
+            child: Image.asset(
+              'assets/images/app_icon.png',
+              scale: 5.0,
+            ),
+          ),
         ],
       ),
     );

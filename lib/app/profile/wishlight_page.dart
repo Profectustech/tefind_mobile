@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:te_find/providers/product_provider.dart';
 import 'package:te_find/providers/provider.dart';
 import 'package:te_find/utils/app_colors.dart';
@@ -11,6 +12,7 @@ import 'package:te_find/utils/progress_bar_manager/utility_app_bar.dart';
 import 'package:te_find/utils/screen_size.dart';
 
 import '../home/products/product_detail_fullScreen.dart';
+import '../home/widgets/product_gridview.dart';
 
 class WishlistPage extends ConsumerStatefulWidget {
   const WishlistPage({super.key});
@@ -36,224 +38,50 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
     productProvider = ref.watch(RiverpodProvider.productProvider);
 
     return Scaffold(
-      appBar: UtilityAppBar(text: "Wishlist", hasActions: true),
+      appBar: AppBar(
+        title: Text(
+          'My favourite lists',
+          style:
+          GoogleFonts.roboto(fontSize: 18.sp, fontWeight: FontWeight.w500),
+        ),
+        centerTitle: false,
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              (productProvider.wishListProduct?.isNotEmpty ?? false)
-                  ? ListView.builder(
-                      itemCount: productProvider.wishListProduct!.length,
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        final wishListProduct =
-                            productProvider.wishListProduct?[index];
-
-                        return Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10),
-                          child: Column(
-                            children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (_) => FullScreenImagePage(
-                                            imageUrl: wishListProduct
-                                                    ?.images?.first ??
-                                                '',
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    child: Container(
-                                      height: 80.h,
-                                      width: 80.w,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color:
-                                            Colors.blueGrey.withOpacity(0.05),
-                                      ),
-                                      child: CachedNetworkImage(
-                                        imageUrl:
-                                            wishListProduct?.images?.first ??
-                                                '',
-                                        imageBuilder:
-                                            (context, imageProvider) =>
-                                                ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(15.r),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: imageProvider,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        placeholder: (context, url) => Center(
-                                          child: SizedBox(
-                                            width: 30.w,
-                                            height: 30.h,
-                                            child:
-                                                const CircularProgressIndicator(
-                                              color: AppColors.primaryColor,
-                                            ),
-                                          ),
-                                        ),
-                                        errorWidget: (context, url, error) =>
-                                            ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(15.r),
-                                          child: Image.asset(
-                                            Assets.laptopPowerbank,
-                                            height: 115,
-                                            width: double.infinity,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(width: 10.w),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Expanded(
-                                              child: Text(
-                                                wishListProduct
-                                                        ?.product
-                                                        ?.productCategory
-                                                        ?.categoryType ??
-                                                    "",
-                                                style: TextStyle(
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              height: 31.67.h,
-                                              width: 31.67.w,
-                                              decoration: BoxDecoration(
-                                                color: AppColors.lightPink,
-                                                shape: BoxShape.circle,
-                                              ),
-                                              child: Center(
-                                                child: SvgPicture.asset(
-                                                  Assets.deleteWishlist,
-                                                  height: 16,
-                                                  width: 16,
-                                                  fit: BoxFit.contain,
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                        // SizedBox(height: 5.h),
-                                        // Text(
-                                        //   "₦20,000.35",
-                                        //   style: TextStyle(
-                                        //     fontSize: 10,
-                                        //     color: AppColors.grey,
-                                        //     fontWeight: FontWeight.w200,
-                                        //   ),
-                                        // ),
-                                        SizedBox(height: 5.h),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              wishListProduct?.price
-                                                      .toString() ??
-                                                  "",
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: AppColors.red,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                            InkWell(
-                                              onTap: () {
-                                                productProvider.addToCart(
-                                                  wishListProduct
-                                                          ?.product?.sku ??
-                                                      '',
-                                                  1,
-                                                );
-                                              },
-                                              child: Container(
-                                                width: 99.w,
-                                                height: 26.h,
-                                                decoration: BoxDecoration(
-                                                  color: AppColors.primaryColor,
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Icon(
-                                                      Icons.shopping_cart,
-                                                      color: AppColors.white,
-                                                      size: 16,
-                                                    ),
-                                                    SizedBox(width: 5.w),
-                                                    Text(
-                                                      "Add To Cart",
-                                                      style: TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color: AppColors.white,
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 10.h),
-                              Divider(),
-                            ],
-                          ),
-                        );
-                      },
-                    )
+              (productProvider.wishListProduct?.isEmpty ?? false)
+                  ? GridView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 9,
+              crossAxisSpacing: 6,
+              childAspectRatio: 0.72,
+            ),
+            itemCount: 8,
+            itemBuilder: (context, index) {
+              //  final feed = productProvider.allProduct![index];
+              return ProductGridview();
+            },
+          )
                   : Center(
                       child: Column(
                         children: [
                           SizedBox(height: 50),
                           Image.asset(
                             Assets.wishListEmpty,
-                            height: 200,
-                            width: 200,
+                            height: 100,
+                            width: 100,
                           ),
                           SizedBox(height: 20),
                           Text(
                             'Your wishlist is feeling lonely.',
-                            style: TextStyle(
-                              fontSize: 24,
+                            style: GoogleFonts.roboto(
+                              fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),

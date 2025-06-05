@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:te_find/utils/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -56,7 +57,7 @@ class CustomButton extends StatelessWidget {
                 )
               : Text(
                   label,
-                  style: TextStyle(
+                  style: GoogleFonts.roboto(
                     color: buttonTextColor,
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
