@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,10 +35,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
   late final List<OnboardingScreenModel> screens;
   late final int lastPage;
-
+  final PageController _pageController = PageController(viewportFraction: 0.8);
+  int _currentIndex = 0;
   int currentPage = 0;
   bool isLastPage = false;
-
 
   void nextAction() {
     _controller.nextPage(
@@ -76,70 +77,83 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   }
 
   @override
+  @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     accountProvider = ref.watch(RiverpodProvider.accountProvider);
 
     return Scaffold(
-      body: Stack(
-        children: [
-          Column(
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
+          child: Column(
             children: [
-              Image.asset(
-                screens[currentPage].image,
-                fit: BoxFit.cover,
-                height: screenHeight,
-                width: screenWidth,
-              ),
-            ],
-          ),
-          Column(
-            children: [
-              SizedBox(height: Responsive.height(context) * 0.1),
+             SizedBox(height: 60.h,),
               Center(
                 child: Image.asset(
-                  Assets.te_findLogo,
-                  height: 63.h,
+                  Assets.te_findLogo2,
+                  height: 34.h,
                 ),
               ),
-             Expanded(
-                child: PageView(
+              SizedBox(height: Responsive.height(context) * 0.05),
+              Expanded(
+                child: PageView.builder(
                   controller: _controller,
-                  onPageChanged: (page) {
+                  itemCount: screens.length,
+                  onPageChanged: (index) {
                     setState(() {
-                      isLastPage = (page == lastPage);
+                      isLastPage = index == screens.length - 1;
+                      _currentIndex = index;
                     });
                   },
-                  children: screens.map((screen) {
-                    return Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SizedBox(height: Responsive.height(context) * 0.49),
-                          Text(
-                            screen.title,
-                            style: TextStyle(
-                              fontSize: 24.sp,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
-                            ),
+                  itemBuilder: (context, index) {
+                    double scale = _currentIndex == index ? 1.0 : 0.9;
+                    return TweenAnimationBuilder(
+                      duration: Duration(milliseconds: 350),
+                      tween: Tween<double>(begin: scale, end: scale),
+                      builder: (context, value, child) {
+                        return Transform.scale(
+                          scale: value,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                height: 280.h,
+                                width: 280.w,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(16),
+                                  child: Image.asset(
+                                    screens[index].image,
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 50.h),
+                              Text(
+                                screens[index].title,
+                                style: GoogleFonts.poppins(
+                                  fontSize: 24.sp,
+                                  color: AppColors.black,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              SizedBox(height: 10.h),
+                              Text(
+                                screens[index].content,
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.poppins(
+                                  color: AppColors.lightTextBlack,
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
                           ),
-                          SizedBox(height: Responsive.height(context) * 0.01),
-                          Text(
-                            screen.content,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        ],
-                      ),
+                        );
+                      },
                     );
-                  }).toList(),
+                  },
                 ),
               ),
               SmoothPageIndicator(
@@ -149,41 +163,41 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   spacing: 8.0,
                   dotWidth: 8.0,
                   dotHeight: 8.0,
-                  dotColor: Colors.white70,
-                  activeDotColor: AppColors.primaryColor
+                  dotColor: AppColors.greyLight,
+                  activeDotColor: AppColors.primaryColor,
                 ),
               ),
-
-              SizedBox(height:Responsive.height(context) * 0.03),
-              Center(
-                child: MaterialButton(
-                  onPressed: () {
-                    if (isLastPage) {
-                      doneAction();
-                    } else {
-                      nextAction();
-                    }
-                  },
-                  child: Container(
-                    height: screenHeight * 0.07,
-                    width: screenWidth * 0.80,
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryColor,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "Next",
-                        style: TextStyle(color: AppColors.white),
-                      ),
+              SizedBox(height: 35.h),
+              MaterialButton(
+                onPressed: () {
+                  if (isLastPage) {
+                    doneAction();
+                  } else {
+                    _controller.nextPage(
+                      duration: Duration(milliseconds: 500),
+                      curve: Curves.easeInOut,
+                    );
+                  }
+                },
+                child: Container(
+                  height: screenHeight * 0.07,
+                  width: screenWidth * 0.80,
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryColor,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Center(
+                    child: Text(
+                      isLastPage ? "Get Started" : "Next",
+                      style: TextStyle(color: AppColors.white),
                     ),
                   ),
                 ),
               ),
-               SizedBox(height:Responsive.height(context) * 0.100),
+              SizedBox(height: Responsive.height(context) * 0.08),
             ],
           ),
-        ],
+        ),
       ),
     );
   }

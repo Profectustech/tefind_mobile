@@ -847,36 +847,54 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(bottom: 30.0, left: 20, right: 20),
-        child: GestureDetector(
-          onTap: () => showMakeOfferDialog(context),
-          child: Container(
-            decoration: BoxDecoration(
-              color: AppColors.primaryColor,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 10,
-                  offset: Offset(0, -2), // Giving shadow above the container
+        child: Row(
+          spacing: 5.w,
+          children: [
+            Expanded(
+              child: GestureDetector(
+                onTap: () => showMakeOfferDialog(context),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryColor,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 10,
+                        offset: Offset(0, -2), // Giving shadow above the container
+                      ),
+                    ],
+                  ),
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+                  child: Row(
+                    spacing: 6.w,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(Assets.offerIcon),
+                      Text(
+                        "Make Offer",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: AppColors.white,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    ],
+                  ),
                 ),
-              ],
+              ),
             ),
-            padding: EdgeInsets.symmetric(vertical: 15, horizontal: 16),
-            child: Row(
-              spacing: 6.w,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SvgPicture.asset(Assets.offerIcon),
-                Text(
-                  "Make Offer",
-                  style: TextStyle(
-                      fontSize: 14,
-                      color: AppColors.white,
-                      fontWeight: FontWeight.w400),
-                ),
-              ],
-            ),
-          ),
+            Expanded(
+              child: CustomButton(
+                borderColor: AppColors.primaryColor,
+                fillColor: AppColors.white,
+                buttonTextColor: AppColors.primaryColor,
+                label: 'Buy Now',
+                onPressed: () {
+                  // Handle Buy Now action
+                },
+              ),
+            )
+          ],
         ),
       ),
     );
@@ -914,6 +932,24 @@ void _leaveReport(BuildContext context) {
               ),
               Divider(thickness: 0.5,),
               Text(
+                'Category',
+                style: GoogleFonts.roboto(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                ),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              CustomTextFormField(
+                //controller: accountProvider.lastNameController,
+                hint: 'Select Category to Report',
+                // validator: Validators().isSignUpEmpty,
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Text(
                 'Message',
                 style: GoogleFonts.roboto(
                   fontWeight: FontWeight.w500,
@@ -924,7 +960,7 @@ void _leaveReport(BuildContext context) {
                 height: 10.h,
               ),
               CustomTextFormField(
-                maxLines: 6,
+                maxLines: 4,
                 //controller: accountProvider.lastNameController,
                 hint: 'Type your message here',
                 // validator: Validators().isSignUpEmpty,

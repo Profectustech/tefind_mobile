@@ -5,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:te_find/app/home/products/featured_product.dart';
+import 'package:te_find/app/home/products/learn_more_content.dart';
 import 'package:te_find/app/home/widgets/categoryTile.dart';
 import 'package:te_find/app/home/widgets/category_grid.dart';
 import 'package:te_find/app/home/widgets/featured_product_detail.dart';
@@ -96,6 +98,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+
                         Row(
                           spacing: 5.w,
                           children: [
@@ -233,192 +236,45 @@ class _HomePageState extends ConsumerState<HomePage> {
                 SizedBox(
                   height: 30.h,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Featured Items',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        )),
-                    Text('View All',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: AppColors.primaryColor,
-                          fontWeight: FontWeight.w500,
-                        )),
-                  ],
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  height: 241.h,
-                  child: ListView.builder(
-                    padding: EdgeInsets.only(left: 5),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 4,
-                    itemBuilder: (context, index) {
-                      // Products negotiableProducts =
-                      // productProvider
-                      //     .negotiableProduct![index];
-                      return Padding(
-                        padding: const EdgeInsets.only(left: 5, right: 5),
-                        child: GestureDetector(
-                            onDoubleTap: () {},
-                            onTap: () {
-                              // NavigatorService().navigateTo(
-                              //   productDetailScreenRoute,
-                              //   // arguments: widget.newProducts,
-                              // );
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          FeaturedProductDetail()));
-                            },
-                            child:
-                                Stack(alignment: Alignment.center, children: [
-                              Container(
-                                height: 232.h,
-                                width: 240.w,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(26),
-                                    color: AppColors.white),
-                                child: Stack(
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          height: 160.h,
-                                          //    width: 240.w,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(26),
-                                                topRight: Radius.circular(26)),
-                                            color: AppColors.primaryColor,
-                                            image: DecorationImage(
-                                              image: AssetImage(
-                                                  'assets/images/bag.png'),
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(height: 8.h),
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 10.0),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Luxury Leather Handbag",
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: AppColors
-                                                        .blackTextColor),
-                                              ),
-                                              SizedBox(height: 8.h),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    "₦45,000",
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: GoogleFonts.roboto(
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color: AppColors
-                                                            .primaryColor),
-                                                  ),
-                                                  Row(
-                                                    spacing: 4.w,
-                                                    children: [
-                                                      SvgPicture.asset(
-                                                          'assets/images/visibility.svg'),
-                                                      Text(
-                                                        "124",
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style:
-                                                            GoogleFonts.roboto(
-                                                          fontSize: 12,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  )
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 12.h,
-                                        ),
-                                      ],
-                                    ),
-                                    Positioned(
-                                      top: 10,
-                                      right: 10,
-                                      child: Container(
-                                        height: 32,
-                                        width: 32,
-                                        decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            shape: BoxShape.circle,
-                                            boxShadow: []),
-                                        child: Center(
-                                          child: Icon(
-                                            Icons.favorite_border_outlined,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Positioned(
-                                      bottom: 80,
-                                      left: 10,
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 25.w, vertical: 5.h),
-                                        decoration: BoxDecoration(
-                                            color: AppColors.primaryColor,
-                                            borderRadius:
-                                                BorderRadius.circular(28.r)),
-                                        child: Text(
-                                          "New",
-                                          overflow: TextOverflow.ellipsis,
-                                          style: GoogleFonts.roboto(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w400,
-                                              color: AppColors.white),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ])),
-                      );
-                    },
-                  ),
-                ),
-                SizedBox(
-                  height: 30.h,
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     Text('Featured Items',
+                //         textAlign: TextAlign.center,
+                //         style: TextStyle(
+                //           fontSize: 16,
+                //           fontWeight: FontWeight.w600,
+                //         )),
+                //     Text('View All',
+                //         textAlign: TextAlign.center,
+                //         style: TextStyle(
+                //           fontSize: 14,
+                //           color: AppColors.primaryColor,
+                //           fontWeight: FontWeight.w500,
+                //         )),
+                //   ],
+                // ),
+                // SizedBox(
+                //   height: 20.h,
+                // ),
+                // SizedBox(
+                //   width: double.infinity,
+                //   height: 241.h,
+                //   child: ListView.builder(
+                //     padding: EdgeInsets.only(left: 5),
+                //     scrollDirection: Axis.horizontal,
+                //     itemCount: 4,
+                //     itemBuilder: (context, index) {
+                //       // Products negotiableProducts =
+                //       // productProvider
+                //       //     .negotiableProduct![index];
+                //       return FeaturedProductContainer();
+                //     },
+                //   ),
+                // ),
+                // SizedBox(
+                //   height: 30.h,
+                // ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -492,100 +348,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     },
                   ),
                 ),
-                CarouselSlider.builder(
-                  options: CarouselOptions(
-                    enlargeFactor: 0.5,
-                    autoPlay: true,
-                    height: 152.82.h,
-                    viewportFraction: 1,
-                    autoPlayCurve: Curves.fastOutSlowIn,
-                    autoPlayAnimationDuration: Duration(milliseconds: 500),
-                    autoPlayInterval: Duration(seconds: 2),
-                    enlargeCenterPage: true,
-                    aspectRatio: 16 / 10,
-                    onPageChanged: (index, reason) {
-                      ref.read(currentIndexProvider.notifier).state = index;
-                    },
-                  ),
-                  itemCount: 3,
-                  itemBuilder: (BuildContext context, int itemIndex,
-                          int pageViewIndex) =>
-                      ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(10.r)),
-                          child: InkWell(
-                            onTap: () {
-                              NavigatorService().navigateTo(carouselContent);
-                            },
-                            child: Container(
-                              height: 50.h,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                        'assets/images/carouselImage.png',
-                                      ),
-                                      fit: BoxFit.cover)),
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10.w, vertical: 10.w),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Text('Shop Sustainably',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w600,
-                                            color: AppColors.white)),
-                                    Row(
-                                      children: [
-                                        Text(
-                                            'Give fashion a second life &\nsave the planet',
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400,
-                                                color: AppColors.white)),
-                                        Spacer(),
-                                        Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 10.w, vertical: 5.w),
-                                          decoration: BoxDecoration(
-                                              color: AppColors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(16)),
-                                          child: Center(
-                                            child: Text(
-                                                'Learn More',
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: AppColors.primaryColor)),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          )),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                AnimatedSmoothIndicator(
-                  activeIndex: currentPageIndex,
-                  count: 3,
-                  effect: ScrollingDotsEffect(
-                    spacing: 4.0,
-                    dotWidth: 8.0,
-                    dotHeight: 7.0,
-                    strokeWidth: 8,
-                    dotColor: AppColors.grey,
-                    activeDotColor: AppColors.primaryColor,
-                  ),
-                ),
+                LearnMoreContent(),
                 SizedBox(
                   height: 20.h,
                 ),
@@ -688,6 +451,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                     return ProductGridview();
                   },
                 ),
+
+
                 _searchController.text.isNotEmpty
                     ? FutureBuilder<List<Products>>(
                         future: productProvider.searchProduct,

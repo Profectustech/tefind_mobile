@@ -106,8 +106,8 @@ class _SetNewPasswordState extends ConsumerState<SetNewPassword> {
                             height: 35.h,
                           ),
                           TextFormField(
-                            validator: Validators().isEmpty,
-                            controller: accountProvider.signInPasswordController,
+                            validator: Validators().isPassword,
+                           // controller: accountProvider.signInPasswordController,
                             decoration: InputDecoration(
                               suffixIcon: IconButton(
                                 icon: Icon(
@@ -169,8 +169,8 @@ class _SetNewPasswordState extends ConsumerState<SetNewPassword> {
                           ),
                           SizedBox(height: 40.h,),
                           TextFormField(
-                            validator: Validators().isEmpty,
-                            controller: accountProvider.signInPasswordController,
+                            validator: Validators().isPassword,
+                           // controller: accountProvider.signInPasswordController,
                             decoration: InputDecoration(
                               suffixIcon: IconButton(
                                 icon: Icon(

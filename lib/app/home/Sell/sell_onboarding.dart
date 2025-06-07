@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -12,6 +13,7 @@ import 'package:te_find/utils/assets_manager.dart';
 import '../../../providers/otherProvider.dart';
 import '../../../providers/provider.dart';
 import '../../../utils/app_colors.dart';
+import '../../../utils/helpers.dart';
 import '../../widgets/custom_text_form_field.dart';
 
 class SellOnboarding extends ConsumerStatefulWidget {
@@ -123,7 +125,7 @@ class _SellOnboardingState extends ConsumerState<SellOnboarding> {
             CustomTextFormField(
               //controller: accountProvider.lastNameController,
               hint: "Enter your full name",
-              // validator: Validators().isSignUpEmpty,
+               validator: Validators().isEmpty,
             ),
             SizedBox(
               height: 20.h,
@@ -175,6 +177,10 @@ class _SellOnboardingState extends ConsumerState<SellOnboarding> {
               height: 10.h,
             ),
             CustomTextFormField(
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(11),
+              ],
               //controller: accountProvider.lastNameController,
               hint: "Enter your phone number",
               // validator: Validators().isSignUpEmpty,
@@ -193,6 +199,10 @@ class _SellOnboardingState extends ConsumerState<SellOnboarding> {
               height: 10.h,
             ),
             CustomTextFormField(
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(11),
+              ],
               //controller: accountProvider.lastNameController,
               hint: "Enter your bvn number",
               // validator: Validators().isSignUpEmpty,

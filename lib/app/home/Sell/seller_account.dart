@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -100,6 +101,10 @@ class _SellerAccountgState extends ConsumerState<SellerAccount> {
                       height: 10.h,
                     ),
                     CustomTextFormField(
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                         LengthLimitingTextInputFormatter(10),
+                      ],
                       //controller: accountProvider.lastNameController,
                       hint: 'Enter your 10-digit account number',
                       // validator: Validators().isSignUpEmpty,

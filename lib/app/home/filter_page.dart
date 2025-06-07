@@ -15,6 +15,21 @@ class _CategoryFilterState extends State<FilterPage> {
   RangeValues _priceRange = const RangeValues(0, 50000);
   final double _minPrice = 0;
   final double _maxPrice = 100000;
+  int selectedColorIndex = 0;
+  int selectedSizeIndex = 2;
+
+  final List<Color> colors = [
+    Colors.black,
+    Colors.white,
+    Colors.red,
+    Colors.blue,
+    Colors.green,
+    Colors.yellow,
+    Colors.pink,
+    Colors.purple,
+  ];
+
+  final List<String> sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
   final Set<String> selectedCategories = {'Tops'};
 
@@ -86,6 +101,93 @@ class _CategoryFilterState extends State<FilterPage> {
                 });
               },
             ),
+            SizedBox(height: 10.h),
+
+            Text(
+              'Size',
+              style: GoogleFonts.roboto(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.lightTextBlack),
+            ),
+            SizedBox(height: 10.h),
+            Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              children: List.generate(sizes.length, (index) {
+                bool isSelected = index == selectedSizeIndex;
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedSizeIndex = index;
+                    });
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    decoration: BoxDecoration(
+                      color: isSelected
+                          ? AppColors.primaryColor
+                          : Colors.transparent,
+                      borderRadius: BorderRadius.circular(30),
+                      border: Border.all(color: Colors.teal),
+                    ),
+                    child: Text(
+                      sizes[index],
+                      style: TextStyle(
+                        color: isSelected ? Colors.white : Colors.black,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                );
+              }),
+            ),
+            SizedBox(height: 10.h),
+
+            Text(
+              'Color',
+              style: GoogleFonts.roboto(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.lightTextBlack),
+            ),
+            SizedBox(height: 10),
+            Row(
+              children: List.generate(colors.length, (index) {
+                bool isSelected = index == selectedColorIndex;
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedColorIndex = index;
+                    });
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(right: 5),
+                    padding: EdgeInsets.all(3),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: isSelected
+                          ? Border.all(color: Colors.black, width: 2)
+                          : null,
+                    ),
+                    child: Container(
+                      width: 30,
+                      height: 30,
+                      decoration: BoxDecoration(
+                        color: colors[index],
+                        shape: BoxShape.circle,
+                        border: colors[index] == Colors.white
+                            ? Border.all(
+                            color: Colors
+                                .grey) // white needs border to be visible
+                            : null,
+                      ),
+                    ),
+                  ),
+                );
+              }),
+            ),
+            SizedBox(height: 10),
             // Category Groups
             ...categoryGroups.entries.map((entry) {
               return Padding(
@@ -98,7 +200,7 @@ class _CategoryFilterState extends State<FilterPage> {
                             fontWeight: FontWeight.bold, fontSize: 14.sp)),
                     SizedBox(height: 10.h),
                     Wrap(
-                      spacing: 20,
+                      spacing: 10.w,
                       runSpacing: 20,
                       children: entry.value.map((cat) {
                         final isSelected = selectedCategories.contains(cat);
@@ -128,15 +230,6 @@ class _CategoryFilterState extends State<FilterPage> {
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                // Icon(
-                                //   isSelected
-                                //       ? Icons.check_box
-                                //       : Icons.check_box_outline_blank,
-                                //   size: 18.sp,
-                                //   color: isSelected
-                                //       ? AppColors.primaryColor
-                                //       : Colors.grey,
-                                // ),
                                 SizedBox(width: 6.w),
                                 Text(
                                   cat,
@@ -154,9 +247,7 @@ class _CategoryFilterState extends State<FilterPage> {
                 ),
               );
             }),
-
-            SizedBox(height: 30.h),
-
+            SizedBox(height: 15.h),
             Row(
               spacing: 10.w,
               children: [

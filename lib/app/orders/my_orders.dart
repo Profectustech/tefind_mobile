@@ -234,7 +234,7 @@ class _MyOrdersState extends ConsumerState<MyOrders> {
 
               //---Seller----//
               DefaultTabController(
-                length: 2,
+                length: 3,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -255,6 +255,7 @@ class _MyOrdersState extends ConsumerState<MyOrders> {
                             text: 'New Orders',
                           ),
                           Tab(text: 'Order History'),
+                          Tab(text: 'Offers'),
                         ],
                       ),
                     ),
@@ -262,13 +263,14 @@ class _MyOrdersState extends ConsumerState<MyOrders> {
                       height: 520.h,
                       child: TabBarView(
                         children: [
-                          // Tab 1 Content
+                          // New Orders
                           Padding(
                             padding: EdgeInsets.symmetric(
                                 horizontal: 0.0, vertical: 20.h),
                             child: Column(
                               children: [
-                                NewOrderWidget(),
+                                // NewOrderWidget(),
+                                ActiveOrderWidget(),
                               ],
                             ),
                           ),
@@ -280,6 +282,17 @@ class _MyOrdersState extends ConsumerState<MyOrders> {
                             child: Column(
                               children: [
                                 ActiveOrderWidget(),
+                              ],
+                            ),
+                          ),
+
+                          // Offers
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 0.0, vertical: 20.h),
+                            child: Column(
+                              children: [
+                                NewOrderWidget(),
                               ],
                             ),
                           ),

@@ -136,7 +136,7 @@ class _NewUserLoginScreenState extends ConsumerState<LoginScreen> {
                         SizedBox(height: 31.h),
 
                         TextFormField(
-                          validator: Validators().isEmpty,
+                          validator: Validators().isPassword,
                           controller: accountProvider.signInPasswordController,
                           decoration: InputDecoration(
                             suffixIcon: IconButton(

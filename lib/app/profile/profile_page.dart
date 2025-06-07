@@ -562,13 +562,14 @@ void shippingAddress(BuildContext context) {
                           ),
                         ],
                       ),
+                      Spacer(),
                       Row(
                         spacing: 5.w,
                         children: [
-                          Icon(
-                            Icons.edit,
-                            size: 18,
-                          ),
+                          // Icon(
+                          //   Icons.edit,
+                          //   size: 18,
+                          // ),
                           SvgPicture.asset(
                             Assets.deleteIcon,
                             color: AppColors.red,
@@ -588,7 +589,7 @@ void shippingAddress(BuildContext context) {
                     Navigator.of(context).pop();
                     NavigatorService().navigateTo(addNewAddressScreenRoute);
                   },
-                  label: 'Add New Address',
+                  label: 'Edit Address',
                   fillColor: AppColors.primaryColor,
                 ),
               ]),

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:te_find/app/widgets/bottom_modals.dart';
@@ -135,27 +136,32 @@ class _SignupState extends ConsumerState<Signup> {
                                   label: 'Name',
                                   controller:
                                   accountProvider.signInPhoneOrEmailController,
-                                  validator: Validators().isEmail,
+                                  validator: Validators().isEmpty,
                                 ),
                                 SizedBox(height: 31.h),
                                 CustomTextFormField(
                                   label: 'Email',
-                                  controller:
-                                  accountProvider.signInPhoneOrEmailController,
+                                  // controller:
+                                  // accountProvider.signInPhoneOrEmailController,
                                   validator: Validators().isEmail,
                                 ),
                                 SizedBox(height: 31.h),
                                 CustomTextFormField(
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.digitsOnly,
+                                    LengthLimitingTextInputFormatter(11),
+                                  ],
                                   label: 'Phone No',
-                                  controller:
-                                  accountProvider.signInPhoneOrEmailController,
-                                  validator: Validators().isEmail,
+                                  // controller:
+                                  // accountProvider.signInPhoneOrEmailController,
+                                  validator: Validators().isEmpty,
                                 ),
                                 SizedBox(height: 31.h),
 
                                 TextFormField(
-                                  validator: Validators().isEmpty,
-                                  controller: accountProvider.signInPasswordController,
+                                  validator: Validators().isPassword,
+
+                                 // controller: accountProvider.signInPasswordController,
                                   decoration: InputDecoration(
                                     suffixIcon: IconButton(
                                       icon: Icon(
