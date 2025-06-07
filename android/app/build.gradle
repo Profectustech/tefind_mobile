@@ -6,12 +6,12 @@ plugins {
 }
 
 android {
-    namespace 'com.saleko.saleko'
+    namespace 'com.tefind.tefind'
     compileSdkVersion 35
     ndkVersion = "29.0.13113456"
 
     defaultConfig {
-        applicationId 'com.saleko.saleko'
+        applicationId 'com.tefind.tefind'
         minSdkVersion 23
         targetSdkVersion 35
         versionCode 1

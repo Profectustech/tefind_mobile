@@ -1,4 +1,4 @@
-package com.saleko.saleko;
+package com.tefind.tefind;
 
 import io.flutter.embedding.android.FlutterActivity;
 

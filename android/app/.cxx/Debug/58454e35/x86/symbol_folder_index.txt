@@ -1,1 +1,1 @@
-C:\Users\USER\StudioProjects\saleko\build\app\intermediates\cxx\Debug\58454e35\obj\x86
+C:\Users\USER\StudioProjects\tefind\build\app\intermediates\cxx\Debug\58454e35\obj\x86

@@ -9,9 +9,9 @@
     <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
     <string>This app needs access to location when in the background for easy tracking.</string>
     <key>NSCameraUsageDescription</key>
-    <string>SALEKO needs camera access to capture QR Code</string>
+    <string>Tefind needs camera access to capture QR Code</string>
     <key>NSPhotoLibraryUsageDescription</key>
-    <string>SALEKO needs library access to upload photo</string>
+    <string>Tefind needs library access to upload photo</string>
     <key>NSMicrophoneUsageDescription</key>
     <string>Allow access to use microphone for sending a voice note to customer support</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
@@ -19,7 +19,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Saleko</string>
+	<string>Tefind</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -27,7 +27,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>Saleko</string>
+	<string>Tefind</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
