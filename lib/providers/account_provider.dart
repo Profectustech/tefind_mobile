@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:te_find/models/BannerModel.dart';
@@ -9,6 +11,7 @@ import 'package:te_find/models/auth_model.dart';
 import 'package:te_find/models/SignInResponse.dart';
 import 'package:te_find/models/storage/app_storage.dart';
 import 'package:te_find/models/util_model.dart';
+import 'package:te_find/providers/provider.dart';
 import 'package:te_find/repository/auth_repository.dart';
 import 'package:te_find/services/dialog_service.dart';
 import 'package:te_find/services/navigation/navigator_service.dart';
@@ -22,10 +25,15 @@ import 'package:te_find/utils/storage_util.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:uuid/uuid.dart';
 
+import '../app/widgets/bottom_modals.dart';
 import '../models/CustomerAddressModel.dart';
 import '../models/PickUpLocationModel.dart';
 
 class AccountProvider extends BaseModel {
+  final Ref ref;
+  AccountProvider.init({
+    required this.ref,
+  });
   final NavigatorService _navigation = locator<NavigatorService>();
   final AuthRepository _authRepository = locator<AuthRepository>();
   final DialogService dialogService = locator<DialogService>();
@@ -187,40 +195,28 @@ class AccountProvider extends BaseModel {
   TextEditingController pinController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController signUpPasswordController = TextEditingController();
+  TextEditingController signUpPinController = TextEditingController();
+  TextEditingController signUpEmailController = TextEditingController();
+  TextEditingController signUpPhoneController = TextEditingController();
+  TextEditingController signUpNameController = TextEditingController();
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController settingPasswordController = TextEditingController();
 
-  // signUpWithEmailOrPhoneNumber
-  final List<String> dropDownItems = [
-    'Email Address',
-    'Phone Number',
-  ];
-
-  // api calls
-  String? signUpReference;
-  // bool isEmail = true;
-  String? username;
-  String? mode;
   startRegistration() async {
-    username = emailPhone == 'Email Address'
-        ? emailController.text
-        : phoneController.text;
-    mode = emailPhone == 'Email Address' ? "email" : "phone";
-    // username = isEmail ? emailController.text : phoneController.text;
-    // mode = isEmail ? "email" : "phone";
-    notifyListeners();
     setBusy(true);
     try {
-      HTTPResponseModel result =
-          await _authRepository.signup({"username": username, "mode": mode});
+      HTTPResponseModel result = await _authRepository.signup({
+        "email": signUpEmailController.text,
+      });
       if (HTTPResponseModel.isApiCallSuccess(result)) {
         setBusy(false);
-        signUpReference = result.data["notification_reference"];
+        showToast(message: result.all['message']);
         notifyListeners();
-        _navigation.navigateTo(
-          verifyEmailorPasswordRoute,
-        );
+        BottomModals.validatePasswordPin(
+            accountProvider: this, // ref.watch(RiverpodProvider.accountProvider),
+            context: NavigatorService().navigationKey!.currentContext!);
+
         return true;
       } else {
         setBusy(false);
@@ -234,19 +230,23 @@ class AccountProvider extends BaseModel {
     }
   }
 
-  verifyOtpCode() async {
+  completeAccountRegistration() async {
     setBusy(true);
     try {
-      HTTPResponseModel result = await _authRepository.verify({
-        "otp": pinController.text,
-        "reference_code": signUpReference,
-        "sent_to": username,
+      HTTPResponseModel result = await _authRepository.createAccount({
+        "firstname": firstNameController.text,
+        "name": lastNameController.text,
+        "email": signUpEmailController.text,
+        "password": signUpPasswordController.text,
+        "username": signUpNameController.text,
+        "phoneNumber": '+234${signUpPhoneController.text}',
       });
       if (HTTPResponseModel.isApiCallSuccess(result)) {
         setBusy(false);
-        _navigation.navigateTo(
-          setUpProfileRoute,
-        );
+        showToast(message: result.all['message']);
+        print(result.all);
+        _navigation.navigateReplacementTo(loginScreenRoute);
+        notifyListeners();
         return true;
       } else {
         setBusy(false);
@@ -260,56 +260,16 @@ class AccountProvider extends BaseModel {
     }
   }
 
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController forgotOtpPinController = TextEditingController();
-// function to help me detect the input for the mode selection//
-  String detectModeFromInput(String input) {
-    final emailRegex = RegExp(r"^[\w\.-]+@[\w\.-]+\.\w+$");
-    if (emailRegex.hasMatch(input.trim())) {
-      return "email";
-    } else {
-      return "phone";
-    }
-  }
-
-  String? forgotReference;
-  sendForgotPassOTP() async {
-    setBusy(true);
-    try {
-      final user = usernameController.text.trim();
-      final mode = detectModeFromInput(user);
-      HTTPResponseModel result = await _authRepository.sendForgotOtp({
-        "mode": mode,
-        "username": user,
-      });
-      if (HTTPResponseModel.isApiCallSuccess(result)) {
-        setBusy(false);
-        forgotReference = result.data["notification_reference"];
-        _navigation.navigateTo(emailVerificationScreenRoute);
-        return true;
-      } else {
-        setBusy(false);
-        showErrorToast(message: result.all['message']);
-        return false;
-      }
-    } catch (e) {
-      setBusy(false);
-      showErrorToast(message: e.toString());
-      return false;
-    }
-  }
-
-  verifyForgotOtpCode() async {
+  verifyOtpCode(String pin) async {
     setBusy(true);
     try {
       HTTPResponseModel result = await _authRepository.verifyForgot({
-        "otp": forgotOtpPinController.text,
-        "reference_code": forgotReference ?? "",
-        "sent_to": usernameController.text,
+        "otpCode": pin,
+        "email": signUpEmailController.text,
       });
       if (HTTPResponseModel.isApiCallSuccess(result)) {
         setBusy(false);
-        _navigation.navigateTo(setNewPasswordRoute);
+        locator<NavigatorService>().navigateTo(completeSignUp);
         return true;
       } else {
         setBusy(false);
@@ -323,20 +283,122 @@ class AccountProvider extends BaseModel {
     }
   }
 
+
+
+TextEditingController forgotPasswordEmailController =
+      TextEditingController(); //""
+  forgetPassword(
+  ) async {
+    setBusy(true);
+    try {
+      HTTPResponseModel result = await _authRepository.sendForgotOtp({
+        "email": forgotPasswordEmailController.text,
+      });
+      if (HTTPResponseModel.isApiCallSuccess(result)) {
+        setBusy(false);
+        BottomModals.validateForgotPasswordPin(  accountProvider: this, // ref.watch(RiverpodProvider.accountProvider),
+            context: NavigatorService().navigationKey!.currentContext!);
+        return true;
+      } else {
+        setBusy(false);
+        showErrorToast(message: result.all['message']);
+        return false;
+      }
+    } catch (e) {
+      setBusy(false);
+      showErrorToast(message: e.toString());
+      return false;
+    }
+  }
+
+TextEditingController updateUserNameController =
+      TextEditingController();
+  updateUser(
+  ) async {
+    setBusy(true);
+    try {
+      HTTPResponseModel result = await _authRepository.upDateUser({
+        "name": updateUserNameController.text,
+      });
+      if (HTTPResponseModel.isApiCallSuccess(result)) {
+        setBusy(false);
+        showToast(message: 'Username updated successfully');
+        getUserProfile();
+        return true;
+      } else {
+        setBusy(false);
+        showErrorToast(message: result.all['message']);
+        return false;
+      }
+    } catch (e) {
+      setBusy(false);
+      showErrorToast(message: e.toString());
+      return false;
+    }
+  }
+
+TextEditingController resendOTP =
+      TextEditingController(); //""
+  resentOTP(
+  ) async {
+    setBusy(true);
+    try {
+      HTTPResponseModel result = await _authRepository.sendForgotOtp({
+        "email": signUpEmailController.text,
+      });
+      if (HTTPResponseModel.isApiCallSuccess(result)) {
+        setBusy(false);
+        showToast(message: result.all['message']);
+        return true;
+      } else {
+        setBusy(false);
+        showErrorToast(message: result.all['message']);
+        return false;
+      }
+    } catch (e) {
+      setBusy(false);
+      showErrorToast(message: e.toString());
+      return false;
+    }
+  }
+
+  verifyForgotOtpCode(String pin) async {
+    setBusy(true);
+    try {
+      HTTPResponseModel result = await _authRepository.verifyForgot({
+        "otpCode": pin,
+        "email": forgotPasswordEmailController.text,
+      });
+      if (HTTPResponseModel.isApiCallSuccess(result)) {
+        setBusy(false);
+        NavigatorService().navigateTo(setNewPasswordRoute);
+        // _navigation.navigateTo(setNewPasswordRoute);
+        return true;
+      } else {
+        setBusy(false);
+        showErrorToast(message: result.all['message']);
+        return false;
+      }
+    } catch (e) {
+      setBusy(false);
+      showErrorToast(message: e.toString());
+      return false;
+    }
+  }
+  TextEditingController forgotPasswordPinController = TextEditingController();
   resetPassword(
     String password,
   ) async {
     setBusy(true);
     try {
       HTTPResponseModel result = await _authRepository.resetPassword({
-        "otp": forgotOtpPinController.text,
-        "username": usernameController.text,
-        "password": password,
-        "password_confirmation": password
+      "email" : forgotPasswordEmailController.text,
+      "otpCode": forgotPasswordPinController.text,
+      "newPassword": password,
       });
       if (HTTPResponseModel.isApiCallSuccess(result)) {
         setBusy(false);
-        _navigation.navigateTo(successfulResetPageScreenRoute);
+        _navigation.navigateTo(loginScreenRoute);
         return true;
       } else {
         setBusy(false);
@@ -350,22 +412,24 @@ class AccountProvider extends BaseModel {
     }
   }
 
-  bool acceptTerms = false;
-  completeSignUp() async {
+
+
+updateUserprofileImage(
+    String? imageUrl,
+    String? dp,
+  ) async {
     setBusy(true);
     try {
-      HTTPResponseModel result = await _authRepository.completeRegistration({
-        "first_name": firstNameController.text,
-        "last_name": lastNameController.text,
-        "email": username,
-        "username": username,
-        "password": passwordController.text,
-        "accept_terms": acceptTerms,
-        "password_confirmation": passwordController.text,
+      HTTPResponseModel result = await _authRepository.updateUserProfileImage({
+      "image": await MultipartFile.fromFile(
+        dp!,
+        filename: imageUrl,
+      )
       });
       if (HTTPResponseModel.isApiCallSuccess(result)) {
         setBusy(false);
-
+        getUserProfile();
+        _navigation.navigateTo(loginScreenRoute);
         return true;
       } else {
         setBusy(false);
@@ -379,74 +443,7 @@ class AccountProvider extends BaseModel {
     }
   }
 
-  createCustomerAddress(
-      String firstName,
-      String lastName,
-      String phoneNumber,
-      String companyName,
-      String buildingNumber,
-      String streetAddress,
-      String addressTitle,
-      String city,
-      String landMark,
-      String state,
-      String note,
-      int defaultAddress) async {
-    setBusy(true);
-    try {
-      HTTPResponseModel result = await _authRepository.createAddress({
-        "customer_id": currentUser.oldUserId,
-        "first_name": firstName,
-        "last_name": lastName,
-        "phone": phoneNumber,
-        "company_name": companyName,
-        "building_no": buildingNumber,
-        "street_address": streetAddress,
-        "address_title": addressTitle,
-        "city": city,
-        "landmark": landMark,
-        "state": state,
-        "default_address": 1,
-        "note": note
-      });
-      if (HTTPResponseModel.isApiCallSuccess(result)) {
-        setBusy(false);
-        return true;
-      } else {
-        setBusy(false);
-        showErrorToast(message: result.all['message']);
-        return false;
-      }
-    } catch (e) {
-      setBusy(false);
-      showErrorToast(message: e.toString());
-      return false;
-    }
-  }
 
-  getCustomerAddress() async {
-    try {
-      HTTPResponseModel result =
-          await _authRepository.getCustomerAddress(currentUser.oldUserId);
-      // print( currentUser.oldUserId);
-      // print( currentUser.oldUserId);
-      // print( currentUser.oldUserId);
-      // print( currentUser.oldUserId);
-      // print( currentUser.oldUserId);
-      if (HTTPResponseModel.isApiCallSuccess(result)) {
-        print(result.data);
-        List<CustomerAddress> addressList = List<CustomerAddress>.from(
-            result.data.map((item) => CustomerAddress.fromJson(item)));
-        _addressList = addressList;
-        notifyListeners();
-        return true;
-      } else {
-        return false;
-      }
-    } catch (e) {
-      return false;
-    }
-  }
 
   getPickUpAddress() async {
     try {
@@ -505,23 +502,23 @@ class AccountProvider extends BaseModel {
   }
 
   logIn() async {
-    // owoyemibusuyi@gmail.com
-    // Busuyi@123
+    // ragovar585@linacit.com
+    // Password@1
     setBusy(true);
     try {
       HTTPResponseModel result = await _authRepository.login({
-        "username": signInPhoneOrEmailController.text,
+      "email": signInPhoneOrEmailController.text,
         "password": signInPasswordController.text,
       });
       if (HTTPResponseModel.isApiCallSuccess(result)) {
         setBusy(false);
-        SignInResponse user = SignInResponse.fromJson(result.data['user']);
-        _currentUser = user;
-        final AuthModel auth = AuthModel.fromJson(result.data['token']);
-        _token = auth;
-        await StorageUtil.setData('token', auth.token);
-        await StorageUtil.setData('profile', json.encode(user));
-
+        print(result.data);
+         SignInResponse user = SignInResponse.fromJson(result.data['user']);
+         _currentUser = user;
+          final AuthModel auth = AuthModel.fromJson(result.data['token']);
+         _token = auth;
+         await StorageUtil.setData('token', auth.token);
+        // // await StorageUtil.setData('profile', json.encode(user));
         _navigation.pushNamedAndRemoveUntil(
           bottomNavigationRoute,
         );
@@ -621,13 +618,14 @@ class AccountProvider extends BaseModel {
     }
   }
 
-  banner() async {
+  getUserProfile() async {
     try {
-      HTTPResponseModel result = await _authRepository.banner();
+      HTTPResponseModel result = await _authRepository.getUserProfile();
       if (HTTPResponseModel.isApiCallSuccess(result)) {
-        List<BannerModel> packageList = List<BannerModel>.from(
-            result.data.map((item) => BannerModel.fromJson(item)));
-        _bannerList = packageList;
+        // List<BannerModel> packageList = List<BannerModel>.from(
+        //     result.data.map((item) => BannerModel.fromJson(item)));
+        // _bannerList = packageList;
+        print(result.data);
         notifyListeners();
       }
     } catch (e) {}

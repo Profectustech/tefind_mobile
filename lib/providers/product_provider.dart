@@ -636,7 +636,7 @@ class ProductProvider extends BaseModel {
   }
 
   loopCartToAuth() async {
-    if (reader.read(RiverpodProvider.accountProvider).currentUser.userId ==
+    if (reader.read(RiverpodProvider.accountProvider).currentUser.id ==
         null) {
       fetchCart();
     } else {
@@ -658,7 +658,7 @@ class ProductProvider extends BaseModel {
     num quantity,
   ) async {
     late HTTPResponseModel res;
-    if (reader.read(RiverpodProvider.accountProvider).currentUser.userId !=
+    if (reader.read(RiverpodProvider.accountProvider).currentUser.id !=
         null) {
       res = await _productRepository.addToCart(sku: sku, quantity: quantity);
     } else {
@@ -686,7 +686,7 @@ class ProductProvider extends BaseModel {
     num cartItemId = 0,
   }) async {
     late HTTPResponseModel res;
-    if (reader.read(RiverpodProvider.accountProvider).currentUser.userId !=
+    if (reader.read(RiverpodProvider.accountProvider).currentUser.id !=
         null) {
       res = await _productRepository.removeFromCart(
           id: productId, cartId: cartId, cartItemId: cartItemId);
@@ -715,7 +715,7 @@ class ProductProvider extends BaseModel {
     num quantity = 0,
   }) async {
     late HTTPResponseModel res;
-    if (reader.read(RiverpodProvider.accountProvider).currentUser.userId !=
+    if (reader.read(RiverpodProvider.accountProvider).currentUser.id !=
         null) {
       res = await _productRepository.updateCart(
           id: productId, cartId: cartId, quantity: quantity);
@@ -738,7 +738,7 @@ class ProductProvider extends BaseModel {
 
   fetchCart() async {
     late HTTPResponseModel res;
-    if (reader.read(RiverpodProvider.accountProvider).currentUser.userId !=
+    if (reader.read(RiverpodProvider.accountProvider).currentUser.id !=
         null) {
       res = await _productRepository.fetchCart();
     } else {
@@ -746,7 +746,7 @@ class ProductProvider extends BaseModel {
           id: reader.read(RiverpodProvider.accountProvider).guestId);
     }
     if (HTTPResponseModel.isApiCallSuccess(res)) {
-      if (reader.read(RiverpodProvider.accountProvider).currentUser.userId !=
+      if (reader.read(RiverpodProvider.accountProvider).currentUser.id !=
           null) {
         _cartModel = CartModel.fromJson(res.data);
       } else {

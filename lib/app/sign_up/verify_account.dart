@@ -1,207 +1,293 @@
-import 'dart:async';
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:te_find/app/widgets/bottom_modals.dart';
+import 'package:te_find/services/navigation/route_names.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:te_find/app/home/home_page.dart';
 import 'package:te_find/app/widgets/back_button.dart';
+import 'package:te_find/app/widgets/sign_in_button.dart';
+import 'package:te_find/services/navigation/navigator_service.dart';
 import 'package:te_find/providers/account_provider.dart';
 import 'package:te_find/providers/provider.dart';
-import 'package:te_find/services/navigation/navigator_service.dart';
 import 'package:te_find/services/navigation/route_names.dart';
 import 'package:te_find/utils/app_colors.dart';
-import 'package:te_find/utils/app_styles.dart';
-import 'package:te_find/app/widgets/custom_button.dart';
-import 'package:te_find/app/widgets/pin_input_field.dart';
+import 'package:te_find/utils/assets_manager.dart';
 import 'package:te_find/utils/helpers.dart';
+import 'package:te_find/utils/notification_helper.dart';
+import 'package:te_find/app/widgets/custom_button.dart';
+import 'package:te_find/app/widgets/custom_text_form_field.dart';
+import 'package:te_find/utils/progress_bar_manager/appbar.dart';
 
-class VerificationScreen extends ConsumerStatefulWidget {
-  const VerificationScreen({super.key});
+import '../../utils/locator.dart';
+
+class CompleteSignUp extends ConsumerStatefulWidget {
+  const CompleteSignUp({super.key});
 
   @override
-  ConsumerState<VerificationScreen> createState() =>
-      _EmailVerificationScreenState();
+  ConsumerState<CompleteSignUp> createState() => _CompleteSignUpState();
 }
 
-class _EmailVerificationScreenState extends ConsumerState<VerificationScreen> {
+class _CompleteSignUpState extends ConsumerState<CompleteSignUp> {
   final NavigatorService _navigation = NavigatorService();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   late AccountProvider accountProvider;
-  TextEditingController pinController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  int waitTime = 100;
-  late Timer timer;
+  bool passwordVisible = true;
 
-  void handleSubmit() {
-    _navigation.navigateTo(loginScreenRoute);
-  }
+  // bool get isFormValid {
+  //   return accountProvider.signInPhoneOrEmailController.text.isNotEmpty &&
+  //       accountProvider.signInPasswordController.text.isNotEmpty;
+  // }
 
-  void handleOnTap() {
-    setState(() {
-      waitTime = 100;
-    });
-    startTimer();
+  void signUp() {
+    _navigation.navigateTo(signupScreenRoute);
   }
 
   @override
   void initState() {
     super.initState();
-    startTimer();
+    // Add listener to emailController to track changes
+    emailController.addListener(_updateButtonState);
+    passwordController.addListener(_updateButtonState);
   }
 
-  void startTimer() {
-    // Create a timer that updates every second
-    timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
-      setState(() {
-        if (waitTime > 0) {
-          waitTime--;
-        } else {
-          // Stop the timer when it reaches 0
-          timer.cancel();
-        }
-      });
-    });
+  @override
+  void dispose() {
+    emailController.removeListener(_updateButtonState);
+    passwordController.removeListener(_updateButtonState);
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
+
+  void _updateButtonState() {
+    setState(() {}); // Trigger a rebuild whenever the email input changes
+  }
+
+  // String? fcmToken;
+  // getFCMToken() async {
+  //   fcmToken = await NotificationHelper.getFcmToken();
+  // }
+
+  // @override
+  // void initState() {
+  //   Future.microtask(() {
+  //     getFCMToken();
+  //     accountProvider.getUserLocation();
+  //   });
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
     accountProvider = ref.watch(RiverpodProvider.accountProvider);
     return Scaffold(
-      backgroundColor: AppColors.greenSecond,
-      body: SafeArea(
-          child: Form(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              child: SingleChildScrollView(
-                  child: Column(
-                children: [
-                  Container(
-                      height: 220,
-                      child: Stack(
+        backgroundColor: Colors.white,
+        body: SafeArea(
+            child: Stack(children: [
+              Image.asset(
+                'assets/images/teFindBackground.png',
+                fit: BoxFit.cover, // Ensures it covers the screen
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 40.h),
+                child: Form(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  key: _formKey,
+                  child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          CustomBackButton(),
-                          Align(
-                              alignment: Alignment.bottomRight,
-                              child: SvgPicture.asset(
-                                'assets/images/svg.logo.png',
-                              )),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: 70.h),
-                              Container(
-                                padding: EdgeInsets.only(left: 20),
-                                width: 300,
-                                child: Text("Verify Account!",
+                          SizedBox(height:20.h),
+                          Center(
+                            child: Column(
+                              children: [
+                                Image.asset(
+                                  Assets.te_findLogo2,
+                                  height: 34.h,
+                                ),
+                                SizedBox(
+                                  height: 20.h,
+                                ),
+                                Text('Sign up to start buying\n& selling',
+                                    textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        fontSize: 35,
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColors.white)),
-                              ),
-                              Container(
-                                padding: EdgeInsets.all(20),
-                                width: 350,
-                                child: Text(
-                                    "Enter 4-digit Code code we have sent to at +23489906056.",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                        color: AppColors.white)),
-                              )
-                            ],
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w600,
+                                        color: AppColors.faintBlack)),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CustomTextFormField(
+                                  label: 'First Name',
+                                  controller:
+                                  accountProvider.firstNameController,
+                                  validator: Validators().isEmpty,
+                                ),
+                                SizedBox(height: 15.h),
+                                CustomTextFormField(
+                                  label: 'Last Name',
+                                  controller:
+                                  accountProvider.lastNameController,
+                                  validator: Validators().isEmpty,
+                                ),
+                                SizedBox(height: 15.h),
+                                CustomTextFormField(
+                                  label: 'User Name',
+                                  controller:
+                                  accountProvider.signUpNameController,
+                                  validator: Validators().isEmpty,
+                                ),
+                                SizedBox(height: 15.h),
+                                CustomTextFormField(
+                                  label: 'Email',
+                                  controller:
+                                  accountProvider.signUpEmailController,
+                                  validator: Validators().isEmail,
+                                ),
+                                SizedBox(height: 15.h),
+                                CustomTextFormField(
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.digitsOnly,
+                                    LengthLimitingTextInputFormatter(11),
+                                  ],
+                                  label: 'Phone No',
+                                  controller:
+                                  accountProvider.signUpPhoneController,
+                                  validator: Validators().isEmpty,
+                                ),
+                                SizedBox(height: 15.h),
+
+                                TextFormField(
+                                  validator: Validators().isPassword,
+                                  controller: accountProvider.signUpPasswordController,
+                                  decoration: InputDecoration(
+                                    suffixIcon: IconButton(
+                                      icon: Icon(
+                                        // Based on passwordVisible state choose the icon
+                                        passwordVisible
+                                            ? Icons.visibility
+                                            : Icons.visibility_off,
+                                        color: AppColors.fadedBlack.withOpacity(0.4),
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          passwordVisible = !passwordVisible;
+                                        });
+                                      },
+                                    ),
+                                    hintText: 'Password',
+                                    hintStyle: const TextStyle(
+                                      color: Colors.grey,
+                                    ),
+                                    labelText: "Password",
+                                    labelStyle: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xff8391A1),
+                                    ),
+                                    fillColor: AppColors.white,
+                                    filled: true,
+                                    focusedBorder: const OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(5)),
+                                      borderSide: BorderSide(
+                                          width: 1, color: AppColors.primaryColor),
+                                    ),
+                                    disabledBorder: const OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(5)),
+                                      borderSide:
+                                      BorderSide(width: 1, color: AppColors.greyLight),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(5)),
+                                      borderSide: BorderSide(
+                                        color: AppColors.greyLight,
+                                        width: 1.w,
+                                      ),
+                                    ),
+                                    errorStyle: const TextStyle(color: AppColors.red),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      borderSide: const BorderSide(),
+                                    ),
+                                  ),
+                                  onChanged: (v) {},
+                                  obscureText: passwordVisible,
+                                  keyboardType: TextInputType.text,
+                                  style: const TextStyle(color: Colors.black),
+                                  cursorColor: Colors.black,
+                                ),
+                                SizedBox(height: 40.h),
+                                CustomButton(
+                                    label: "Sign Up",
+                                    fillColor:
+                                    // isFormValid ?
+                                    AppColors.primaryColor,
+                                    // : Colors.grey,
+                                    onPressed:
+                                    // isFormValid
+                                    //     ?
+                                        () {
+                                      accountProvider.completeAccountRegistration();
+                                      // if (_formKey.currentState!.validate()) {
+                                      //   accountProvider.startRegistration();
+                                      //
+                                      // }
+
+                                    }
+                                  // : null,
+                                ),
+                                SizedBox(height: 15.h),
+                                Row(
+                                  spacing: 5,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Already had an account?',
+                                      style: TextStyle(
+                                          color: AppColors.black,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                    InkWell(
+                                      onTap: (){
+                                        locator<NavigatorService>().navigateTo(loginScreenRoute);
+                                      },
+                                      child: Text(
+                                        'Sign In',
+                                        style: TextStyle(
+                                            color: AppColors.primaryColor,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+
+                              ],
+                            ),
                           ),
                         ],
                       )),
-                  SizedBox(height: 20.h),
-                  Padding(
-                    padding: EdgeInsets.all(20),
-                    child: Column(
-                      children: [
-                        PinInputField(
-                          pinController: pinController,
-                        ),
-                        SizedBox(height: 100.h),
-                        Center(
-                            child: Container(
-                                padding: EdgeInsets.all(20),
-                                decoration: BoxDecoration(
-                                  gradient: RadialGradient(
-                                    center: Alignment(
-                                      0.9,
-                                      -0.9,
-                                    ),
-                                    colors: [
-                                      Colors.grey.shade400,
-                                      AppColors.secondaryColor,
-                                      AppColors.secondaryColor,
-                                      AppColors.secondaryColor,
-                                    ],
-                                    radius: 4.0,
-                                  ),
-                                  //  color: Color(0xff16275D),
-                                  // color: Color(0xff21093A),
-                                  border: Border.all(
-                                      width: 2, color: AppColors.green),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(50)),
-                                ),
-                                width: 350,
-                                height: 250,
-                                child: Column(
-                                  children: [
-                                    SizedBox(
-                                      height: 30,
-                                    ),
-                                    Padding(
-                                        padding: EdgeInsets.only(
-                                            left: 20, right: 20),
-                                        child: CustomButton(
-                                          fillColor: AppColors.primaryColor,
-                                          label: 'Verify',
-                                          onPressed: () {
-                                            if (pinController.text.isNotEmpty) {
-                                              _navigation.navigateTo(
-                                                  setPasswordScreenRoute);
-                                            } else {
-                                              showErrorToast(message:
-                                                  "Kindly input your OTP");
-                                            }
-                                          },
-                                        )),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    GestureDetector(
-                                        onTap: () {},
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              'Didn’t receive the code? ',
-                                              style: AppStyles
-                                                  .createNormalTextStyle(
-                                                textColor: AppColors.white,
-                                              ),
-                                            ),
-                                            Text(
-                                              'Resend',
-                                              style: TextStyle(
-                                                  color: AppColors.white,
-                                                  decoration:
-                                                      TextDecoration.underline,
-                                                  decorationColor: Colors.white,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ],
-                                        )),
-                                  ],
-                                ))),
-                        SizedBox(
-                          height: 20,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              )))),
-    );
+                ),
+              ),
+            ])));
   }
 }

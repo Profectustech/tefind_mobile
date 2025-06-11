@@ -146,7 +146,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                     height: 10.h,
                   ),
                   Text(
-                    "Amara Okafor",
+                    "${accountProvider.currentUser.name}",
                     overflow: TextOverflow.ellipsis,
                     style: GoogleFonts.roboto(
                       fontSize: 20,

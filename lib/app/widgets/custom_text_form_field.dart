@@ -20,6 +20,8 @@ class CustomTextFormField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final Color? color;
   final double? borderRadius;
+  final String? prefixText;
+  final Widget? prefixIcon;
 
   const CustomTextFormField({
     super.key,
@@ -36,6 +38,8 @@ class CustomTextFormField extends StatelessWidget {
     this.suffixIcon,
     this.inputFormatters,
     this.color = AppColors.white, this.borderRadius,
+    this.prefixText,
+    this.prefixIcon,
   });
 
   @override
@@ -59,6 +63,8 @@ class CustomTextFormField extends StatelessWidget {
         filled: true,
         labelText: label,
         hintText: hint,
+        prefixIcon: prefixIcon,
+        prefixText: prefixText,
         suffixIcon: suffixIcon ?? null,
         hintStyle: GoogleFonts.roboto(
           fontSize: 14,

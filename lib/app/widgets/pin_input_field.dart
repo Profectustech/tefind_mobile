@@ -6,8 +6,13 @@ import 'package:pinput/pinput.dart';
 class PinInputField extends StatefulWidget {
   TextEditingController? pinController;
   int? pinNumber;
-  PinInputField({Key? key, this.pinController, this.pinNumber})
-      : super(key: key);
+   void Function(String)? onCompleted;
+  PinInputField({
+    Key? key,
+    this.pinController,
+    this.pinNumber,
+    this.onCompleted,
+  }) : super(key: key);
 
   @override
   State<PinInputField> createState() => _PinInputFieldState();
@@ -35,7 +40,7 @@ class _PinInputFieldState extends State<PinInputField> {
       textStyle: const TextStyle(
         fontSize: 22,
         fontWeight: FontWeight.bold,
-        color:  Colors.black,
+        color: Colors.black,
       ),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -70,9 +75,7 @@ class _PinInputFieldState extends State<PinInputField> {
                 widget.pinController!.setText(value);
               },
               hapticFeedbackType: HapticFeedbackType.lightImpact,
-              onCompleted: (pin) {
-                // debugPrint('onCompleted: $pin');
-              },
+              onCompleted: widget.onCompleted,
               onChanged: (value) {
                 // debugPrint('onChanged: $value');
               },

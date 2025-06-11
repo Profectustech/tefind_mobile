@@ -6,7 +6,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:te_find/app/home/widgets/shoppingCartListView.dart';
 
+import '../../../providers/account_provider.dart';
+import '../../../providers/provider.dart';
 import '../../../utils/app_colors.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_text_form_field.dart';
@@ -18,6 +21,7 @@ class EditProfileDialog extends ConsumerStatefulWidget {
   @override
   ConsumerState<EditProfileDialog> createState() => _EditProfileDialogState();
 }
+late AccountProvider accountProvider;
 
 class _EditProfileDialogState extends ConsumerState<EditProfileDialog> {
   // Example state
@@ -37,6 +41,7 @@ class _EditProfileDialogState extends ConsumerState<EditProfileDialog> {
       dp = file.path;
       dpName = file.path.split('/').last;
       dpSize = getFileSize(file);
+      accountProvider.updateUserprofileImage(dpName, dp);
     });
   }
 
@@ -51,6 +56,7 @@ class _EditProfileDialogState extends ConsumerState<EditProfileDialog> {
 
   @override
   Widget build(BuildContext context) {
+    accountProvider = ref.watch(RiverpodProvider.accountProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -106,6 +112,7 @@ class _EditProfileDialogState extends ConsumerState<EditProfileDialog> {
                         child: GestureDetector(
                           onTap: () {
                             takePicture();
+
                           },
                           child: Container(
                             height: 32,
@@ -137,37 +144,36 @@ class _EditProfileDialogState extends ConsumerState<EditProfileDialog> {
               ),
             ),
 
-            const SizedBox(height: 10),
+            const SizedBox(height: 30),
             _buildLabel('Full Name'),
             const SizedBox(height: 5),
-            CustomTextFormField(hint: ''),
-
-            const SizedBox(height: 10),
-            _buildLabel('Bio'),
-            const SizedBox(height: 5),
-            CustomTextFormField(hint: '', maxLines: 2),
-
-            const SizedBox(height: 10),
-            _buildLabel('Email'),
-            const SizedBox(height: 5),
-            CustomTextFormField(hint: ''),
-
-            const SizedBox(height: 10),
-            _buildLabel('Phone Number'),
-            const SizedBox(height: 5),
             CustomTextFormField(
-                hint: ''),
-            const SizedBox(height: 10),
-            _buildLabel('Location'),
-            const SizedBox(height: 5),
-            CustomTextFormField(hint: ''),
+              controller: accountProvider.updateUserNameController,
+                hint: 'Enter your full name'),
 
-            const SizedBox(height: 20),
+            // const SizedBox(height: 10),
+            // _buildLabel('Bio'),
+            // const SizedBox(height: 5),
+            // CustomTextFormField(hint: '', maxLines: 2),
+            // const SizedBox(height: 10),
+            // _buildLabel('Email'),
+            // const SizedBox(height: 5),
+            // CustomTextFormField(hint: ''),
+            // const SizedBox(height: 10),
+            // _buildLabel('Phone Number'),
+            // const SizedBox(height: 5),
+            // CustomTextFormField(
+            //     hint: ''),
+            // const SizedBox(height: 10),
+            // _buildLabel('Location'),
+            // const SizedBox(height: 5),
+            // CustomTextFormField(hint: ''),
+             SizedBox(height: 80.h),
             CustomButton(
               label: 'Save Change',
               fillColor: AppColors.primaryColor,
               onPressed: () {
-                // Save logic here
+                accountProvider.updateUser();
                 Navigator.of(context).pop();
               },
             )

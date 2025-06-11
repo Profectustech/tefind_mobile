@@ -23,26 +23,18 @@ import 'package:te_find/app/onboarding/onboarding_screen_view.dart';
 import 'package:te_find/app/orders/order_detail_page.dart';
 import 'package:te_find/app/profile/add_new_address.dart';
 import 'package:te_find/app/profile/listing_view_all.dart';
-
 import 'package:te_find/app/settings/change_password_page.dart';
 import 'package:te_find/app/settings/change_transaction_pin.dart';
 import 'package:te_find/app/settings/delete_account.dart';
-
 import 'package:te_find/app/profile/orders/my_oders_page.dart';
-
 import 'package:te_find/app/profile/wishlight_page.dart';
 import 'package:te_find/app/sign_up/set_password.dart';
-import 'package:te_find/app/sign_up/set_up_profile.dart';
 import 'package:te_find/app/sign_up/signup.dart';
 import 'package:te_find/app/sign_up/verify_account.dart';
-import 'package:te_find/app/sign_up/verify_email_or_password.dart';
-import 'package:te_find/models/Products.dart';
-
 import 'package:te_find/services/analytics_service.dart';
 import 'package:te_find/services/navigation/route_names.dart';
 import 'package:te_find/utils/base_model.dart';
 import 'package:te_find/utils/locator.dart';
-
 import '../../app/cart/successful_transaction.dart';
 import '../../app/forgotPassword/successful_reset_page.dart';
 import '../../app/home/Sell/sell-stepper.dart';
@@ -83,12 +75,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         routeName: settings.name!,
         viewToShow: const EmailInputScreen(),
       );
-    // newly added
-    case setUpProfileRoute:
-      return _getPageRoute(
-        routeName: settings.name!,
-        viewToShow: const SetUpProfile(),
-      );
     case checkoutScreenRoute:
       return _getPageRoute(
         routeName: settings.name!,
@@ -109,13 +95,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         routeName: settings.name!,
         viewToShow: const SetNewPassword(),
       );
-    case verifyEmailorPasswordRoute:
-      return _getPageRoute(
-        routeName: settings.name!,
-        viewToShow: VerifyEmailOrPassword(),
-      );
-
-    case MyOrdersScreenRoute:
+      case MyOrdersScreenRoute:
       return _getPageRoute(
         routeName: settings.name!,
         viewToShow: MyOdersPage(),
@@ -127,10 +107,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         routeName: settings.name!,
         viewToShow:  SuccessfulResetPage(),
       );
-    case verificationScreenRoute:
+    case completeSignUp:
       return _getPageRoute(
         routeName: settings.name!,
-        viewToShow: const VerificationScreen(),
+        viewToShow: const CompleteSignUp(),
       );
     case setPasswordScreenRoute:
       return _getPageRoute(

@@ -10,7 +10,14 @@ class AuthRepository {
   Future<HTTPResponseModel> signup(Map<String, dynamic> body) async {
     return await _networkHelper.runApi(
       type: ApiRequestType.post,
-      url: "auth-svc/auth/signup",
+      url: "auth/signup",
+      body: body,
+    );
+  }
+  Future<HTTPResponseModel> createAccount(Map<String, dynamic> body) async {
+    return await _networkHelper.runApi(
+      type: ApiRequestType.post,
+      url: "auth/create-account",
       body: body,
     );
   }
@@ -18,32 +25,32 @@ class AuthRepository {
   Future<HTTPResponseModel> verify(Map<String, dynamic> body) async {
     return await _networkHelper.runApi(
       type: ApiRequestType.post,
-      url: "auth-svc/otp/verify",
+      url: "auth/verify-otp",
       body: body,
     );
   }
   Future<HTTPResponseModel> verifyForgot(Map<String, dynamic> body) async {
     return await _networkHelper.runApi(
       type: ApiRequestType.post,
-      url: "auth-svc/otp/verify",
+      url: "auth/verify-otp",
       body: body,
     );
   }
 
-
-  Future<HTTPResponseModel> completeRegistration(
-      Map<String, dynamic> body) async {
-    return await _networkHelper.runApi(
-      type: ApiRequestType.post,
-      url: "auth-svc/auth/complete-signup",
-      body: body,
-    );
-  }
   Future<HTTPResponseModel> sendForgotOtp(
       Map<String, dynamic> body) async {
     return await _networkHelper.runApi(
       type: ApiRequestType.post,
-      url: "auth-svc/otp/send",
+      url: "auth/forgot-password",
+      body: body,
+    );
+  }
+
+  Future<HTTPResponseModel> resendOTp(
+      Map<String, dynamic> body) async {
+    return await _networkHelper.runApi(
+      type: ApiRequestType.post,
+      url: "auth/resend-otp",
       body: body,
     );
   }
@@ -51,7 +58,24 @@ class AuthRepository {
       Map<String, dynamic> body) async {
     return await _networkHelper.runApi(
       type: ApiRequestType.post,
-      url: "auth-svc/auth/reset-password",
+      url: "auth/reset-password",
+      body: body,
+    );
+  }
+  Future<HTTPResponseModel> upDateUser(
+      Map<String, dynamic> body) async {
+    return await _networkHelper.runApi(
+      type: ApiRequestType.put,
+      url: "user/profile",
+      body: body,
+    );
+  }
+
+  Future<HTTPResponseModel> updateUserProfileImage(
+      Map<String, dynamic> body) async {
+    return await _networkHelper.runApi(
+      type: ApiRequestType.formData,
+      url: "auth/profile/image",
       body: body,
     );
   }
@@ -99,15 +123,15 @@ class AuthRepository {
   Future<HTTPResponseModel> login(Map<String, dynamic> body) async {
     return await _networkHelper.runApi(
       type: ApiRequestType.post,
-      url: 'auth-svc/auth/login',
+      url: 'auth/login',
       body: body,
     );
   }
 
-  Future<HTTPResponseModel> banner() async {
+  Future<HTTPResponseModel> getUserProfile() async {
     return await _networkHelper.runApi(
       type: ApiRequestType.get,
-      url: 'main-svc-v2/media/get-items?type=slider',
+      url: 'api/user/profile',
     );
   }
 

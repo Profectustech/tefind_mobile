@@ -216,7 +216,6 @@ class _NewUserLoginScreenState extends ConsumerState<LoginScreen> {
                           ],
                         ),
                         SizedBox(height: 80.h),
-
                         CustomButton(
                             label: "Sign In",
                             fillColor:
@@ -227,20 +226,21 @@ class _NewUserLoginScreenState extends ConsumerState<LoginScreen> {
                                 // isFormValid
                                 //     ?
                                 () {
+                                  accountProvider.logIn();
                               // if (_formKey.currentState!.validate()) {
                               //
                               //   // _navigation.navigateReplacementTo(
                               //   //     bottomNavigationRoute);
                               //
                               // }
-                                  locator<NavigatorService>().navigateTo(bottomNavigationRoute);
+                              //    locator<NavigatorService>().navigateTo(bottomNavigationRoute);
                            //   accountProvider.logIn();
                             }
                             // : null,
                             ),
                         SizedBox(height: 30.h),
                         Row(
-                          spacing: 5,
+                          spacing: 7.w,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
@@ -265,12 +265,12 @@ class _NewUserLoginScreenState extends ConsumerState<LoginScreen> {
                           ],
                         ),
                         SizedBox(height: 30.h),
-                        Center(
-                          child: Image.asset(
-                            Assets.fingerPrint,
-                            height: 71.h,
-                          ),
-                        ),
+                        // Center(
+                        //   child: Image.asset(
+                        //     Assets.fingerPrint,
+                        //     height: 71.h,
+                        //   ),
+                        // ),
 
                         SizedBox(
                           height: 20,

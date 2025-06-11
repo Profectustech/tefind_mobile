@@ -27,31 +27,31 @@ class SetNewPassword extends ConsumerStatefulWidget {
 
 class _SetNewPasswordState extends ConsumerState<SetNewPassword> {
   final NavigatorService _navigation = NavigatorService();
-  TextEditingController emailController = TextEditingController();
+  TextEditingController passWordController = TextEditingController();
   late AccountProvider accountProvider;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   // A boolean to check if the email field is not emptys
-  bool get isEmailFilled => accountProvider.usernameController.text.isNotEmpty;
+  // bool get isEmailFilled => accountProvider.usernameController.text.isNotEmpty;
   bool passwordVisible = true;
   bool confPasswordVisible = true;
   @override
   void initState() {
     super.initState();
     Future.microtask(() {
-      accountProvider.usernameController.addListener(_updateButtonState);
+      // accountProvider.usernameController.addListener(_updateButtonState);
     });
   }
 
   @override
   void dispose() {
-    accountProvider.usernameController.clear();
+    passWordController.clear();
     super.dispose();
   }
 
   void _updateButtonState() {
     setState(() {
-      isEmailFilled;
+      // isEmailFilled;
     }); // Trigger a rebuild whenever the email input changes
   }
 
@@ -238,8 +238,7 @@ class _SetNewPasswordState extends ConsumerState<SetNewPassword> {
                               AppColors.primaryColor,
                               // : Colors.grey,
                               onPressed: () {
-                                BottomModals.validatePasswordPin(context: context);
-                                NavigatorService().navigateReplacementTo(loginScreenRoute);
+                                accountProvider.resetPassword(passWordController.text);
                               }),
 
                         ],

@@ -215,19 +215,7 @@ class _AddNewAddressState extends ConsumerState<AddNewAddress> {
                   label: "Add Address",
                   fillColor: AppColors.primaryColor,
                   onPressed: () {
-                    accountProvider.createCustomerAddress(
-                        _firstNameController.text,
-                        _lastNameController.text,
-                        _phoneController.text,
-                        _companyNameController.text,
-                        _buildingNumber.text,
-                        _streetNumber.text,
-                        _addressTitleController.text,
-                        _cityContrller.text,
-                        _postalCode.text,
-                        _stateController.text,
-                        _noteToDriverController.text,
-                        _isChecked? 1 : 0);
+
                     Navigator.pop(context);
                   }),
             ],

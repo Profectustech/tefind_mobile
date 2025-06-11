@@ -1,59 +1,100 @@
 class SignInResponse {
   SignInResponse({
-      String? userId, 
-      String? userType, 
-      String? email, 
-      String? firstName, 
-      String? lastName,
-    int? oldUserId,
-  String? phoneNumber}){
-    _userId = userId;
-    _userType = userType;
+    String? id,
+    String? email,
+    String? name,
+    String? phoneNumber,
+    String? role,
+    bool? isVerified,
+    bool? isBusinessVerified,
+    int? rating,
+    int? totalReviews,
+    int? adminLevel,
+    List<String>? permissions,
+    String? createdAt,
+    String? updatedAt,
+    bool? hasStore,
+  }) {
+    _id = id;
     _email = email;
-    _firstName = firstName;
-    _lastName = lastName;
+    _name = name;
     _phoneNumber = phoneNumber;
-  _oldUserId = oldUserId;
-}
+    _role = role;
+    _isVerified = isVerified;
+    _isBusinessVerified = isBusinessVerified;
+    _rating = rating;
+    _totalReviews = totalReviews;
+    _adminLevel = adminLevel;
+    _permissions = permissions;
+    _createdAt = createdAt;
+    _updatedAt = updatedAt;
+    _hasStore = hasStore;
+  }
 
   SignInResponse.fromJson(dynamic json) {
-    _userId = json['user_id'];
-    _userType = json['user_type'];
+    _id = json['_id'];
     _email = json['email'];
-    _firstName = json['first_name'];
-    _lastName = json['last_name'];
-    _phoneNumber = json['phone_number'];
-    _oldUserId = json['old_user_id'];
-
+    _name = json['name'];
+    _phoneNumber = json['phoneNumber'];
+    _role = json['role'];
+    _isVerified = json['isVerified'];
+    _isBusinessVerified = json['isBusinessVerified'];
+    _rating = json['rating'];
+    _totalReviews = json['totalReviews'];
+    _adminLevel = json['adminLevel'];
+    _permissions = json['permissions'] != null ? List<String>.from(json['permissions']) : [];
+    _createdAt = json['createdAt'];
+    _updatedAt = json['updatedAt'];
+    _hasStore = json['hasStore'];
   }
-  String? _userId;
-  String? _userType;
+
+  String? _id;
   String? _email;
-  String? _firstName;
-  String? _lastName;
+  String? _name;
   String? _phoneNumber;
-  int? _oldUserId;
+  String? _role;
+  bool? _isVerified;
+  bool? _isBusinessVerified;
+  int? _rating;
+  int? _totalReviews;
+  int? _adminLevel;
+  List<String>? _permissions;
+  String? _createdAt;
+  String? _updatedAt;
+  bool? _hasStore;
 
-  String? get userId => _userId;
-  String? get userType => _userType;
+  // Getters
+  String? get id => _id;
   String? get email => _email;
-  String? get firstName => _firstName;
-  String? get lastName => _lastName;
+  String? get name => _name;
   String? get phoneNumber => _phoneNumber;
-  int? get oldUserId => _oldUserId;
-
+  String? get role => _role;
+  bool? get isVerified => _isVerified;
+  bool? get isBusinessVerified => _isBusinessVerified;
+  int? get rating => _rating;
+  int? get totalReviews => _totalReviews;
+  int? get adminLevel => _adminLevel;
+  List<String>? get permissions => _permissions;
+  String? get createdAt => _createdAt;
+  String? get updatedAt => _updatedAt;
+  bool? get hasStore => _hasStore;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['user_id'] = _userId;
-    map['user_type'] = _userType;
+    map['_id'] = _id;
     map['email'] = _email;
-    map['first_name'] = _firstName;
-    map['last_name'] = _lastName;
-    map['phone_number'] = _phoneNumber;
-    map['old_user_id'] = _oldUserId;
-
+    map['name'] = _name;
+    map['phoneNumber'] = _phoneNumber;
+    map['role'] = _role;
+    map['isVerified'] = _isVerified;
+    map['isBusinessVerified'] = _isBusinessVerified;
+    map['rating'] = _rating;
+    map['totalReviews'] = _totalReviews;
+    map['adminLevel'] = _adminLevel;
+    map['permissions'] = _permissions;
+    map['createdAt'] = _createdAt;
+    map['updatedAt'] = _updatedAt;
+    map['hasStore'] = _hasStore;
     return map;
   }
-
 }

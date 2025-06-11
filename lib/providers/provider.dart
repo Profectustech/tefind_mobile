@@ -13,8 +13,8 @@ class RiverpodProvider {
     (ref) => AppNavNotifier(),
   );
 
-  static final accountProvider =
-      ChangeNotifierProvider<AccountProvider>((ref) => AccountProvider());
+  static final accountProvider = ChangeNotifierProvider<AccountProvider>(
+          (ref) => AccountProvider.init(ref: ref));
   static final navStateProvider =
       ChangeNotifierProvider<NavStateProvider>((ref) => NavStateProvider());
   static final productProvider = ChangeNotifierProvider<ProductProvider>(

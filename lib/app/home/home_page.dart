@@ -63,16 +63,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     String query = _searchController.text.trim();
 
     Future.microtask(() {
-      productProvider.loopCartToAuth();
-      productProvider.setMyCategories();
-      productProvider.setMyNewProduct();
-      productProvider.setMyFeatureProduct();
-      productProvider.setMyFashionProduct();
-      productProvider.setMyElectronicProduct();
-      accountProvider.banner();
-      productProvider.setMyTopBestSeller();
-      // productProvider.setMyNegotiableProduct();
-      productProvider.setMyDiscountedProduct();
+
     });
   }
 
@@ -108,7 +99,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                   fontSize: 16,
                                   fontWeight: FontWeight.w300,
                                 )),
-                            Text('Micheal',
+                            Text('${accountProvider.currentUser.name}',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 16,

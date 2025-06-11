@@ -1,12 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:te_find/app/home/widgets/property_filter.dart';
+import 'package:te_find/app/settings/setting_page.dart';
 import 'package:te_find/app/widgets/custom_button.dart';
 import 'package:te_find/app/widgets/pin_input_field.dart';
 import 'package:te_find/utils/assets_manager.dart';
 
+import '../../providers/account_provider.dart';
 import '../../utils/app_colors.dart';
 import '../home/filter_page.dart';
 import '../home/widgets/category_filter.dart';
@@ -18,96 +22,301 @@ RangeValues _priceRange = const RangeValues(0, 50000);
 
 final double _minPrice = 0;
 final double _maxPrice = 100000;
-
 class BottomModals {
-  static validatePasswordPin({required BuildContext context}) {
+
+  static validatePasswordPin({
+    required BuildContext context,
+    required AccountProvider accountProvider,
+  }) {
     return showModalBottomSheet(
       context: context,
       isDismissible: true,
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
-      builder: (context) => Container(
-        width: double.infinity,
-        height: 510.h,
-        padding: EdgeInsets.symmetric(horizontal: 0.w),
-        margin: EdgeInsets.only(bottom: 4.h, left: 0.w, right: 0.w),
-        decoration: BoxDecoration(
-          color: Colors.white, //ColorThemes.normalBorderColor50,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20.r),
-            topRight: Radius.circular(20.r),
-          ),
-        ),
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            vertical: 50.0.h,
-            horizontal: 50.0.h,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                height: 30.h,
+      builder: (context) {
+        int countdownSeconds = 63; // 1:03 in seconds
+        Timer? timer;
+        return StatefulBuilder(
+          builder: (context, setState) {
+            void startTimer() {
+              timer?.cancel(); // Cancel any existing timer
+              timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
+                if (countdownSeconds > 0) {
+                  setState(() {
+                    countdownSeconds--;
+                  });
+                } else {
+                  t.cancel();
+                }
+              });
+            }
+
+            // Start the timer only once when the sheet is built
+            if (timer == null || !timer!.isActive) {
+              startTimer();
+            }
+
+            String formatTime(int seconds) {
+              int m = seconds ~/ 60;
+              int s = seconds % 60;
+              String mm = m.toString();
+              String ss = s.toString().padLeft(2, '0');
+              return "$mm:$ss";
+            }
+
+            return Container(
+              width: double.infinity,
+              height: 510.h,
+              padding: EdgeInsets.symmetric(horizontal: 0.w),
+              margin: EdgeInsets.only(bottom: 4.h),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20.r),
+                  topRight: Radius.circular(20.r),
+                ),
               ),
-              Center(
-                  child: Column(
-                children: [
-                  PinInputField(
-                    pinNumber: 4,
-                    //  pinController: accountProvider.forgotOtpPinController,
-                  ),
-                  SizedBox(
-                    height: 30.h,
-                  ),
-                  Text('We’ve sent a verification code to',
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.black)),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Text('email@gmail.com',
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.black)),
-                  SizedBox(
-                    height: 50.h,
-                  ),
-                  Text('1:03',
-                      style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.black)),
-                  SizedBox(
-                    height: 50.h,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    spacing: 5.w,
-                    children: [
-                      Text("Didn\'t receive OTP?",
-                          style: TextStyle(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: 50.0.h,
+                  horizontal: 50.0.h,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(height: 30.h),
+                    Center(
+                      child: Column(
+                        children: [
+                          PinInputField(
+                            pinController: accountProvider.signUpPinController,
+                            pinNumber: 6,
+                            onCompleted: (pin) async {
+                              bool success =
+                              await accountProvider.verifyOtpCode(pin);
+                              if (success) {
+                                timer?.cancel(); // Cancel timer on success
+                                Navigator.pop(context); // close modal
+                              }
+                            },
+                          ),
+                          SizedBox(height: 30.h),
+                          Text(
+                            'We’ve sent a verification code to',
+                            style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w400,
-                              color: AppColors.black)),
-                      Text('Click here',
-                          style: TextStyle(
+                              color: AppColors.black,
+                            ),
+                          ),
+                          SizedBox(height: 10.h),
+                          Text(
+                            '${accountProvider.signUpEmailController.text}',
+                            style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
-                              color: AppColors.black)),
-                    ],
-                  ),
-                ],
-              )),
-            ],
-          ),
-        ),
-      ),
+                              color: AppColors.black,
+                            ),
+                          ),
+                          SizedBox(height: 50.h),
+                          Text(
+                            formatTime(countdownSeconds),
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.black,
+                            ),
+                          ),
+                          SizedBox(height: 50.h),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Didn’t receive OTP? ",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.black,
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: countdownSeconds == 0
+                                    ? () async {
+                                  timer?.cancel();
+                                  setState(() {
+                                    countdownSeconds = 63;
+                                  });
+                                  startTimer();
+                                  await accountProvider.resentOTP();
+                                }
+                                    : null,
+                                child: Text(
+                                  'Resend OTP',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: countdownSeconds == 0
+                                        ? AppColors.primaryColor
+                                        : Colors.grey,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    ).whenComplete((){
+      accountProvider.signUpPinController.clear();
+    });
+  }
+
+  static validateForgotPasswordPin({
+    required BuildContext context,
+    required AccountProvider accountProvider,
+  }) {
+    return showModalBottomSheet(
+      context: context,
+      isDismissible: true,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) {
+        int countdownSeconds = 63; // 1:03 in seconds
+        late Timer timer;
+        return StatefulBuilder(
+          builder: (context, setState) {
+            // Start the timer only once when the sheet is built
+            if (countdownSeconds == 63) {
+              timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
+                if (countdownSeconds > 0) {
+                  countdownSeconds--;
+                  setState(() {}); // update UI
+                } else {
+                  t.cancel();
+                }
+              });
+            }
+            String formatTime(int seconds) {
+              int m = seconds ~/ 60;
+              int s = seconds % 60;
+              String mm = m.toString().padLeft(1, '0');
+              String ss = s.toString().padLeft(2, '0');
+              return "$mm:$ss";
+            }
+
+            return Container(
+              width: double.infinity,
+              height: 510.h,
+              padding: EdgeInsets.symmetric(horizontal: 0.w),
+              margin: EdgeInsets.only(bottom: 4.h),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20.r),
+                  topRight: Radius.circular(20.r),
+                ),
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: 50.0.h,
+                  horizontal: 50.0.h,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(height: 30.h),
+                    Center(
+                      child: Column(
+                        children: [
+                          PinInputField(
+                            pinController: accountProvider.forgotPasswordPinController,
+                            pinNumber: 6,
+                            onCompleted: (pin) async {
+                              bool success = await accountProvider.verifyForgotOtpCode(pin);
+                              if (success) {
+                                Navigator.pop(context); // close modal
+                              }
+                            },
+                          ),
+                          SizedBox(height: 30.h),
+                          Text(
+                            'We’ve sent a verification code to',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.black,
+                            ),
+                          ),
+                          SizedBox(height: 10.h),
+                          Text(
+                            '${accountProvider.signUpEmailController.text}',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.black,
+                            ),
+                          ),
+                          SizedBox(height: 50.h),
+                          Text(
+                            formatTime(countdownSeconds),
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.black,
+                            ),
+                          ),
+                          SizedBox(height: 50.h),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Didn’t receive OTP? ",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.black,
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: countdownSeconds == 0
+                                    ? () {
+                                  // TODO: Call resend OTP function here
+                                  print("Resend OTP tapped!");
+                                }
+                                    : null,
+                                child: Text(
+                                  'Click here',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: countdownSeconds == 0 ? Colors.blue : Colors.grey,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
+
 
   //---price---//
   static condition({required BuildContext context}) {

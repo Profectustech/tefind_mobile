@@ -63,7 +63,6 @@ class _CheckOutPage extends ConsumerState<CheckOutPage>
     _tabController = TabController(length: 2, vsync: this);
     Future.microtask(() {
       accountProvider.getPickUpAddress();
-      accountProvider.getCustomerAddress();
       productProvider.fetchCart();
     });
   }
@@ -910,7 +909,7 @@ class _CheckOutPage extends ConsumerState<CheckOutPage>
                                                     Row(
                                                       children: [
                                                         Text(
-                                                            "${accountProvider.currentUser.firstName} ${accountProvider.currentUser.lastName}",
+                                                            "${accountProvider.currentUser.name}}",
                                                             style: TextStyle(
                                                                 color: AppColors
                                                                     .black,

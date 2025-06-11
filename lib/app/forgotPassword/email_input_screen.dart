@@ -32,25 +32,25 @@ class _EmailInputScreenState extends ConsumerState<EmailInputScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   // A boolean to check if the email field is not empty
-  bool get isEmailFilled => accountProvider.usernameController.text.isNotEmpty;
+  // bool get isEmailFilled => accountProvider.usernameController.text.isNotEmpty;
 
   @override
   void initState() {
     super.initState();
     Future.microtask(() {
-      accountProvider.usernameController.addListener(_updateButtonState);
+      // accountProvider.usernameController.addListener(_updateButtonState);
     });
   }
 
   @override
   void dispose() {
-    accountProvider.usernameController.clear();
+    accountProvider.forgotPasswordEmailController.clear();
     super.dispose();
   }
 
   void _updateButtonState() {
     setState(() {
-      isEmailFilled;
+      // isEmailFilled;
     }); // Trigger a rebuild whenever the email input changes
   }
 
@@ -106,7 +106,7 @@ class _EmailInputScreenState extends ConsumerState<EmailInputScreen> {
                   ),
                   CustomTextFormField(
                     label: 'Email',
-                    controller: accountProvider.signInPhoneOrEmailController,
+                    controller: accountProvider.forgotPasswordEmailController,
                     validator: Validators().isEmail,
                   ),
                   SizedBox(height: 100.h),
@@ -117,8 +117,7 @@ class _EmailInputScreenState extends ConsumerState<EmailInputScreen> {
                           AppColors.primaryColor,
                       // : Colors.grey,
                       onPressed: () {
-                        BottomModals.validatePasswordPin(context: context);
-                        NavigatorService().navigateTo(setNewPasswordRoute);
+                        accountProvider.forgetPassword();
                       }),
 
                 ],

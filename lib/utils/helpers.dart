@@ -53,60 +53,60 @@ Future<void> launchPhone(String phone) async {
 }
 
 showToast({String? title, String? message,Widget? icon}) {
-  showte_findSnackBar( message ?? '',icon, true );
-  // if (NavigatorService.navigationKey_.currentContext != null) {
-  //   return showTopSnackBar(
-  //       Overlay.of(NavigatorService.navigationKey_.currentContext!),
-  //       Material(
-  //         color: Colors.transparent,
-  //         child: Container(
-  //             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-  //             decoration: BoxDecoration(
-  //               color: AppColors.lightSuccessColor,
-  //               border: Border.all(
-  //                 color: AppColors.lightSuccessBorderColor,
-  //               ),
-  //               borderRadius: const BorderRadius.all(Radius.circular(12)),
-  //             ),
-  //             alignment: Alignment.center,
-  //             child: Row(
-  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //               crossAxisAlignment: CrossAxisAlignment.start,
-  //               children: [
-  //                 Expanded(
-  //                   child: Column(
-  //                     crossAxisAlignment: CrossAxisAlignment.start,
-  //                     mainAxisAlignment: MainAxisAlignment.center,
-  //                     children: [
-  //                       Text(title == null || title == '' ? "Success" : title,
-  //                           style: TextStyle(
-  //                               color: AppColors.toastTextColor,
-  //                               fontWeight: FontWeight.w700,
-  //                               fontSize: 15)),
-  //                       const SizedBox(
-  //                         height: 2,
-  //                       ),
-  //                       Text(message ?? '',
-  //                           maxLines: 3,
-  //                           style: TextStyle(
-  //                             color: AppColors.toastTextColor,
-  //                             fontWeight: FontWeight.w400,
-  //                             fontSize: 12, // Adjust as needed
-  //                             overflow: TextOverflow.ellipsis,
-  //                           )),
-  //                     ],
-  //                   ),
-  //                 ),
-  //                 // SvgPicture.asset(
-  //                 //   Assets.greenCheckIcon,
-  //                 //   height: 24,
-  //                 //   width: 24,
-  //                 // ),
-  //               ],
-  //             )),
-  //       ),
-  //       padding: const EdgeInsets.all(30));
-  // }
+//  showte_findSnackBar( message ?? '',icon, true );
+  if (NavigatorService.navigationKey_.currentContext != null) {
+    return showTopSnackBar(
+        Overlay.of(NavigatorService.navigationKey_.currentContext!),
+        Material(
+          color: Colors.transparent,
+          child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+              decoration: BoxDecoration(
+                color: AppColors.lightSuccessColor,
+                border: Border.all(
+                  color: AppColors.lightSuccessBorderColor,
+                ),
+                borderRadius: const BorderRadius.all(Radius.circular(12)),
+              ),
+              alignment: Alignment.center,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(title == null || title == '' ? "Success" : title,
+                            style: TextStyle(
+                                color: AppColors.toastTextColor,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 15)),
+                        const SizedBox(
+                          height: 2,
+                        ),
+                        Text(message ?? '',
+                            maxLines: 3,
+                            style: TextStyle(
+                              color: AppColors.toastTextColor,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 12, // Adjust as needed
+                              overflow: TextOverflow.ellipsis,
+                            )),
+                      ],
+                    ),
+                  ),
+                  // SvgPicture.asset(
+                  //   Assets.greenCheckIcon,
+                  //   height: 24,
+                  //   width: 24,
+                  // ),
+                ],
+              )),
+        ),
+        padding: const EdgeInsets.all(30));
+  }
   // if (NavigationService.navigationKey_.currentContext != null) {
   //   return showTopSnackBar(
   //     Overlay.of(NavigationService.navigationKey_.currentContext!),
@@ -121,63 +121,63 @@ showToast({String? title, String? message,Widget? icon}) {
 
 
 showErrorToast({String? title, String? message,Widget? icon}) {
-  showte_findSnackBar( message ?? '',icon, false );
-  // if (NavigatorService.navigationKey_.currentContext != null) {
-  //   return showTopSnackBar(
-  //       Overlay.of(NavigatorService.navigationKey_.currentContext!),
-  //       Material(
-  //         color: Colors.transparent,
-  //         child: Container(
-  //             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-  //             decoration: BoxDecoration(
-  //               color: AppColors.lightErrorColor,
-  //               border: Border.all(
-  //                 color: AppColors.lightErrorBorderColor,
-  //               ),
-  //               borderRadius: const BorderRadius.all(Radius.circular(12)),
-  //             ),
-  //             alignment: Alignment.center,
-  //             child: Row(
-  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //               crossAxisAlignment: CrossAxisAlignment.start,
-  //               children: [
-  //                 Expanded(
-  //                   child: Column(
-  //                     crossAxisAlignment: CrossAxisAlignment.start,
-  //                     mainAxisAlignment: MainAxisAlignment.center,
-  //                     children: [
-  //                       Text(
-  //                           title == null || title == ''
-  //                               ? "Error Occurred"
-  //                               : title,
-  //                           style: TextStyle(
-  //                               color: AppColors.toastTextColor,
-  //                               fontWeight: FontWeight.w700,
-  //                               fontSize: 15)),
-  //                       const SizedBox(
-  //                         height: 2,
-  //                       ),
-  //                       Text(message ?? '',
-  //                           maxLines: 3,
-  //                           style: GoogleFonts.roboto(
-  //                               textStyle: TextStyle(
-  //                             overflow: TextOverflow.ellipsis,
-  //                             color: AppColors.toastTextColor,
-  //                             fontWeight: FontWeight.w400,
-  //                             fontSize: 12,
-  //                           ))),
-  //                     ],
-  //                   ),
-  //                 ),
-  //                 // SvgPicture.asset(
-  //                 //   Assets.closeIcon,
-  //                 //   height: 24,
-  //                 //   width: 24,
-  //                 // )
-  //               ],
-  //             )),
-  //       ));
-  // }
+ // showte_findSnackBar( message ?? '',icon, false );
+  if (NavigatorService.navigationKey_.currentContext != null) {
+    return showTopSnackBar(
+        Overlay.of(NavigatorService.navigationKey_.currentContext!),
+        Material(
+          color: Colors.transparent,
+          child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+              decoration: BoxDecoration(
+                color: AppColors.lightErrorColor,
+                border: Border.all(
+                  color: AppColors.lightErrorBorderColor,
+                ),
+                borderRadius: const BorderRadius.all(Radius.circular(12)),
+              ),
+              alignment: Alignment.center,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                            title == null || title == ''
+                                ? "Error Occurred"
+                                : title,
+                            style: TextStyle(
+                                color: AppColors.toastTextColor,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 15)),
+                        const SizedBox(
+                          height: 2,
+                        ),
+                        Text(message ?? '',
+                            maxLines: 3,
+                            style: GoogleFonts.roboto(
+                                textStyle: TextStyle(
+                              overflow: TextOverflow.ellipsis,
+                              color: AppColors.toastTextColor,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 12,
+                            ))),
+                      ],
+                    ),
+                  ),
+                  // SvgPicture.asset(
+                  //   Assets.closeIcon,
+                  //   height: 24,
+                  //   width: 24,
+                  // )
+                ],
+              )),
+        ));
+  }
   // return showTopSnackBar(
   //   Overlay.of(NavigationService.navigationKey_.currentContext!),
   //   CustomSnackBar.info(
@@ -336,6 +336,8 @@ class Validators {
       return null;
     }
   }
+  final NumberFormat currencyFormat =
+  NumberFormat.currency(decimalDigits: 2, symbol: '\u20A6');
 
 //
   String? isPassword(value) {

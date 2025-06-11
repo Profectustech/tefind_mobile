@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
@@ -12,6 +13,7 @@ import 'package:te_find/services/navigation/navigator_service.dart';
 import 'package:te_find/services/navigation/route_names.dart';
 
 import '../../../utils/app_colors.dart';
+import '../../widgets/currency_formater.dart';
 import '../../widgets/custom_text_form_field.dart';
 
 class SellItems extends ConsumerStatefulWidget {
@@ -570,9 +572,13 @@ class _SellItemsState extends ConsumerState<SellItems> {
                 height: 5.h,
               ),
               CustomTextFormField(
-                //controller: accountProvider.lastNameController,
-                hint: "₦ 0.00",
-                // validator: Validators().isSignUpEmpty,
+                hint: "0.00",
+                prefixText: "₦ ",
+                inputType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  CurrencyInputFormatter(),
+                ],
               ),
               SizedBox(
                 height: 15.h,
