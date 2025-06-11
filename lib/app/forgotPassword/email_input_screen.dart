@@ -48,12 +48,6 @@ class _EmailInputScreenState extends ConsumerState<EmailInputScreen> {
     super.dispose();
   }
 
-  void _updateButtonState() {
-    setState(() {
-      // isEmailFilled;
-    }); // Trigger a rebuild whenever the email input changes
-  }
-
   @override
   Widget build(BuildContext context) {
     accountProvider = ref.watch(RiverpodProvider.accountProvider);

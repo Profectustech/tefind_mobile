@@ -49,17 +49,13 @@ class _NewUserLoginScreenState extends ConsumerState<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    // Add listener to emailController to track changes
-    emailController.addListener(_updateButtonState);
-    passwordController.addListener(_updateButtonState);
+
   }
 
   @override
   void dispose() {
-    emailController.removeListener(_updateButtonState);
-    passwordController.removeListener(_updateButtonState);
-    emailController.dispose();
-    passwordController.dispose();
+    accountProvider.signInPhoneOrEmailController.clear();
+    accountProvider.signInPasswordController.clear();
     super.dispose();
   }
 

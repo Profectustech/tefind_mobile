@@ -28,6 +28,7 @@ class SetNewPassword extends ConsumerStatefulWidget {
 class _SetNewPasswordState extends ConsumerState<SetNewPassword> {
   final NavigatorService _navigation = NavigatorService();
   TextEditingController passWordController = TextEditingController();
+  TextEditingController confirPassWordController = TextEditingController();
   late AccountProvider accountProvider;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -107,7 +108,7 @@ class _SetNewPasswordState extends ConsumerState<SetNewPassword> {
                           ),
                           TextFormField(
                             validator: Validators().isPassword,
-                           // controller: accountProvider.signInPasswordController,
+                            controller: passWordController,
                             decoration: InputDecoration(
                               suffixIcon: IconButton(
                                 icon: Icon(
@@ -169,8 +170,16 @@ class _SetNewPasswordState extends ConsumerState<SetNewPassword> {
                           ),
                           SizedBox(height: 40.h,),
                           TextFormField(
-                            validator: Validators().isPassword,
-                           // controller: accountProvider.signInPasswordController,
+                            validator: (val){
+                              if(val!.isEmpty) {
+                                return "Fill empty field";
+                              }
+                              if(val != passWordController.text) {
+                                return 'Passwords does not match';
+                              }
+                              return null;
+                            },
+                            controller:confirPassWordController,
                             decoration: InputDecoration(
                               suffixIcon: IconButton(
                                 icon: Icon(

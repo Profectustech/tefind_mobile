@@ -1,43 +1,26 @@
 {
   "project_info": {
-    "project_number": "925314903013",
-    "project_id": "tefind-862a6",
-    "storage_bucket": "tefind-862a6.firebasestorage.app"
+    "project_number": "850971239862",
+    "project_id": "tefind-63f5c",
+    "storage_bucket": "tefind-63f5c.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:925314903013:android:11e7389935b1ada99a9d0c",
+        "mobilesdk_app_id": "1:850971239862:android:5e0b133f0dc7a552488d17",
         "android_client_info": {
           "package_name": "com.tefind.tefind"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "925314903013-qq696jhofe3grgt393q6qqgtjgpm5a2b.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDJCbIQTwy4yvOAeP0SLvB6YLdLk5ZrvQk"
+          "current_key": "AIzaSyBeG0XeJ4MNGfJB6-DZUsZGYp84FQ0MO_w"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "925314903013-qq696jhofe3grgt393q6qqgtjgpm5a2b.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "925314903013-pmc945v63eq7cud0jqjjsm247jbokbfq.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.tefind.tefind"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

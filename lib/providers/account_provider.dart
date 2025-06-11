@@ -269,7 +269,30 @@ class AccountProvider extends BaseModel {
       });
       if (HTTPResponseModel.isApiCallSuccess(result)) {
         setBusy(false);
-        locator<NavigatorService>().navigateTo(completeSignUp);
+        showToast(message: result.all['message']);
+        return true;
+      } else {
+        setBusy(false);
+        showErrorToast(message: result.all['message']);
+        return false;
+      }
+    } catch (e) {
+      setBusy(false);
+      showErrorToast(message: e.toString());
+      return false;
+    }
+  }
+
+  verifyForgotPassOtpCode(String pin) async {
+    setBusy(true);
+    try {
+      HTTPResponseModel result = await _authRepository.verifyForgot({
+        "otpCode": pin,
+        "email": forgotPasswordEmailController.text,
+      });
+      if (HTTPResponseModel.isApiCallSuccess(result)) {
+        setBusy(false);
+        showToast(message: result.all['message']);
         return true;
       } else {
         setBusy(false);
@@ -343,7 +366,7 @@ TextEditingController resendOTP =
   ) async {
     setBusy(true);
     try {
-      HTTPResponseModel result = await _authRepository.sendForgotOtp({
+      HTTPResponseModel result = await _authRepository.resendOTp({
         "email": signUpEmailController.text,
       });
       if (HTTPResponseModel.isApiCallSuccess(result)) {
@@ -362,17 +385,18 @@ TextEditingController resendOTP =
     }
   }
 
-  verifyForgotOtpCode(String pin) async {
+  TextEditingController resendForgotOTP =
+  TextEditingController(); //""
+  resentForgotPassOTP(
+      ) async {
     setBusy(true);
     try {
-      HTTPResponseModel result = await _authRepository.verifyForgot({
-        "otpCode": pin,
+      HTTPResponseModel result = await _authRepository.resendOTp({
         "email": forgotPasswordEmailController.text,
       });
       if (HTTPResponseModel.isApiCallSuccess(result)) {
         setBusy(false);
-        NavigatorService().navigateTo(setNewPasswordRoute);
-        // _navigation.navigateTo(setNewPasswordRoute);
+        showToast(message: result.all['message']);
         return true;
       } else {
         setBusy(false);
@@ -385,6 +409,7 @@ TextEditingController resendOTP =
       return false;
     }
   }
+
   TextEditingController forgotPasswordPinController = TextEditingController();
   resetPassword(
     String password,

@@ -49,40 +49,27 @@ class _SignupState extends ConsumerState<Signup> {
     _navigation.navigateTo(signupScreenRoute);
   }
 
-  @override
-  void initState() {
-    super.initState();
-    // Add listener to emailController to track changes
-    emailController.addListener(_updateButtonState);
-    passwordController.addListener(_updateButtonState);
-  }
 
   @override
   void dispose() {
-    emailController.removeListener(_updateButtonState);
-    passwordController.removeListener(_updateButtonState);
-    emailController.dispose();
-    passwordController.dispose();
     super.dispose();
   }
 
-  void _updateButtonState() {
-    setState(() {}); // Trigger a rebuild whenever the email input changes
+
+
+  String? fcmToken;
+  getFCMToken() async {
+    fcmToken = await NotificationHelper.getFcmToken();
   }
 
-  // String? fcmToken;
-  // getFCMToken() async {
-  //   fcmToken = await NotificationHelper.getFcmToken();
-  // }
-
-  // @override
-  // void initState() {
-  //   Future.microtask(() {
-  //     getFCMToken();
-  //     accountProvider.getUserLocation();
-  //   });
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    Future.microtask(() {
+      getFCMToken();
+      print("FCM Token: $fcmToken");
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

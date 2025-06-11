@@ -1123,6 +1123,7 @@ void logout(BuildContext context) {
                     child: CustomButton(
                       onPressed: (){
                         Navigator.pop(context);
+                        NavigatorService().navigateReplacementTo(loginScreenRoute);
                       },
                       fillColor: AppColors.red,
                       label: 'Log out',

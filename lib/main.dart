@@ -22,6 +22,7 @@ import 'app/splashScreen/splashscreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   StorageUtil.createSharedPref();
   setupLocator();
   runApp(
@@ -73,26 +74,27 @@ class _MyAppState extends State<MyApp> {
         ?.requestNotificationsPermission();
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('app_icon');
-    // final DarwinInitializationSettings initializationSettingsDarwin =
-    //     DarwinInitializationSettings(
-    //         requestAlertPermission: true,
-    //         requestBadgePermission: true,
-    //         requestSoundPermission: true,
-    //         onDidReceiveLocalNotification: (int id, String? title, String? body,
-    //             String? payload) async {});
+    final DarwinInitializationSettings initializationSettingsDarwin =
+        DarwinInitializationSettings(
+            requestAlertPermission: true,
+            requestBadgePermission: true,
+            requestSoundPermission: true,
+            // onDidReceiveLocalNotification: (int id, String? title, String? body,
+            //     String? payload) async {}
+        );
 
-    // final InitializationSettings initializationSettings =
-    //     InitializationSettings(
-    //   android: initializationSettingsAndroid,
-    //   iOS: initializationSettingsDarwin,
-    //   macOS: initializationSettingsDarwin,
-    // );
+    final InitializationSettings initializationSettings =
+        InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsDarwin,
+      macOS: initializationSettingsDarwin,
+    );
 
-    // await flutterLocalNotificationsPlugin.initialize(
-    //   initializationSettings,
-    //   onDidReceiveNotificationResponse:
-    //       (NotificationResponse notificationResponse) {},
-    // );
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse:
+          (NotificationResponse notificationResponse) {},
+    );
 
     final NotificationAppLaunchDetails? notificationAppLaunchDetails =
         await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
@@ -102,15 +104,15 @@ class _MyAppState extends State<MyApp> {
       // initialRoute = SecondPage.routeName;
     }
 
-    /// Update the iOS foreground notification presentation options to allow
-    /// heads up notifications.
+    // Update the iOS foreground notification presentation options to allow
+    // heads up notifications.
 
-    // await FirebaseMessaging.instance
-    //     .setForegroundNotificationPresentationOptions(
-    //   alert: true,
-    //   badge: true,
-    //   sound: true,
-    // );
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
 
     FirebaseMessaging.onMessage.listen((RemoteMessage event) {
       if (kDebugMode) {
@@ -137,21 +139,21 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     if (!Platform.isIOS) {
-      Firebase.initializeApp();
-      // Firebase.initializeApp(
-      //   options: FirebaseOptions(
-      //     apiKey: "AIzaSyApaVsozSHhhshXehnTIdoY78KLeDal29M",
-      //     appId: "1:255132733985:android:29196a1e7284d7776a4960",
-      //     messagingSenderId: "255132733985",
-      //     projectId: "rypogeapp",
-      //   ),
-      // );
+    //  Firebase.initializeApp();
+      Firebase.initializeApp(
+        options: FirebaseOptions(
+          apiKey: "AIzaSyBeG0XeJ4MNGfJB6-DZUsZGYp84FQ0MO_w",
+          appId: "1:850971239862:android:5e0b133f0dc7a552488d17",
+          messagingSenderId: "850971239862",
+          projectId: "tefind-63f5c",
+        ),
+      );
     } else {
       Firebase.initializeApp();
     }
 
     registerNotification();
-    // FirebaseMessaging.onBackgroundMessage(_messageHandler);
+     FirebaseMessaging.onBackgroundMessage(_messageHandler);
     super.initState();
   }
 
