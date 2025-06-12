@@ -43,6 +43,7 @@ import '../../app/home/products/product_by_seller.dart';
 import '../../app/profile/about_us.dart';
 import '../../app/profile/help_and_support.dart';
 import '../../app/profile/widgets/edit_dialog.dart';
+import '../../app/settings/create_transaction_pin.dart';
 import '../../app/settings/notifications_page.dart';
 import '../../app/settings/setting_page.dart';
 import '../../models/BestSellerModel.dart';
@@ -310,6 +311,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _getPageRoute(
         routeName: settings.name!,
         viewToShow: const ChangeTransactionPin(),
+      );
+   case createTransactionPin:
+      return _getPageRoute(
+        routeName: settings.name!,
+        viewToShow: const CreateTransactionPin(),
       );
 
     default:

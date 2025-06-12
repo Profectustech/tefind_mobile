@@ -29,63 +29,63 @@ class _HelpAndSupportState extends ConsumerState<HelpAndSupport> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Popular Topics',
-              style: GoogleFonts.roboto(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            SizedBox(
-              height: 20.h,
-            ),
-            Row(
-              spacing: 10.w,
-              children: [
-                Expanded(
-                  child: PopularTopicWidget(
-                    topic: 'Payment Issues',
-                    imagePath: Assets.paymentIssues,
-                  ),
-                ),
-                Expanded(
-                  child: PopularTopicWidget(
-                    topic: 'Shipping & Delivery',
-                    imagePath: Assets.shippingIcon,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
-            Row(
-              spacing: 10.w,
-              children: [
-                Expanded(
-                  child: PopularTopicWidget(
-                    topic: 'Returns & Refunds',
-                    imagePath: Assets.returnIcon,
-                  ),
-                ),
-                Expanded(
-                  child: PopularTopicWidget(
-                    topic: 'Buyer Protection',
-                    imagePath: Assets.privacyIcon,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 20.h,
-            ),
-            Text(
-              'Support Options',
-              style: GoogleFonts.roboto(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
+            // Text(
+            //   'Popular Topics',
+            //   style: GoogleFonts.roboto(
+            //     fontSize: 14.sp,
+            //     fontWeight: FontWeight.w500,
+            //   ),
+            // ),
+            // SizedBox(
+            //   height: 20.h,
+            // ),
+            // Row(
+            //   spacing: 10.w,
+            //   children: [
+            //     Expanded(
+            //       child: PopularTopicWidget(
+            //         topic: 'Payment Issues',
+            //         imagePath: Assets.paymentIssues,
+            //       ),
+            //     ),
+            //     Expanded(
+            //       child: PopularTopicWidget(
+            //         topic: 'Shipping & Delivery',
+            //         imagePath: Assets.shippingIcon,
+            //       ),
+            //     ),
+            //   ],
+            // ),
+            // SizedBox(
+            //   height: 10.h,
+            // ),
+            // Row(
+            //   spacing: 10.w,
+            //   children: [
+            //     Expanded(
+            //       child: PopularTopicWidget(
+            //         topic: 'Returns & Refunds',
+            //         imagePath: Assets.returnIcon,
+            //       ),
+            //     ),
+            //     Expanded(
+            //       child: PopularTopicWidget(
+            //         topic: 'Buyer Protection',
+            //         imagePath: Assets.privacyIcon,
+            //       ),
+            //     ),
+            //   ],
+            // ),
+            // SizedBox(
+            //   height: 20.h,
+            // ),
+            // Text(
+            //   'Support Options',
+            //   style: GoogleFonts.roboto(
+            //     fontSize: 14.sp,
+            //     fontWeight: FontWeight.w500,
+            //   ),
+            // ),
             SizedBox(
               height: 10.h,
             ),

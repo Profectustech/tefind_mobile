@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:te_find/app/home/widgets/shoppingCartListView.dart';
+import 'package:te_find/utils/helpers.dart';
 
 import '../../../providers/account_provider.dart';
 import '../../../providers/provider.dart';
@@ -25,33 +26,38 @@ late AccountProvider accountProvider;
 
 class _EditProfileDialogState extends ConsumerState<EditProfileDialog> {
   // Example state
-  String initials = "LO";
   String? dp;
   String? dpName;
-  String? dpSize;
   takePicture() async {
     final imagePicker = ImagePicker();
     File file = File(await imagePicker
         .pickImage(
-          source: ImageSource.gallery,
-        )
+      source: ImageSource.gallery,
+    )
         .then((pickedFile) => pickedFile!.path));
-
     setState(() {
       dp = file.path;
       dpName = file.path.split('/').last;
-      dpSize = getFileSize(file);
-      accountProvider.updateUserprofileImage(dpName, dp);
     });
+    accountProvider.updateUserprofileImage(dp, dpName);
   }
 
-  String getFileSize(File dp) {
-    int sizeInBytes = dp.lengthSync();
-    double sizeInKB = sizeInBytes / 1024;
-    double sizeInMB = sizeInKB / 1024;
-    return sizeInMB > 1
-        ? "${sizeInMB.toStringAsFixed(2)} MB"
-        : "${sizeInKB.toStringAsFixed(2)} KB";
+  @override
+  void initState() {
+    Future.microtask(() {
+      accountProvider.updateUserNameController.text =
+          accountProvider.currentUser.name ?? '';
+
+    });
+    super.initState();
+
+  }
+
+  @override
+  void dispose() {
+    accountProvider.updateUserNameController.clear();
+
+    super.dispose();
   }
 
   @override
@@ -97,10 +103,13 @@ class _EditProfileDialogState extends ConsumerState<EditProfileDialog> {
                         child: dp == null
                             ? Center(
                                 child: Text(
-                                  "LO",
+                                   accountProvider.currentUser.name!.isNotEmpty
+                                      ? accountProvider.currentUser.name![0].toUpperCase()
+                                      : '',
                                   style: TextStyle(
-                                    color: Colors.white,
+                                    color: AppColors.primaryColor,
                                     fontSize: 19,
+                                    fontWeight: FontWeight.bold
                                   ),
                                 ),
                               )
@@ -172,9 +181,16 @@ class _EditProfileDialogState extends ConsumerState<EditProfileDialog> {
             CustomButton(
               label: 'Save Change',
               fillColor: AppColors.primaryColor,
-              onPressed: () {
-                accountProvider.updateUser();
-                Navigator.of(context).pop();
+              onPressed: () async{
+                if(accountProvider.updateUserNameController.text.isEmpty) {
+                showErrorToast(message: 'Please enter your full name');
+                  return;
+                }
+                bool success =
+                    await accountProvider.updateUser();
+                if (success) {
+                  Navigator.pop(context);
+                }
               },
             )
           ],

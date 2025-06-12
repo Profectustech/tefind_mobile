@@ -345,8 +345,8 @@ TextEditingController updateUserNameController =
       });
       if (HTTPResponseModel.isApiCallSuccess(result)) {
         setBusy(false);
-        showToast(message: 'Username updated successfully');
         getUserProfile();
+        showToast(message: 'Username updated successfully');
         return true;
       } else {
         setBusy(false);
@@ -360,7 +360,33 @@ TextEditingController updateUserNameController =
     }
   }
 
-TextEditingController resendOTP =
+  createTransactionPin(
+      String? pin
+      ) async {
+    setBusy(true);
+    try {
+      HTTPResponseModel result = await _authRepository.setTransactionPin({
+        "pin": pin,
+      });
+      if (HTTPResponseModel.isApiCallSuccess(result)) {
+        setBusy(false);
+        getUserProfile();
+        showToast(message: 'Username updated successfully');
+        return true;
+      } else {
+        setBusy(false);
+        showErrorToast(message: result.all['message']);
+        return false;
+      }
+    } catch (e) {
+      setBusy(false);
+      showErrorToast(message: e.toString());
+      return false;
+    }
+  }
+
+
+  TextEditingController resendOTP =
       TextEditingController(); //""
   resentOTP(
   ) async {
@@ -440,8 +466,8 @@ TextEditingController resendOTP =
 
 
 updateUserprofileImage(
-    String? imageUrl,
     String? dp,
+    String? imageUrl,
   ) async {
     setBusy(true);
     try {
@@ -454,7 +480,6 @@ updateUserprofileImage(
       if (HTTPResponseModel.isApiCallSuccess(result)) {
         setBusy(false);
         getUserProfile();
-        _navigation.navigateTo(loginScreenRoute);
         return true;
       } else {
         setBusy(false);
@@ -543,7 +568,7 @@ updateUserprofileImage(
           final AuthModel auth = AuthModel.fromJson(result.data['token']);
          _token = auth;
          await StorageUtil.setData('token', auth.token);
-        // // await StorageUtil.setData('profile', json.encode(user));
+        await StorageUtil.setData('profile', json.encode(user));
         _navigation.pushNamedAndRemoveUntil(
           bottomNavigationRoute,
         );
@@ -647,10 +672,8 @@ updateUserprofileImage(
     try {
       HTTPResponseModel result = await _authRepository.getUserProfile();
       if (HTTPResponseModel.isApiCallSuccess(result)) {
-        // List<BannerModel> packageList = List<BannerModel>.from(
-        //     result.data.map((item) => BannerModel.fromJson(item)));
-        // _bannerList = packageList;
-        print(result.data);
+        SignInResponse user = SignInResponse.fromJson(result.data);
+        _currentUser = user;
         notifyListeners();
       }
     } catch (e) {}

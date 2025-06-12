@@ -34,33 +34,7 @@ class ProfilePage extends ConsumerStatefulWidget {
 class ProfilePageState extends ConsumerState<ProfilePage> {
   late AccountProvider accountProvider;
   final NavigatorService _navigation = NavigatorService();
-  String? dp;
-  String? dpName;
-  String? dpSize;
 
-  // takePicture() async {
-  //   final imagePicker = ImagePicker();
-  //   File file = File(await imagePicker
-  //       .pickImage(
-  //     source: ImageSource.gallery,
-  //   )
-  //       .then((pickedFile) => pickedFile!.path));
-  //
-  //   setState(() {
-  //     dp = file.path;
-  //     dpName = file.path.split('/').last;
-  //     dpSize = getFileSize(file);
-  //   });
-  // }
-  //
-  // String getFileSize(File dp) {
-  //   int sizeInBytes = dp.lengthSync();
-  //   double sizeInKB = sizeInBytes / 1024;
-  //   double sizeInMB = sizeInKB / 1024;
-  //   return sizeInMB > 1
-  //       ? "${sizeInMB.toStringAsFixed(2)} MB"
-  //       : "${sizeInKB.toStringAsFixed(2)} KB";
-  // }
   @override
   Widget build(BuildContext context) {
     accountProvider = ref.watch(RiverpodProvider.accountProvider);
@@ -88,8 +62,8 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black
-                            .withOpacity(0.2), // corrected method
+                        color:
+                            Colors.black.withOpacity(0.2), // corrected method
                         spreadRadius: 0.2,
                         blurRadius: 0.2,
                         offset: Offset(0, 0.2),
@@ -97,9 +71,8 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                     ],
                   ),
                   child: Center(
-                    child:
-                    SvgPicture.asset(
-                     "assets/images/settingsIcon.svg",
+                    child: SvgPicture.asset(
+                      "assets/images/settingsIcon.svg",
                       color: AppColors.black,
                     ),
                   ),
@@ -111,7 +84,6 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
             width: 16.w,
           ),
         ],
-
         centerTitle: false,
       ),
       body: SafeArea(
@@ -411,15 +383,13 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                       NavigatorService().navigateTo(favouriteScreen);
                     }),
                     Divider(),
-                    profileListTile(Assets.location, "Shipping Addresses",
-                        () {
+                    profileListTile(Assets.location, "Shipping Addresses", () {
                       shippingAddress(context);
                     }),
                     Divider(),
                     profileListTile(Assets.privacyIcon, "Privacy and Security",
                         () {
-                          privacyAndSecurity(context);
-
+                      privacyAndSecurity(context);
                     }),
                     Divider(),
                     profileListTile(Assets.support, "Help and Support", () {
@@ -428,7 +398,6 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                     Divider(),
                     profileListTile(Assets.about, "About", () {
                       NavigatorService().navigateTo(aboutUs);
-
                     }),
                   ]),
             ),
@@ -438,7 +407,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
           ),
           Center(
             child: CustomButton(
-              onPressed: (){
+              onPressed: () {
                 logout(context);
               },
               label: 'Log Out',
@@ -864,20 +833,34 @@ void privacyAndSecurity(BuildContext context) {
                 Text(
                   'Account and Security',
                   style: GoogleFonts.roboto(
-                      fontWeight: FontWeight.w400, fontSize: 14,
-                  color: AppColors.grey),
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14,
+                      color: AppColors.grey),
                 ),
                 SizedBox(height: 15.h),
-                PaymentMethodWidget(
+                PrivacyOption(
                   image: 'changePassword',
                   title: 'Change Password',
-                  onPressed: () {},
+                  subtitle: 'Update your account password',
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    NavigatorService().navigateTo(changePasswordScreenRoute);
+                  },
+                ),
+                SizedBox(height: 15.h),
+                PrivacyOption(
+                  image: 'transactionPin',
+                  title: 'Create Transaction Pin',
+                  subtitle: 'Manage your transaction security PIN',
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    NavigatorService().navigateTo(createTransactionPin);
+                  },
                 ),
                 SizedBox(height: 30.h),
                 CustomButton(
                   onPressed: () {
                     Navigator.of(context).pop();
-
                   },
                   label: 'Close',
                   fillColor: AppColors.primaryColor,
@@ -930,6 +913,76 @@ class PaymentMethodWidget extends StatelessWidget {
                 color: AppColors.grey,
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class PrivacyOption extends StatelessWidget {
+  final String image;
+  final String title;
+  final String subtitle;
+  final Function()? onPressed;
+  const PrivacyOption({
+    super.key,
+    required this.image,
+    required this.title,
+    required this.onPressed,
+    required this.subtitle,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 5.w),
+        height: 47.h,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: AppColors.greyLight, width: 1),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+                width: 37.w,
+                height: 37.h,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle, color: AppColors.lightGreen2),
+                child: Center(
+                    child: SvgPicture.asset(
+                  'assets/images/$image.svg',
+                  height: 20.h,
+                ))),
+            SizedBox(width: 10.w),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  title,
+                  style: GoogleFonts.roboto(
+                      fontSize: 14, fontWeight: FontWeight.w400),
+                ),
+                Text(
+                  subtitle,
+                  style: GoogleFonts.roboto(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.lightTextBlack),
+                ),
+              ],
+            ),
+            Spacer(),
+            Icon(
+              Icons.arrow_forward_ios_rounded,
+              color: AppColors.grey,
+              size: 20,
+            )
           ],
         ),
       ),
@@ -1095,15 +1148,18 @@ void logout(BuildContext context) {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-
               Text(
                 'Log Out',
-                style: GoogleFonts.roboto(fontWeight: FontWeight.bold, fontSize: 18),
+                style: GoogleFonts.roboto(
+                    fontWeight: FontWeight.bold, fontSize: 18),
               ),
               SizedBox(height: 10.h),
               Text(
                 'Are you sure you want to log out?',
-                style: GoogleFonts.roboto(fontWeight: FontWeight.w400, fontSize: 14, color: AppColors.lightTextBlack),
+                style: GoogleFonts.roboto(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14,
+                    color: AppColors.lightTextBlack),
               ),
               SizedBox(height: 20.h),
               Row(
@@ -1111,7 +1167,7 @@ void logout(BuildContext context) {
                 children: [
                   Expanded(
                     child: CustomButton(
-                      onPressed: (){
+                      onPressed: () {
                         Navigator.pop(context);
                       },
                       fillColor: AppColors.greyLight,
@@ -1121,9 +1177,11 @@ void logout(BuildContext context) {
                   ),
                   Expanded(
                     child: CustomButton(
-                      onPressed: (){
+                      onPressed: () {
                         Navigator.pop(context);
-                        NavigatorService().navigateReplacementTo(loginScreenRoute);
+                        StorageUtil.clearData();
+                        NavigatorService()
+                            .navigateReplacementTo(loginScreenRoute);
                       },
                       fillColor: AppColors.red,
                       label: 'Log out',

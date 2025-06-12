@@ -36,6 +36,7 @@ const String changePasswordScreenRoute = "ChangePasswordScreenRoute";
 const String notificationSettingScreenRoute = "NotificationSettingScreenRoute";
 const String deleteAccountScreenRoute = "DeleteAccountScreenRoute";
 const String changeTransactionPINScreenRoute = "changeTransactionPINScreenRoute";
+const String createTransactionPin = "createTransactionPin";
 const String helpScreenRoute = "helpScreenRoute";
 const String legalTermsScreenRoute = "legalTermsScreenRoute";
 const String privacyPolicyScreenRoute = "privacyPolicyScreenRoute";
