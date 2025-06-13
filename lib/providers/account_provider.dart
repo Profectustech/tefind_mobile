@@ -4,8 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:map_location_picker/map_location_picker.dart';
 import 'package:te_find/models/BannerModel.dart';
 import 'package:te_find/models/auth_model.dart';
 import 'package:te_find/models/SignInResponse.dart';
@@ -28,6 +28,8 @@ import 'package:uuid/uuid.dart';
 import '../app/widgets/bottom_modals.dart';
 import '../models/CustomerAddressModel.dart';
 import '../models/PickUpLocationModel.dart';
+import 'package:geocoding/geocoding.dart' as Geocoding;
+import 'package:map_location_picker/map_location_picker.dart' as Picker;
 
 class AccountProvider extends BaseModel {
   final Ref ref;
@@ -44,8 +46,7 @@ class AccountProvider extends BaseModel {
   LoadingState get fetchState => _fetchState;
   List<BannerModel>? _bannerList;
   List<BannerModel>? get bannerList => _bannerList;
-  List<CustomerAddress>? _addressList;
-  List<CustomerAddress>? get addressList => _addressList;
+
   List<PickUpLocation>? _pickUpAddress;
   List<PickUpLocation>? get pickUpAddress => _pickUpAddress;
   int? selectedAddressIndex;
@@ -216,7 +217,6 @@ class AccountProvider extends BaseModel {
         BottomModals.validatePasswordPin(
             accountProvider: this, // ref.watch(RiverpodProvider.accountProvider),
             context: NavigatorService().navigationKey!.currentContext!);
-
         return true;
       } else {
         setBusy(false);
@@ -266,6 +266,7 @@ class AccountProvider extends BaseModel {
       HTTPResponseModel result = await _authRepository.verifyForgot({
         "otpCode": pin,
         "email": signUpEmailController.text,
+        "type": 'signup',
       });
       if (HTTPResponseModel.isApiCallSuccess(result)) {
         setBusy(false);
@@ -289,6 +290,7 @@ class AccountProvider extends BaseModel {
       HTTPResponseModel result = await _authRepository.verifyForgot({
         "otpCode": pin,
         "email": forgotPasswordEmailController.text,
+        "type": 'reset'
       });
       if (HTTPResponseModel.isApiCallSuccess(result)) {
         setBusy(false);
@@ -371,18 +373,20 @@ TextEditingController updateUserNameController =
       if (HTTPResponseModel.isApiCallSuccess(result)) {
         setBusy(false);
         getUserProfile();
-        showToast(message: 'Username updated successfully');
+        showToast(message: result.all['message']);
+        NavigatorService().navigateReplacementTo(bottomNavigationRoute);
         return true;
       } else {
         setBusy(false);
         showErrorToast(message: result.all['message']);
         return false;
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
       setBusy(false);
       showErrorToast(message: e.toString());
       return false;
     }
+
   }
 
 
@@ -458,7 +462,8 @@ TextEditingController updateUserNameController =
       }
     } catch (e) {
       setBusy(false);
-      showErrorToast(message: e.toString());
+      print(e);
+     showErrorToast(message: e.toString());
       return false;
     }
   }
@@ -480,6 +485,8 @@ updateUserprofileImage(
       if (HTTPResponseModel.isApiCallSuccess(result)) {
         setBusy(false);
         getUserProfile();
+        showToast(message: result.all['message']);
+        NavigatorService().pop(NavigatorService().navigationKey!.currentContext!);
         return true;
       } else {
         setBusy(false);
@@ -492,6 +499,57 @@ updateUserprofileImage(
       return false;
     }
   }
+
+TextEditingController bcSellerFullName = TextEditingController();
+TextEditingController bcUserName = TextEditingController();
+TextEditingController bcSellerBussName = TextEditingController();
+TextEditingController bcSellerBussPhoneNumber = TextEditingController();
+TextEditingController bcSellerBussAddress = TextEditingController();
+TextEditingController bcSellerCity = TextEditingController();
+TextEditingController bcSellerState = TextEditingController();
+TextEditingController bcSellerBio = TextEditingController();
+
+  becomeASeller() async {
+    setBusy(true);
+    try {
+      HTTPResponseModel result = await _authRepository.login({
+        "fullname": bcSellerFullName.text,
+        "username": bcUserName.text,
+        "phoneNumber":bcSellerBussPhoneNumber.text,
+        "businessName" : bcSellerBussName.text,
+        "businessAddress": bcSellerBussAddress.text,
+        "city": bcSellerCity.text,
+        "state": bcSellerState.text,
+        "images" : MultipartFile,
+        "location": {
+          "type": "Point",
+          "coordinates": [ _userPosition!.latitude,
+
+            _userPosition!.longitude,]
+        },
+        "bio":bcSellerBio.text
+      });
+      if (HTTPResponseModel.isApiCallSuccess(result)) {
+        setBusy(false);
+        print(result.data);
+        _navigation.pushNamedAndRemoveUntil(
+          bottomNavigationRoute,
+        );
+        return true;
+      } else {
+        setBusy(false);
+        print(result);
+        showErrorToast(message: result.all['error']['message']);
+        return false;
+      }
+    } catch (e) {
+      setBusy(false);
+      print(e.toString());
+      showErrorToast(message: e.toString());
+      return false;
+    }
+  }
+
 
 
 
@@ -512,44 +570,44 @@ updateUserprofileImage(
     }
   }
 
-  Future<bool> getDefaultLocation() async {
-    try {
-      setBusy(true);
-      if (_userPosition == null) {
-        await getUserLocation();
-      }
-      if (_userPosition == null) {
-        return false;
-      }
-      final lat = _userPosition!.latitude;
-      final lng = _userPosition!.longitude;
-      HTTPResponseModel result =
-          await _authRepository.getDefaultLocation(lat, lng);
-      if (HTTPResponseModel.isApiCallSuccess(result)) {
-        setBusy(false);
-        final data = result.data;
-        final address = data['address'];
-        _currentLocationAddress = CustomerAddress(
-          addressTitle: 'Current Location',
-          address: address['village'] ?? '',
-          city: address['city'] ?? '',
-          state: address['state'] ?? '',
-          landmark: '',
-          defaultAddress: false,
-        );
-
-        notifyListeners();
-        return true;
-      } else {
-        setBusy(false);
-        return false;
-      }
-    } catch (e) {
-      debugPrint('Error fetching default location: $e');
-      setBusy(false);
-      return false;
-    }
-  }
+  // Future<bool> getDefaultLocation() async {
+  //   try {
+  //     setBusy(true);
+  //     if (_userPosition == null) {
+  //       await getUserLocation();
+  //     }
+  //     if (_userPosition == null) {
+  //       return false;
+  //     }
+  //     final lat = _userPosition!.latitude;
+  //     final lng = _userPosition!.longitude;
+  //     HTTPResponseModel result =
+  //         await _authRepository.getDefaultLocation(lat, lng);
+  //     if (HTTPResponseModel.isApiCallSuccess(result)) {
+  //       setBusy(false);
+  //       final data = result.data;
+  //       final address = data['address'];
+  //       _currentLocationAddress = CustomerAddress(
+  //         addressTitle: 'Current Location',
+  //         address: address['village'] ?? '',
+  //         city: address['city'] ?? '',
+  //         state: address['state'] ?? '',
+  //         landmark: '',
+  //         defaultAddress: false,
+  //       );
+  //
+  //       notifyListeners();
+  //       return true;
+  //     } else {
+  //       setBusy(false);
+  //       return false;
+  //     }
+  //   } catch (e) {
+  //     debugPrint('Error fetching default location: $e');
+  //     setBusy(false);
+  //     return false;
+  //   }
+  // }
 
   logIn() async {
     // ragovar585@linacit.com
@@ -563,6 +621,7 @@ updateUserprofileImage(
       if (HTTPResponseModel.isApiCallSuccess(result)) {
         setBusy(false);
         print(result.data);
+        showToast(message: result.all['message']);
          SignInResponse user = SignInResponse.fromJson(result.data['user']);
          _currentUser = user;
           final AuthModel auth = AuthModel.fromJson(result.data['token']);
@@ -575,7 +634,9 @@ updateUserprofileImage(
         return true;
       } else {
         setBusy(false);
-        showErrorToast(message: result.all['message']);
+        print(result);
+        showErrorToast(message: result.message);
+        print(result.message);
         return false;
       }
     } catch (e) {
@@ -919,73 +980,155 @@ updateUserprofileImage(
     _navigation.navigateReplacementTo(bottomNavigationRoute);
     return "Success";
   }
+String? shippingAddress = '';
+  TextEditingController businessAddressController = TextEditingController();
+  double? shippingLat;
+  double? shippingLng;
+  void showDestinationAddressPicker(appProvider) async {
+    if (appProvider.userPosition == null) {
+      await appProvider.getUserLocation(); // <-- This should set userPosition
+      if (appProvider.userPosition == null) {
+        print("Could not fetch user location");
+        return;
+      }
+    }
+    Navigator.push(
+      NavigatorService.navigationKey_.currentContext!,
+      MaterialPageRoute(
+        builder: (context) {
+          return MapLocationPicker(
+            location: Location(lat: 9.0820, lng: 8.6753),
+            radius: 1200,
+            apiKey: "AIzaSyBSzjGUZiQN3ixGLGVHs1p3o6mUm9GxYfs",
+            currentLatLng: LatLng(
+              appProvider.userPosition.latitude,
+              appProvider.userPosition.longitude,
+            ),
+            popOnNextButtonTaped: true,
+            backButton: IconButton(
+              onPressed: () {
+                NavigatorService().goBack();
+              },
+              icon: const Icon(Icons.arrow_back_ios),
+            ),
+            hideBackButton: false,
+            onNext: (GeocodingResult? result) {
+              shippingAddress = result?.formattedAddress ?? '';
+              businessAddressController.text = result?.formattedAddress ?? '';
+              shippingLat = result?.geometry.location.lat;
+              shippingLng = result?.geometry.location.lng;
+            },
+          );
+        },
+      ),
+    );
+  }
 
-  Position? locationData;
-  bool? _serviceEnabled;
-
-  LocationPermission? _permissionGranted;
-
-  // Position _userPosition = Position(
-  //   longitude: 0.0, //3.8354081093539407,
-  //   latitude: 0.0, //7.428901726059259,
-  //   timestamp: DateTime.now(),
-  //   accuracy: 0.0,
-  //   altitude: 0.0,
-  //   altitudeAccuracy: 0.0,
-  //   heading: 0.0,
-  //   headingAccuracy: 0.0,
-  //   speed: 0.0,
-  //   speedAccuracy: 0.0,
-  // );
-  // Position get userPosition => _userPosition;
   Position? _userPosition;
   Position? get userPosition => _userPosition;
+  CustomerAddress?  _currentAddress;
+  CustomerAddress? get currentAddress => _currentAddress;
 
-  // getUserLocation() async {
-  //   _serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  //   if (!_serviceEnabled!) {
-  //     showToast(message: "Kindly make your location service enabled");
-  //     if (!_serviceEnabled!) {}
+  //
+  // Future<void> getUserLocationAndAddress() async {
+  //   try {
+  //     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  //     if (!serviceEnabled) {
+  //       showToast(message: "Kindly enable location services");
+  //       return;
+  //     }
+  //
+  //     LocationPermission permission = await Geolocator.checkPermission();
+  //     if (permission == LocationPermission.denied) {
+  //       permission = await Geolocator.requestPermission();
+  //       if (permission == LocationPermission.denied) {
+  //         showToast(message: "Location permission denied");
+  //         return;
+  //       }
+  //     }
+  //
+  //     if (permission == LocationPermission.deniedForever) {
+  //       showToast(message: "Permission permanently denied. Enable it in settings.");
+  //       return;
+  //     }
+  //
+  //     Position position = await Geolocator.getCurrentPosition(
+  //       desiredAccuracy: LocationAccuracy.high,
+  //     );
+  //     _userPosition = position;
+  //
+  //     print(_userPosition!.latitude);
+  //     print(_userPosition!.latitude);
+  //     print(_userPosition!.longitude);
+  //     print(_userPosition!.latitude);
+  //     print(_userPosition!.longitude);
+  //
+  //     // Reverse geocoding
+  //     List<Placemark> placemarks = await placemarkFromCoordinates(
+  //       position.latitude,
+  //       position.longitude,
+  //     );
+  //
+  //     if (placemarks.isNotEmpty) {
+  //       Placemark place = placemarks.first;
+  //
+  //       _currentAddress = CustomerAddress(
+  //         addressTitle: "Current Location",
+  //         address: "${place.street}, ${place.subLocality}",
+  //         city: place.locality ?? '',
+  //         state: place.administrativeArea ?? '',
+  //         lga: place.subAdministrativeArea ?? '',
+  //         landmark: place.name ?? '',
+  //         defaultAddress: true,
+  //       );
+  //
+  //       debugPrint("Customer Address: ${_currentAddress!.toJson()}");
+  //     }
+  //
+  //     notifyListeners();
+  //   } catch (e) {
+  //     debugPrint("Error getting location/address: $e");
+  //     showToast(message: "Failed to get current location.");
   //   }
-  //   _permissionGranted = await Geolocator.checkPermission();
-  //   if (_permissionGranted == LocationPermission.denied) {
-  //     _permissionGranted = await Geolocator.requestPermission();
-  //   }
-  //   locationData = await Geolocator.getCurrentPosition();
-  //   _userPosition = locationData!;
-  //   notifyListeners();
   // }
-  Future<void> getUserLocation() async {
-    try {
-      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      if (!serviceEnabled) {
-        showToast(message: "Kindly enable location services");
-        return;
-      }
-      LocationPermission permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) {
-          showToast(message: "Location permission denied");
-          return;
-        }
-      }
-      if (permission == LocationPermission.deniedForever) {
-        showToast(
-            message: "Permission permanently denied. Enable it in settings.");
-        return;
-      }
 
-      Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
-      _userPosition = position;
-      notifyListeners();
-    } catch (e) {
-      debugPrint("Error getting location: $e");
-      showToast(message: "Failed to get current location.");
+  Future<void> getUserLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Check if location services are enabled
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // You can show a dialog to prompt the user to enable location services
+      print('Location services are disabled.');
+      return;
     }
+
+    // Check permission
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        print('Location permissions are denied');
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      print('Location permissions are permanently denied');
+      return;
+    }
+
+    // Get the current position
+    _userPosition = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+
+    print('User location: ${userPosition!.latitude}, ${userPosition!.longitude}');
+    notifyListeners();
   }
+
+
 
   // sign up method
   final signUpMethodProvider = StateProvider<String>((ref) => '');

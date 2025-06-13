@@ -162,7 +162,7 @@ class _CategoryFilterState extends State<FilterPage> {
                     });
                   },
                   child: Container(
-                    margin: EdgeInsets.only(right: 5),
+                    margin: EdgeInsets.only(right: 2.w),
                     padding: EdgeInsets.all(3),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,

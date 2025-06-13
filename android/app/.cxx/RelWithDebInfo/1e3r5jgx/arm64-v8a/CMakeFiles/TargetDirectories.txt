@@ -1,0 +1,2 @@
+C:/Users/USER/StudioProjects/TeFindMobile/android/app/.cxx/RelWithDebInfo/1e3r5jgx/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/Users/USER/StudioProjects/TeFindMobile/android/app/.cxx/RelWithDebInfo/1e3r5jgx/arm64-v8a/CMakeFiles/rebuild_cache.dir

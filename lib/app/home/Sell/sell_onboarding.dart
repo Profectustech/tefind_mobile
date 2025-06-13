@@ -6,9 +6,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:te_find/app/widgets/custom_button.dart';
 import 'package:te_find/utils/assets_manager.dart';
+import 'package:te_find/utils/map_helper.dart';
 
 import '../../../providers/otherProvider.dart';
 import '../../../providers/provider.dart';
@@ -27,30 +29,30 @@ class _SellOnboardingState extends ConsumerState<SellOnboarding> {
   late OtherProvider otherProvider;
   String? dp;
   String? dpName;
-  String? dpSize;
+
+  LatLng? selectedLatLng;
+  String? selectedAddress;
 
   takePicture() async {
     final imagePicker = ImagePicker();
     File file = File(await imagePicker
         .pickImage(
-          source: ImageSource.gallery,
-        )
+      source: ImageSource.gallery,
+    )
         .then((pickedFile) => pickedFile!.path));
 
     setState(() {
       dp = file.path;
       dpName = file.path.split('/').last;
-      dpSize = getFileSize(file);
     });
   }
 
-  String getFileSize(File dp) {
-    int sizeInBytes = dp.lengthSync();
-    double sizeInKB = sizeInBytes / 1024;
-    double sizeInMB = sizeInKB / 1024;
-    return sizeInMB > 1
-        ? "${sizeInMB.toStringAsFixed(2)} MB"
-        : "${sizeInKB.toStringAsFixed(2)} KB";
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() async {
+
+    });
   }
 
   @override
@@ -62,35 +64,37 @@ class _SellOnboardingState extends ConsumerState<SellOnboarding> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            /// Profile Image
             Center(
               child: Stack(
                 children: [
                   Container(
-                      height: 80.h,
-                      width: 80.w,
-                      decoration: BoxDecoration(
-                          image: dp != null
-                              ? DecorationImage(
-                                  image: FileImage(File(dp!)),
-                                  fit: BoxFit.cover,
-                                )
-                              : null,
-                          shape: BoxShape.circle,
-                          color: AppColors.greyLight),
-                      child: dp == null
-                          ? Center(
-                              child: SvgPicture.asset(
-                              Assets.userProfile,
-                              color: AppColors.grey,
-                            ))
-                          : null),
+                    height: 80.h,
+                    width: 80.w,
+                    decoration: BoxDecoration(
+                      image: dp != null
+                          ? DecorationImage(
+                        image: FileImage(File(dp!)),
+                        fit: BoxFit.cover,
+                      )
+                          : null,
+                      shape: BoxShape.circle,
+                      color: AppColors.greyLight,
+                    ),
+                    child: dp == null
+                        ? Center(
+                      child: SvgPicture.asset(
+                        Assets.userProfile,
+                        color: AppColors.grey,
+                      ),
+                    )
+                        : null,
+                  ),
                   Positioned(
                     bottom: 0,
                     right: 0,
                     child: GestureDetector(
-                      onTap: () {
-                        takePicture();
-                      },
+                      onTap: takePicture,
                       child: Container(
                         height: 32.h,
                         width: 32.w,
@@ -109,137 +113,84 @@ class _SellOnboardingState extends ConsumerState<SellOnboarding> {
                 ],
               ),
             ),
-            SizedBox(
-              height: 20.h,
-            ),
-            Text(
-              'Full Name',
-              style: GoogleFonts.roboto(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
+            SizedBox(height: 20.h),
+
+            /// Full Name
+            labelText('Full Name'),
             CustomTextFormField(
-              //controller: accountProvider.lastNameController,
               hint: "Enter your full name",
-               validator: Validators().isEmpty,
+              validator: Validators().isEmpty,
             ),
-            SizedBox(
-              height: 20.h,
-            ),
-            Text(
-              'User Name',
-              style: GoogleFonts.roboto(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
+            SizedBox(height: 20.h),
+
+            /// User Name
+            labelText('User Name'),
             CustomTextFormField(
-              //controller: accountProvider.lastNameController,
-              hint: "Enter your User name",
-              // validator: Validators().isSignUpEmpty,
+              hint: "Enter your user name",
             ),
-            SizedBox(
-              height: 20.h,
-            ),
-            Text(
-              'Business Name (Optional)',
-              style: GoogleFonts.roboto(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
+            SizedBox(height: 20.h),
+
+            /// Business Name
+            labelText('Business Name (Optional)'),
             CustomTextFormField(
-              //controller: accountProvider.lastNameController,
               hint: "Enter your business name",
-              // validator: Validators().isSignUpEmpty,
             ),
-            SizedBox(
-              height: 20.h,
-            ),
-            Text(
-              'Phone Number',
-              style: GoogleFonts.roboto(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
+            SizedBox(height: 20.h),
+
+            /// Phone Number
+            labelText('Phone Number'),
             CustomTextFormField(
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
                 LengthLimitingTextInputFormatter(11),
               ],
-              //controller: accountProvider.lastNameController,
               hint: "Enter your phone number",
-              // validator: Validators().isSignUpEmpty,
             ),
-            SizedBox(
-              height: 20.h,
-            ),
-            Text(
-              'BVN',
-              style: GoogleFonts.roboto(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
+            SizedBox(height: 20.h),
+
+            /// BVN
+            labelText('BVN'),
             CustomTextFormField(
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
                 LengthLimitingTextInputFormatter(11),
               ],
-              //controller: accountProvider.lastNameController,
-              hint: "Enter your bvn number",
-              // validator: Validators().isSignUpEmpty,
+              hint: "Enter your BVN number",
             ),
-            SizedBox(
-              height: 20.h,
-            ),
-            Text(
-              'Bio',
-              style: GoogleFonts.roboto(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
+            SizedBox(height: 20.h),
+
+            /// Bio
+            labelText('Bio'),
             CustomTextFormField(
               maxLines: 5,
+              hint: "Tell buyers about yourself and your business",
+            ),
+            SizedBox(height: 20.h),
 
-              //controller: accountProvider.lastNameController,
-              hint: "Tell buyer's about yourself and your business",
-              // validator: Validators().isSignUpEmpty,
-            ),
-            SizedBox(
-              height: 20.h,
-            ),
+            SizedBox(height: 30.h),
+
+            /// Next Button
             CustomButton(
               onPressed: () {
+                // You can pass selectedLatLng and selectedAddress to the provider here if needed
                 otherProvider.regPosition(1);
               },
               label: 'Next',
               fillColor: AppColors.primaryColor,
               buttonTextColor: Colors.white,
-            )
+            ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget labelText(String label) {
+    return Text(
+      label,
+      style: GoogleFonts.roboto(
+        fontSize: 14.sp,
+        fontWeight: FontWeight.w500,
       ),
     );
   }

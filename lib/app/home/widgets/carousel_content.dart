@@ -76,7 +76,7 @@ class _CarouselContentState extends ConsumerState<CarouselContent> {
                   children: [
                     Container(
                       padding: EdgeInsets.symmetric(
-                          horizontal: 10.w, vertical: 20.h),
+                          horizontal: 10.w, vertical: 10.h),
                       height: 141.h,
                       width: double.infinity,
                       decoration: BoxDecoration(
@@ -222,7 +222,7 @@ class _CarouselContentState extends ConsumerState<CarouselContent> {
                             height: 10.h,
                           ),
                           SizedBox(
-                            height: 40,
+                            height: 30,
                             child: ListView.builder(
                               itemCount: items.length,
                               shrinkWrap: true,
@@ -631,19 +631,19 @@ class _CarouselContentState extends ConsumerState<CarouselContent> {
                               ],
                             ),
                             SizedBox(
-                              height: 15.h,
+                              height: 10.h,
                             ),
                             Column(
                               children: [
                                 Text(
                                   "I source materials from the platform to create upcycled fashion pieces. It's reduced my material costs by 60% while helping me create truly unique designs.",
                                   style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 12.sp,
                                       fontWeight: FontWeight.w400,
                                       color: AppColors.lightTextBlack),
                                 ),
                                 SizedBox(
-                                  height: 5,
+                                  height: 5.h,
                                 ),
                                 Row(
                                   spacing: 5.w,
@@ -656,7 +656,7 @@ class _CarouselContentState extends ConsumerState<CarouselContent> {
                                       "Saved 45kg of texttile waste",
                                       overflow: TextOverflow.ellipsis,
                                       style: GoogleFonts.roboto(
-                                          fontSize: 12,
+                                          fontSize: 12.sp,
                                           fontWeight: FontWeight.w400,
                                           color: AppColors.green),
                                     ),
@@ -687,7 +687,7 @@ class _CarouselContentState extends ConsumerState<CarouselContent> {
                             'Start Your Sustainable Journey',
                             textAlign: TextAlign.center,
                             style: GoogleFonts.roboto(
-                              fontSize: 20,
+                              fontSize: 20.sp,
                               fontWeight: FontWeight.w600,
                               color: AppColors.white,
                             ),
@@ -699,7 +699,7 @@ class _CarouselContentState extends ConsumerState<CarouselContent> {
                             'Every purchase makes a difference to our planet',
                             textAlign: TextAlign.center,
                             style: GoogleFonts.roboto(
-                              fontSize: 14,
+                              fontSize: 14.sp,
                               fontWeight: FontWeight.w400,
                               color: AppColors.white,
                             ),
@@ -716,7 +716,7 @@ class _CarouselContentState extends ConsumerState<CarouselContent> {
                             child: Text(
                               'Start Shopping',
                               style: GoogleFonts.roboto(
-                                fontSize: 14,
+                                fontSize: 14.sp,
                                 fontWeight: FontWeight.w500,
                                 color: AppColors.primaryColor,
                               ),
@@ -729,7 +729,8 @@ class _CarouselContentState extends ConsumerState<CarouselContent> {
                       height: 20.h,
                     ),
                     Container(
-                      height: 151.h,
+                      padding: EdgeInsets.symmetric(vertical: 6.h),
+                      height: 153.h,
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: AppColors.white,
@@ -746,31 +747,28 @@ class _CarouselContentState extends ConsumerState<CarouselContent> {
                       ),
                       child: Column(
                         children: [
-                          SizedBox(
-                            height: 20.h,
-                          ),
                           Text(
                             'Our Environmental Commitment',
                             textAlign: TextAlign.center,
                             style: GoogleFonts.roboto(
-                              fontSize: 18,
+                              fontSize: 18.sp,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                           SizedBox(
-                            height: 10.h,
+                            height: 5.h,
                           ),
                           Text(
                             "We're dedicated to reducing fashion's environmental",
                             textAlign: TextAlign.center,
                             style: GoogleFonts.roboto(
-                              fontSize: 14,
+                              fontSize: 14.sp,
                               fontWeight: FontWeight.w400,
                               color: AppColors.lightTextBlack,
                             ),
                           ),
                           SizedBox(
-                            height: 20.h,
+                            height: 10.h,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -845,7 +843,7 @@ class _CarouselContentState extends ConsumerState<CarouselContent> {
                           "Terms of Service",
                           textAlign: TextAlign.center,
                           style: GoogleFonts.roboto(
-                            fontSize: 14,
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.w400,
                             color: AppColors.lightTextBlack,
                           ),
@@ -861,7 +859,7 @@ class _CarouselContentState extends ConsumerState<CarouselContent> {
                           "Contact us ",
                           textAlign: TextAlign.center,
                           style: GoogleFonts.roboto(
-                            fontSize: 14,
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.w400,
                             color: AppColors.lightTextBlack,
                           ),
@@ -874,7 +872,7 @@ class _CarouselContentState extends ConsumerState<CarouselContent> {
                         "© 2025 . All rights reserved. ",
                         textAlign: TextAlign.center,
                         style: GoogleFonts.roboto(
-                          fontSize: 14,
+                          fontSize: 14.sp,
                           fontWeight: FontWeight.w400,
                           color: AppColors.lightTextBlack,
                         ),
@@ -913,8 +911,8 @@ class SustainablyShopBenefit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-      height: 106.h,
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+      height: 110.h,
       width: double.infinity,
       decoration: BoxDecoration(
         color: AppColors.white,
@@ -942,15 +940,15 @@ class SustainablyShopBenefit extends StatelessWidget {
                 Text(
                   title,
                   style: GoogleFonts.roboto(
-                    fontSize: 16,
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                SizedBox(height: 5.h),
+                SizedBox(height: 3.h),
                 Text(
                   description,
                   style: GoogleFonts.roboto(
-                    fontSize: 14,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w400,
                   ),
                 ),

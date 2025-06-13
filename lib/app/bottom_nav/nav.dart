@@ -42,7 +42,7 @@ class _NavState extends ConsumerState<BottomNav> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      key: globalScaffoldKey,
+     key: globalScaffoldKey,
       body: pages[navStateProvider.currentTabIndex],
       endDrawer: CartDrawer(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

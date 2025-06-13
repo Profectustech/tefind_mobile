@@ -14,6 +14,8 @@ class SignInResponse {
     String? createdAt,
     String? updatedAt,
     bool? hasStore,
+    String? image,
+    String? username,
   }) {
     _id = id;
     _email = email;
@@ -29,10 +31,12 @@ class SignInResponse {
     _createdAt = createdAt;
     _updatedAt = updatedAt;
     _hasStore = hasStore;
+    _image = image;
+    _username = username;
   }
 
   SignInResponse.fromJson(dynamic json) {
-    _id = json['_id'];
+    _id = json['_id'] ?? json['id'];
     _email = json['email'];
     _name = json['name'];
     _phoneNumber = json['phoneNumber'];
@@ -46,6 +50,8 @@ class SignInResponse {
     _createdAt = json['createdAt'];
     _updatedAt = json['updatedAt'];
     _hasStore = json['hasStore'];
+    _image = json['image'];
+    _username = json['username'];
   }
 
   String? _id;
@@ -62,6 +68,8 @@ class SignInResponse {
   String? _createdAt;
   String? _updatedAt;
   bool? _hasStore;
+  String? _image;
+  String? _username;
 
   // Getters
   String? get id => _id;
@@ -78,6 +86,8 @@ class SignInResponse {
   String? get createdAt => _createdAt;
   String? get updatedAt => _updatedAt;
   bool? get hasStore => _hasStore;
+  String? get image => _image;
+  String? get username => _username;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -95,6 +105,8 @@ class SignInResponse {
     map['createdAt'] = _createdAt;
     map['updatedAt'] = _updatedAt;
     map['hasStore'] = _hasStore;
+    map['image'] = _image;
+    map['username'] = _username;
     return map;
   }
 }

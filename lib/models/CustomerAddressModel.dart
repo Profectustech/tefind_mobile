@@ -4,6 +4,7 @@ class CustomerAddress {
   final String address;
   final String city;
   final String state;
+  final String lga;
   final String landmark;
   final bool defaultAddress;
 
@@ -13,6 +14,7 @@ class CustomerAddress {
     this.address = '',
     this.city = '',
     this.state = '',
+    this.lga = '',
     this.landmark = '',
     this.defaultAddress = false,
   });
@@ -24,6 +26,7 @@ class CustomerAddress {
       address: json['address'] ?? '',
       city: json['city'] ?? '',
       state: json['state'] ?? '',
+      lga: json['lga'] ?? '',
       landmark: json['landmark'] ?? '',
       defaultAddress: json['default_address'] ?? false,
     );
@@ -36,6 +39,7 @@ class CustomerAddress {
       'address': address,
       'city': city,
       'state': state,
+      'lga': lga,
       'landmark': landmark,
       'default_address': defaultAddress,
     };
@@ -47,6 +51,7 @@ class CustomerAddress {
     String? address,
     String? city,
     String? state,
+    String? lga,
     String? landmark,
     bool? defaultAddress,
   }) {
@@ -56,6 +61,7 @@ class CustomerAddress {
       address: address ?? this.address,
       city: city ?? this.city,
       state: state ?? this.state,
+      lga: lga ?? this.lga,
       landmark: landmark ?? this.landmark,
       defaultAddress: defaultAddress ?? this.defaultAddress,
     );
@@ -76,6 +82,7 @@ class CustomerAddress {
         other.address == address &&
         other.city == city &&
         other.state == state &&
+        other.lga == lga &&
         other.landmark == landmark &&
         other.defaultAddress == defaultAddress;
   }
@@ -88,6 +95,7 @@ class CustomerAddress {
       address,
       city,
       state,
+      lga,
       landmark,
       defaultAddress,
     );

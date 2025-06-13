@@ -493,7 +493,7 @@ class _SellItemsState extends ConsumerState<SellItems> {
                 physics: NeverScrollableScrollPhysics(),
                 mainAxisSpacing: 8,
                 crossAxisSpacing: 8,
-                childAspectRatio: 1.35, // Adjust as needed (width / height)
+                childAspectRatio: 1.30, // Adjust as needed (width / height)
                 children: List.generate(conditions.length, (index) {
                   bool isSelected = selectedIndex == index;
                   return GestureDetector(

@@ -293,11 +293,11 @@ class _ProductBySellerState extends ConsumerState<ProductBySeller> {
                           ),
                         ),
                         SizedBox(
-                          height: 40.h,
+                          height: 20.h,
                         ),
                         Divider(),
                         SizedBox(
-                          height: 20.h,
+                          height: 10.h,
                         ),
                         Text(
                           "42",
@@ -318,7 +318,7 @@ class _ProductBySellerState extends ConsumerState<ProductBySeller> {
                   ),
                 ),
                 SizedBox(
-                  height: 20.h,
+                  height: 10.h,
                 ),
                 DefaultTabController(
                   length: 3,
@@ -527,7 +527,7 @@ class _ProductBySellerState extends ConsumerState<ProductBySeller> {
                                     Container(
                                       padding: EdgeInsets.symmetric(
                                           vertical: 10.h, horizontal: 10.w),
-                                      height: 394.h,
+                                     // height: 394.h,
                                       width: double.infinity,
                                       decoration:
                                           BoxDecoration(color: AppColors.white),
@@ -735,7 +735,7 @@ class ProfileReviewWidget extends StatelessWidget {
       children: [
         Container(
           padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
-          height: 205.h,
+         // height: 205.h,
           decoration: BoxDecoration(color: AppColors.white),
           child: Center(
             child: Column(
@@ -996,7 +996,6 @@ class ProfileReviewWidget extends StatelessWidget {
         ),
         Container(
           padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
-          height: 217.h,
           decoration: BoxDecoration(color: AppColors.white),
           child: Center(
             child: Column(

@@ -37,19 +37,34 @@ class _NewUserLoginScreenState extends ConsumerState<LoginScreen> {
 
   bool passwordVisible = true;
 
-  // bool get isFormValid {
-  //   return accountProvider.signInPhoneOrEmailController.text.isNotEmpty &&
-  //       accountProvider.signInPasswordController.text.isNotEmpty;
-  // }
+  final ValueNotifier<bool> _isButtonEnabled = ValueNotifier(false);
+  void _updateButtonState() {
+    final isEmailNotEmpty = accountProvider.signInPhoneOrEmailController.text.isNotEmpty;
+    final isPasswordNotEmpty = accountProvider.signInPasswordController.text.isNotEmpty;
+    _isButtonEnabled.value = isEmailNotEmpty && isPasswordNotEmpty;
+  }
 
   void signUp() {
     _navigation.navigateTo(signupScreenRoute);
   }
+  String? fcmToken;
+  getFCMToken() async {
+    fcmToken = await NotificationHelper.getFcmToken();
+    print("FCM Token: $fcmToken");
+  }
+
 
   @override
   void initState() {
+    Future.microtask(() {
+      setState(() {
+     //   accountProvider.getUserLocationAndAddress();
+        accountProvider.signInPhoneOrEmailController.addListener(_updateButtonState);
+        accountProvider.signInPasswordController.addListener(_updateButtonState);
+        _updateButtonState();
+      });
+    });
     super.initState();
-
   }
 
   @override
@@ -58,24 +73,6 @@ class _NewUserLoginScreenState extends ConsumerState<LoginScreen> {
     accountProvider.signInPasswordController.clear();
     super.dispose();
   }
-
-  void _updateButtonState() {
-    setState(() {}); // Trigger a rebuild whenever the email input changes
-  }
-
-  // String? fcmToken;
-  // getFCMToken() async {
-  //   fcmToken = await NotificationHelper.getFcmToken();
-  // }
-
-  // @override
-  // void initState() {
-  //   Future.microtask(() {
-  //     getFCMToken();
-  //     accountProvider.getUserLocation();
-  //   });
-  //   super.initState();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -170,8 +167,8 @@ class _NewUserLoginScreenState extends ConsumerState<LoginScreen> {
                             disabledBorder: const OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(5)),
-                              borderSide:
-                                  BorderSide(width: 1, color: AppColors.greyLight),
+                              borderSide: BorderSide(
+                                  width: 1, color: AppColors.greyLight),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius:
@@ -212,28 +209,22 @@ class _NewUserLoginScreenState extends ConsumerState<LoginScreen> {
                           ],
                         ),
                         SizedBox(height: 80.h),
-                        CustomButton(
-                            label: "Sign In",
-                            fillColor:
-                                // isFormValid ?
-                                AppColors.primaryColor,
-                            // : Colors.grey,
-                            onPressed:
-                                // isFormValid
-                                //     ?
-                                () {
+                        ValueListenableBuilder<bool>(
+                          valueListenable: _isButtonEnabled,
+                          builder: (context, isEnabled, _) {
+                            return CustomButton(
+                              label: "Sign In",
+                              fillColor: isEnabled ? AppColors.primaryColor : Colors.grey,
+                              onPressed: isEnabled
+                                  ? () {
+                                if (_formKey.currentState!.validate()) {
                                   accountProvider.logIn();
-                              // if (_formKey.currentState!.validate()) {
-                              //
-                              //   // _navigation.navigateReplacementTo(
-                              //   //     bottomNavigationRoute);
-                              //
-                              // }
-                              //    locator<NavigatorService>().navigateTo(bottomNavigationRoute);
-                           //   accountProvider.logIn();
-                            }
-                            // : null,
-                            ),
+                                }
+                              }
+                                  : null,
+                            );
+                          },
+                        ),
                         SizedBox(height: 30.h),
                         Row(
                           spacing: 7.w,
@@ -247,8 +238,9 @@ class _NewUserLoginScreenState extends ConsumerState<LoginScreen> {
                                   fontWeight: FontWeight.w400),
                             ),
                             InkWell(
-                              onTap: (){
-                                locator<NavigatorService>().navigateTo(signupScreenRoute);
+                              onTap: () {
+                                locator<NavigatorService>()
+                                    .navigateTo(signupScreenRoute);
                               },
                               child: Text(
                                 'Sign Up',

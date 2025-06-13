@@ -78,6 +78,7 @@ dependencies:
   device_preview: ^1.2.0
   webview_flutter: ^4.11.0
   fl_chart: ^1.0.0
+  google_maps_flutter:
 
 
 
@@ -94,9 +95,9 @@ dev_dependencies:
 
 
 flutter_launcher_icons:
-  android: "launcher_icon"
+  android: "ic_launcher"
   ios: true
-  image_path: "assets/images/app_icon.jpg"
+  image_path: "assets/images/app_icon.png"
 
 
 

@@ -7,8 +7,6 @@ import 'package:te_find/models/MarketListModel.dart';
 import 'package:te_find/models/Products.dart';
 import 'package:te_find/models/WishListModel.dart';
 import 'package:te_find/models/brandListModel.dart';
-import 'package:te_find/models/featured_product_model.dart';
-import 'package:te_find/models/product.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:te_find/models/util_model.dart';
 import 'package:te_find/providers/provider.dart';
@@ -19,13 +17,10 @@ import 'package:te_find/utils/assets_manager.dart';
 import 'package:te_find/utils/base_model.dart';
 import 'package:te_find/utils/enums.dart';
 import 'package:te_find/utils/helpers.dart';
-
 import '../models/BestSellerModel.dart';
-import '../models/productModel.dart';
 
 class ProductProvider extends BaseModel {
   final Ref reader;
-
   ProductProvider.init({
     required this.reader,
   });

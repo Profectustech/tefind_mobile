@@ -7,7 +7,7 @@
     <application
         android:label="Tefind"
         android:name="${applicationName}"
-        android:icon="@mipmap/launcher_icon">
+        android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -38,6 +38,8 @@
         <meta-data
             android:name="com.google.android.gms.auth.api.signin"
             android:value="@string/default_web_client_id"/>
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBSzjGUZiQN3ixGLGVHs1p3o6mUm9GxYfs"/>
 
     </application>
     <!-- Required to query activities that can process text, see:

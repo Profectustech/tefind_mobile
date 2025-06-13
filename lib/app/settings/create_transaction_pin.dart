@@ -72,6 +72,27 @@ class _CreateTransactionPinState extends ConsumerState<CreateTransactionPin> {
     //}
   }
 
+  final ValueNotifier<bool> _isButtonEnabled = ValueNotifier(false);
+  void _updateButtonState() {
+    final isPinComplete = createPinController.text.length == 4;
+    _isButtonEnabled.value = isPinComplete;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      createPinController.addListener(_updateButtonState);
+      _updateButtonState(); // Initial check
+    });
+  }
+
+  @override
+  void dispose() {
+    createPinController.clear();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     accountProvider = ref.watch(RiverpodProvider.accountProvider);
@@ -112,16 +133,21 @@ class _CreateTransactionPinState extends ConsumerState<CreateTransactionPin> {
               SizedBox(
                 height: 120.h,
               ),
-              CustomButton(
-                  fillColor: AppColors.primaryColor,
-                  label: 'Proceed',
-                  onPressed: (){
-                    bool isSuccess=
-                    accountProvider.createTransactionPin(createPinController.text);
-                    if (isSuccess) {
-                      completeTransactionPIN();
-                    }
-                  },)
+              ValueListenableBuilder<bool>(
+                valueListenable: _isButtonEnabled,
+                builder: (context, isEnabled, _) {
+                  return CustomButton(
+                    label: "Proceed",
+                    fillColor: isEnabled ? AppColors.primaryColor : Colors.grey,
+                    onPressed: isEnabled
+                        ? () {
+                            accountProvider
+                                .createTransactionPin(createPinController.text);
+                          }
+                        : null,
+                  );
+                },
+              ),
             ],
           ),
         ),

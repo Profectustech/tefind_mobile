@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:te_find/app/widgets/custom_button.dart';
 import 'package:te_find/utils/assets_manager.dart';
 
+import '../../../providers/account_provider.dart';
 import '../../../providers/otherProvider.dart';
 import '../../../providers/provider.dart';
 import '../../../utils/app_colors.dart';
@@ -20,10 +21,12 @@ class SellerProfile extends ConsumerStatefulWidget {
 
 class _SellerProfileState extends ConsumerState<SellerProfile> {
   late OtherProvider otherProvider;
+  late AccountProvider accountProvider;
   bool isChecked = false;
   bool isChecked1 = false;
   @override
   Widget build(BuildContext context) {
+    accountProvider = ref.watch(RiverpodProvider.accountProvider);
     otherProvider = ref.watch(RiverpodProvider.otherProvider);
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -47,12 +50,13 @@ class _SellerProfileState extends ConsumerState<SellerProfile> {
                       height: 10.h,
                     ),
                     CustomTextFormField(
-                      maxLines: 4,
-
-                      //controller: accountProvider.lastNameController,
-                      hint: "Enter your Address",
-                      // validator: Validators().isSignUpEmpty,
-                    ),
+                        onTap: () {
+                          accountProvider
+                              .showDestinationAddressPicker(accountProvider);
+                        },
+                        controller: accountProvider.businessAddressController,
+                        hint: '',
+                        maxLines: 2),
                     SizedBox(
                       height: 20.h,
                     ),

@@ -152,6 +152,8 @@ class BottomModals {
                                   });
                                   startTimer();
                                   await accountProvider.resentOTP();
+                                  accountProvider.signUpPinController.clear();
+
                                 }
                                     : null,
                                 child: Text(
@@ -358,15 +360,17 @@ class BottomModals {
             topRight: Radius.circular(20.r),
           ),
         ),
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            vertical: 10.0.h,
-            horizontal: 10.0.w,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [Condition()],
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              vertical: 10.0.h,
+              horizontal: 10.0.w,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [Condition()],
+            ),
           ),
         ),
       ),

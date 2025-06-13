@@ -6,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:te_find/app/bottom_nav/nav_service.dart';
-import 'package:te_find/app/home/check_out.dart';
 import 'package:te_find/app/home/products/product_detail_fullScreen.dart';
 import 'package:te_find/app/widgets/custom_button.dart';
 import 'package:te_find/providers/payment_provider.dart';

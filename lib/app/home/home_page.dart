@@ -61,8 +61,11 @@ class _HomePageState extends ConsumerState<HomePage> {
   void initState() {
     super.initState();
     String query = _searchController.text.trim();
-
     Future.microtask(() {
+      if (accountProvider.currentAddress?.state == null ||
+          accountProvider.currentAddress?.state == '') {
+      //  accountProvider.getUserLocationAndAddress();
+      }
 
     });
   }

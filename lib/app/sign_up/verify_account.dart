@@ -40,10 +40,17 @@ class _CompleteSignUpState extends ConsumerState<CompleteSignUp> {
 
   bool passwordVisible = true;
 
-  // bool get isFormValid {
-  //   return accountProvider.signInPhoneOrEmailController.text.isNotEmpty &&
-  //       accountProvider.signInPasswordController.text.isNotEmpty;
-  // }
+  final ValueNotifier<bool> _isButtonEnabled = ValueNotifier(false);
+  void _updateButtonState() {
+    final isEmailNotEmpty = accountProvider.signUpEmailController.text.isNotEmpty;
+    final isFirstNameNotEmpty = accountProvider.firstNameController.text.isNotEmpty;
+    final isLastNameNotEmpty = accountProvider.lastNameController.text.isNotEmpty;
+    final isUserNameNotEmpty = accountProvider.signUpNameController.text.isNotEmpty;
+    final isPhoneNotEmpty = accountProvider.signUpPhoneController.text.isNotEmpty;
+    final isPasswordNotEmpty = accountProvider.signUpPasswordController.text.isNotEmpty;
+    _isButtonEnabled.value = isEmailNotEmpty && isPasswordNotEmpty && isFirstNameNotEmpty && isLastNameNotEmpty && isUserNameNotEmpty && isPhoneNotEmpty;
+  }
+
 
   void signUp() {
     _navigation.navigateTo(signupScreenRoute);
@@ -59,6 +66,13 @@ String? fcmToken;
   void initState() {
     Future.microtask(() {
       getFCMToken();
+      accountProvider.firstNameController.addListener(_updateButtonState);
+      accountProvider.lastNameController.addListener(_updateButtonState);
+      accountProvider.signUpNameController.addListener(_updateButtonState);
+      accountProvider.signUpEmailController.addListener(_updateButtonState);
+      accountProvider.signUpPhoneController.addListener(_updateButtonState);
+      accountProvider.signUpPasswordController.addListener(_updateButtonState);
+      _updateButtonState();
     });
     super.initState();
   }
@@ -219,24 +233,21 @@ String? fcmToken;
                                   cursorColor: Colors.black,
                                 ),
                                 SizedBox(height: 40.h),
-                                CustomButton(
-                                    label: "Sign Up",
-                                    fillColor:
-                                    // isFormValid ?
-                                    AppColors.primaryColor,
-                                    // : Colors.grey,
-                                    onPressed:
-                                    // isFormValid
-                                    //     ?
-                                        () {
-                                      accountProvider.completeAccountRegistration();
-                                      // if (_formKey.currentState!.validate()) {
-                                      //   accountProvider.startRegistration();
-                                      //
-                                      // }
-
-                                    }
-                                  // : null,
+                                ValueListenableBuilder<bool>(
+                                  valueListenable: _isButtonEnabled,
+                                  builder: (context, isEnabled, _) {
+                                    return CustomButton(
+                                      label: "Sign Up",
+                                      fillColor: isEnabled ? AppColors.primaryColor : Colors.grey,
+                                      onPressed: isEnabled
+                                          ? () {
+                                        if (_formKey.currentState!.validate()) {
+                                          accountProvider.completeAccountRegistration();
+                                        }
+                                      }
+                                          : null,
+                                    );
+                                  },
                                 ),
                                 SizedBox(height: 15.h),
                                 Row(

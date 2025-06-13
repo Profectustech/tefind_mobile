@@ -493,7 +493,7 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
                   color: AppColors.white,
                   borderRadius: BorderRadius.circular(16.r)),
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -507,7 +507,7 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
                     SizedBox(height: 10.h),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      spacing: 15.w,
+                      spacing: 10.w,
                       children: [
                         Container(
                           height: 48.h,
@@ -565,7 +565,7 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
                                 Text(
                                   '(36 reviews)',
                                   style: TextStyle(
-                                    fontSize: 14,
+                                    fontSize: 11.sp,
                                     color: Colors.grey[600],
                                   ),
                                 ),

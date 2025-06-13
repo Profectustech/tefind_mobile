@@ -9,7 +9,6 @@ import 'package:te_find/app/forgotPassword/set_new_password.dart';
 import 'package:te_find/app/home/Sell/sell_items.dart';
 import 'package:te_find/app/home/categories_page.dart';
 import 'package:te_find/app/home/products/all_fashion_product.dart';
-import 'package:te_find/app/home/check_out.dart';
 import 'package:te_find/app/home/confirmed_payment.dart';
 import 'package:te_find/app/home/products/fashion_page.dart';
 import 'package:te_find/app/home/pay_with_wallet.dart';
@@ -45,6 +44,7 @@ import '../../app/profile/help_and_support.dart';
 import '../../app/profile/widgets/edit_dialog.dart';
 import '../../app/settings/create_transaction_pin.dart';
 import '../../app/settings/notifications_page.dart';
+import '../../app/settings/privavy_and_security.dart';
 import '../../app/settings/setting_page.dart';
 import '../../models/BestSellerModel.dart';
 import '../../models/CategoriesModel.dart';
@@ -70,16 +70,16 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         routeName: settings.name!,
         viewToShow: const OnboardingScreen(),
       );
+    case privacyAnsSecurity:
+      return _getPageRoute(
+        routeName: settings.name!,
+        viewToShow: const PrivavyAndSecurity(),
+      );
 
     case emailInputScreenRoute:
       return _getPageRoute(
         routeName: settings.name!,
         viewToShow: const EmailInputScreen(),
-      );
-    case checkoutScreenRoute:
-      return _getPageRoute(
-        routeName: settings.name!,
-        viewToShow: CheckOutPage(),
       );
     case confirmedPaymentPage:
       return _getPageRoute(

@@ -138,6 +138,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+
     if (!Platform.isIOS) {
     //  Firebase.initializeApp();
       Firebase.initializeApp(

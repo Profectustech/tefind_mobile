@@ -32,30 +32,29 @@ class _SetNewPasswordState extends ConsumerState<SetNewPassword> {
   late AccountProvider accountProvider;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  // A boolean to check if the email field is not emptys
-  // bool get isEmailFilled => accountProvider.usernameController.text.isNotEmpty;
+  final ValueNotifier<bool> _isButtonEnabled = ValueNotifier(false);
+  void _updateButtonState() {
+    final isEmailNotEmpty = passWordController.text.isNotEmpty;
+    final isFirstNameNotEmpty = confirPassWordController.text.isNotEmpty;
+    _isButtonEnabled.value = isEmailNotEmpty && isFirstNameNotEmpty;
+  }
   bool passwordVisible = true;
   bool confPasswordVisible = true;
   @override
   void initState() {
     super.initState();
     Future.microtask(() {
-      // accountProvider.usernameController.addListener(_updateButtonState);
+      passWordController.addListener(_updateButtonState);
+      confirPassWordController.addListener(_updateButtonState);
     });
   }
 
   @override
   void dispose() {
     passWordController.clear();
+    confirPassWordController.clear();
     super.dispose();
   }
-
-  void _updateButtonState() {
-    setState(() {
-      // isEmailFilled;
-    }); // Trigger a rebuild whenever the email input changes
-  }
-
   @override
   Widget build(BuildContext context) {
     accountProvider = ref.watch(RiverpodProvider.accountProvider);
@@ -240,15 +239,22 @@ class _SetNewPasswordState extends ConsumerState<SetNewPassword> {
                             cursorColor: Colors.black,
                           ),
                           SizedBox(height: 100.h),
-                          CustomButton(
-                              label: "Proceed",
-                              fillColor:
-                              // isFormValid ?
-                              AppColors.primaryColor,
-                              // : Colors.grey,
-                              onPressed: () {
-                                accountProvider.resetPassword(passWordController.text);
-                              }),
+                          ValueListenableBuilder<bool>(
+                            valueListenable: _isButtonEnabled,
+                            builder: (context, isEnabled, _) {
+                              return CustomButton(
+                                label: "Proceed",
+                                fillColor: isEnabled ? AppColors.primaryColor : Colors.grey,
+                                onPressed: isEnabled
+                                    ? () {
+                                  if (_formKey.currentState!.validate()) {
+                                    accountProvider.resetPassword(passWordController.text);
+                                  }
+                                }
+                                    : null,
+                              );
+                            },
+                          ),
 
                         ],
                       ),

@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -94,23 +95,58 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
             height: 10.h,
           ),
           Container(
-            padding: EdgeInsets.symmetric(vertical: 20.h),
-            height: 438.h,
+            padding: EdgeInsets.symmetric(vertical: 15.h),
+            height: 440.h,
             decoration: BoxDecoration(color: AppColors.white),
             child: Center(
               child: Column(
                 children: [
+                  // Container(
+                  //   height: 96.h,
+                  //   width: 96.w,
+                  //   decoration: BoxDecoration(
+                  //     border: Border.all(width: 2.w, color: AppColors.primaryColor),
+                  //     shape: BoxShape.circle,
+                  //     color: AppColors.primaryColor,
+                  //     image: accountProvider.currentUser.image != null
+                  //         ? DecorationImage(
+                  //       image: NetworkImage(accountProvider.currentUser.image!),
+                  //       fit: BoxFit.cover,
+                  //     )
+                  //         : null,
+                  //   ),
+                  // ),
                   Container(
                     height: 96.h,
                     width: 96.w,
                     decoration: BoxDecoration(
-                      border:
-                          Border.all(width: 2.w, color: AppColors.primaryColor),
                       shape: BoxShape.circle,
+                      border: Border.all(width: 2.w, color: AppColors.primaryColor),
                       color: AppColors.primaryColor,
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/bag.png'),
-                        fit: BoxFit.cover,
+                    ),
+                    child: accountProvider.currentUser.image != null
+                        ? Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: NetworkImage(accountProvider.currentUser.image!),
+                          fit: BoxFit.cover,
+                          onError: (exception, stackTrace) {
+                            // Optional: you can handle fallback here too
+                          },
+                        ),
+                      ),
+                    )
+                        : Center(
+                      child: Text(
+                        accountProvider.currentUser.name!.isNotEmpty
+                            ? accountProvider.currentUser.name![0].toUpperCase()
+                            : '',
+                        style: TextStyle(
+                          color: AppColors.white,
+                          fontSize: 30.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
@@ -118,7 +154,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                     height: 10.h,
                   ),
                   Text(
-                    "${accountProvider.currentUser.name}",
+                    "@${accountProvider.currentUser.username}",
                     overflow: TextOverflow.ellipsis,
                     style: GoogleFonts.roboto(
                       fontSize: 20,
@@ -129,7 +165,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                     "Fashion enthusiast & sustainable shopper",
                     overflow: TextOverflow.ellipsis,
                     style: GoogleFonts.roboto(
-                        fontSize: 14,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
                         color: AppColors.grey),
                   ),
@@ -137,8 +173,8 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                     height: 5.h,
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 10.h),
-                    height: 112.h,
+                    padding: EdgeInsets.symmetric(vertical: 5.h),
+                    height: 114.h,
                     width: 343.w,
                     decoration: BoxDecoration(
                         color: AppColors.lightGreen2,
@@ -148,7 +184,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                         Text(
                           "Wallet",
                           style: GoogleFonts.roboto(
-                              fontSize: 14,
+                              fontSize: 14.sp,
                               fontWeight: FontWeight.w400,
                               color: AppColors.grey),
                         ),
@@ -159,7 +195,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                           "₦125,500",
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.roboto(
-                            fontSize: 24,
+                            fontSize: 24.sp,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -227,14 +263,14 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                           Text(
                             "42",
                             style: GoogleFonts.roboto(
-                                fontSize: 20,
+                                fontSize: 20.sp,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.primaryColor),
                           ),
                           Text(
                             "Item Listed",
                             style: GoogleFonts.roboto(
-                                fontSize: 12,
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.w400,
                                 color: AppColors.lightTextBlack),
                           ),
@@ -251,14 +287,14 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                           Text(
                             "18",
                             style: GoogleFonts.roboto(
-                                fontSize: 20,
+                                fontSize: 20.sp,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.primaryColor),
                           ),
                           Text(
                             "Item Sold",
                             style: GoogleFonts.roboto(
-                                fontSize: 12,
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.w400,
                                 color: AppColors.lightTextBlack),
                           ),
@@ -278,9 +314,9 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                         height: 38.h,
                         width: 136.w,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(8.r),
                             border: Border.all(
-                                color: AppColors.primaryColor, width: 1)),
+                                color: AppColors.primaryColor, width: 1.w)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           spacing: 7.w,
@@ -304,8 +340,8 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
             height: 10,
           ),
           Container(
-              padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
-              height: 508.h,
+              padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
+              height: 512.h,
               width: double.infinity,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
@@ -369,7 +405,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                 color: AppColors.white,
                 borderRadius: BorderRadius.circular(16)),
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0.w, vertical: 20.h),
+              padding: EdgeInsets.symmetric(horizontal: 20.0.w, vertical: 10.h),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -389,7 +425,8 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                     Divider(),
                     profileListTile(Assets.privacyIcon, "Privacy and Security",
                         () {
-                      privacyAndSecurity(context);
+                          NavigatorService().navigateTo(privacyAnsSecurity);
+
                     }),
                     Divider(),
                     profileListTile(Assets.support, "Help and Support", () {
@@ -411,6 +448,20 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
                 logout(context);
               },
               label: 'Log Out',
+              buttonTextColor: AppColors.red,
+              borderColor: AppColors.red,
+              fillColor: AppColors.white,
+            ),
+          ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  Center(
+            child: CustomButton(
+              onPressed: () {
+                logout(context);
+              },
+              label: 'Delete Account',
               buttonTextColor: AppColors.red,
               borderColor: AppColors.red,
               fillColor: AppColors.white,
@@ -801,77 +852,6 @@ void withdrawFunds(BuildContext context) {
   );
 }
 
-void privacyAndSecurity(BuildContext context) {
-  showDialog(
-    context: context,
-    barrierDismissible: true,
-    builder: (context) {
-      return Dialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Close Icon
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Privacy & Security',
-                      style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.w500, fontSize: 14),
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.close),
-                      onPressed: () => Navigator.of(context).pop(),
-                    )
-                  ],
-                ),
-                SizedBox(height: 10.h),
-                Text(
-                  'Account and Security',
-                  style: GoogleFonts.roboto(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14,
-                      color: AppColors.grey),
-                ),
-                SizedBox(height: 15.h),
-                PrivacyOption(
-                  image: 'changePassword',
-                  title: 'Change Password',
-                  subtitle: 'Update your account password',
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    NavigatorService().navigateTo(changePasswordScreenRoute);
-                  },
-                ),
-                SizedBox(height: 15.h),
-                PrivacyOption(
-                  image: 'transactionPin',
-                  title: 'Create Transaction Pin',
-                  subtitle: 'Manage your transaction security PIN',
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    NavigatorService().navigateTo(createTransactionPin);
-                  },
-                ),
-                SizedBox(height: 30.h),
-                CustomButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  label: 'Close',
-                  fillColor: AppColors.primaryColor,
-                ),
-              ]),
-        ),
-      );
-    },
-  );
-}
-
 class PaymentMethodWidget extends StatelessWidget {
   final String image;
   final String title;
@@ -913,76 +893,6 @@ class PaymentMethodWidget extends StatelessWidget {
                 color: AppColors.grey,
               ),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class PrivacyOption extends StatelessWidget {
-  final String image;
-  final String title;
-  final String subtitle;
-  final Function()? onPressed;
-  const PrivacyOption({
-    super.key,
-    required this.image,
-    required this.title,
-    required this.onPressed,
-    required this.subtitle,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 5.w),
-        height: 47.h,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: AppColors.greyLight, width: 1),
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-                width: 37.w,
-                height: 37.h,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle, color: AppColors.lightGreen2),
-                child: Center(
-                    child: SvgPicture.asset(
-                  'assets/images/$image.svg',
-                  height: 20.h,
-                ))),
-            SizedBox(width: 10.w),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  title,
-                  style: GoogleFonts.roboto(
-                      fontSize: 14, fontWeight: FontWeight.w400),
-                ),
-                Text(
-                  subtitle,
-                  style: GoogleFonts.roboto(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.lightTextBlack),
-                ),
-              ],
-            ),
-            Spacer(),
-            Icon(
-              Icons.arrow_forward_ios_rounded,
-              color: AppColors.grey,
-              size: 20,
-            )
           ],
         ),
       ),

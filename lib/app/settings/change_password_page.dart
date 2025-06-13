@@ -16,43 +16,91 @@ class ChangePasswordPage extends ConsumerStatefulWidget {
   @override
   ConsumerState createState() => _ChangePasswordPageState();
 }
-TextEditingController emailController = TextEditingController();
-TextEditingController phoneController = TextEditingController();
-late AccountProvider accountProvider;
-bool currentPasswordVisible = true;
-bool newPasswordVisible = true;
-bool confirmPasswordVisible = true;
 
 class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
+  TextEditingController currentPassword = TextEditingController();
+  TextEditingController newPassword = TextEditingController();
+  TextEditingController confirmPassword = TextEditingController();
+  late AccountProvider accountProvider;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool currentPasswordVisible = true;
+  bool newPasswordVisible = true;
+  bool confirmPasswordVisible = true;
+
+  final ValueNotifier<bool> _isButtonEnabled = ValueNotifier(false);
+  void _updateButtonState() {
+    final isCurrentPasswordNotEmpty = currentPassword.text.isNotEmpty;
+    final isNewPasswordNotEmpty =
+        accountProvider.settingPasswordController.text.isNotEmpty;
+    final isConfirmPasswordNotEmpty = confirmPassword.text.isNotEmpty;
+    _isButtonEnabled.value = isCurrentPasswordNotEmpty &&
+        isNewPasswordNotEmpty &&
+        isConfirmPasswordNotEmpty;
+  }
+
+  @override
+  void initState() {
+    Future.microtask(() {
+      currentPassword.addListener(_updateButtonState);
+      accountProvider.settingPasswordController.addListener(_updateButtonState);
+      confirmPassword.addListener(_updateButtonState);
+      _updateButtonState();
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    currentPassword.clear();
+    confirmPassword.clear();
+    accountProvider.settingPasswordController.clear();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     accountProvider = ref.watch(RiverpodProvider.accountProvider);
     return Scaffold(
-      appBar: UtilityAppBar(text: "Change Password", hasActions: false, centerTitle: false,),
-          body: SingleChildScrollView(
-            child: Padding(padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              child: Column(
+      appBar: UtilityAppBar(
+        text: "Change Password",
+        hasActions: false,
+        centerTitle: false,
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          child: Form(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            key: _formKey,
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 30.h,),
-                  Text(
-                    'Create a strong password to protect your account',
-                    style: GoogleFonts.roboto(
-                      color: AppColors.lightTextBlack,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                    ),
+              children: [
+                SizedBox(
+                  height: 30.h,
+                ),
+                Text(
+                  'Create a strong password to protect your account',
+                  style: GoogleFonts.roboto(
+                    color: AppColors.lightTextBlack,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
                   ),
-                  SizedBox(height: 30.h,),
-                  Text(
-                    'Current Password',
-                    style: GoogleFonts.roboto(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
+                ),
+                SizedBox(
+                  height: 30.h,
+                ),
+                Text(
+                  'Current Password',
+                  style: GoogleFonts.roboto(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
                   ),
-                  SizedBox(height: 10.h,),
-                  TextFormField(
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                TextFormField(
+                  controller: currentPassword,
                   validator: Validators().isEmpty,
                   decoration: InputDecoration(
                     suffixIcon: IconButton(
@@ -69,7 +117,6 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                         });
                       },
                     ),
-
                     hintStyle: const TextStyle(
                       color: Colors.grey,
                     ),
@@ -82,18 +129,20 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                     filled: true,
                     focusedBorder: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
-                      borderSide: BorderSide(
-                          width: 1, color: AppColors.primaryColor),
+                      borderSide:
+                          BorderSide(width: 1, color: AppColors.primaryColor),
                     ),
                     disabledBorder: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
-                      borderSide:
-                      BorderSide(width: 1, color:  AppColors.greyLight,),
+                      borderSide: BorderSide(
+                        width: 1,
+                        color: AppColors.greyLight,
+                      ),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                       borderSide: BorderSide(
-                        color:  AppColors.greyLight,
+                        color: AppColors.greyLight,
                         width: 1.w,
                       ),
                     ),
@@ -109,15 +158,19 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                   style: const TextStyle(color: Colors.black),
                   cursorColor: Colors.black,
                 ),
-                SizedBox(height: 20.h,),
-                  Text(
-                    'New Password',
-                    style: GoogleFonts.roboto(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                Text(
+                  'New Password',
+                  style: GoogleFonts.roboto(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
                   ),
-                  SizedBox(height: 10.h,),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
                 TextFormField(
                   validator: Validators().isEmpty,
                   controller: accountProvider.settingPasswordController,
@@ -136,7 +189,6 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                         });
                       },
                     ),
-
                     hintStyle: const TextStyle(
                       color: Colors.grey,
                     ),
@@ -149,18 +201,20 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                     filled: true,
                     focusedBorder: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
-                      borderSide: BorderSide(
-                          width: 1, color: AppColors.primaryColor),
+                      borderSide:
+                          BorderSide(width: 1, color: AppColors.primaryColor),
                     ),
                     disabledBorder: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
-                      borderSide:
-                      BorderSide(width: 1, color:  AppColors.greyLight,),
+                      borderSide: BorderSide(
+                        width: 1,
+                        color: AppColors.greyLight,
+                      ),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(5)),
                       borderSide: BorderSide(
-                        color:  AppColors.greyLight,
+                        color: AppColors.greyLight,
                         width: 1.w,
                       ),
                     ),
@@ -178,27 +232,30 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                   style: const TextStyle(color: Colors.black),
                   cursorColor: Colors.black,
                 ),
-
-                SizedBox(height: 20.h,),
-                  Text(
-                    'Confirm New Password',
-                    style: GoogleFonts.roboto(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                Text(
+                  'Confirm New Password',
+                  style: GoogleFonts.roboto(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
                   ),
-                  SizedBox(height: 10.h,),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
                 TextFormField(
-                  validator: (val){
-                    if(val!.isEmpty) {
+                  controller: confirmPassword,
+                  validator: (val) {
+                    if (val!.isEmpty) {
                       return "Fill empty field";
                     }
-                    if(val != accountProvider.settingPasswordController.text) {
+                    if (val != accountProvider.settingPasswordController.text) {
                       return 'Passwords does not match';
                     }
                     return null;
                   },
-
                   decoration: InputDecoration(
                     suffixIcon: IconButton(
                       icon: Icon(
@@ -226,18 +283,20 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                     filled: true,
                     focusedBorder: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
-                      borderSide: BorderSide(
-                          width: 1, color: AppColors.primaryColor),
+                      borderSide:
+                          BorderSide(width: 1, color: AppColors.primaryColor),
                     ),
                     disabledBorder: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
-                      borderSide:
-                      BorderSide(width: 1, color:  AppColors.greyLight,),
+                      borderSide: BorderSide(
+                        width: 1,
+                        color: AppColors.greyLight,
+                      ),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                       borderSide: BorderSide(
-                        color:  AppColors.greyLight,
+                        color: AppColors.greyLight,
                         width: 1.w,
                       ),
                     ),
@@ -253,38 +312,47 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                   style: const TextStyle(color: Colors.black),
                   cursorColor: Colors.black,
                 ),
-                  SizedBox(height: 30),
-                  Wrap(
-                    spacing: 10,
-                    runSpacing: 10,
-                    children: [
-                      buildCriteriaIndicator(
-                          "8 characters", accountProvider.criteria1Satisfied),
-                      buildCriteriaIndicator(
-                          "Uppercase", accountProvider.hasUppercaseLetter),
-                      buildCriteriaIndicator(
-                          "Lowercase", accountProvider.hasLowercaseLetter),
-                      buildCriteriaIndicator(
-                          "Number", accountProvider.hasNumber),
-                      buildCriteriaIndicator(
-                          "Special Character", accountProvider.hasSymbol),
-                    ],
-                  ),
-
-                  SizedBox(height: 30.h,),
-
-                  CustomButton(
-                    label: "Update Password",
-                    fillColor:
-                         AppColors.primaryColor,
-
-                    onPressed: (){},
-                  ),
-
-
-
-                ],),),
+                SizedBox(height: 30),
+                Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  children: [
+                    buildCriteriaIndicator(
+                        "8 characters", accountProvider.criteria1Satisfied),
+                    buildCriteriaIndicator(
+                        "Uppercase", accountProvider.hasUppercaseLetter),
+                    buildCriteriaIndicator(
+                        "Lowercase", accountProvider.hasLowercaseLetter),
+                    buildCriteriaIndicator("Number", accountProvider.hasNumber),
+                    buildCriteriaIndicator(
+                        "Special Character", accountProvider.hasSymbol),
+                  ],
+                ),
+                SizedBox(
+                  height: 30.h,
+                ),
+                ValueListenableBuilder<bool>(
+                  valueListenable: _isButtonEnabled,
+                  builder: (context, isEnabled, _) {
+                    return CustomButton(
+                      label: "Update Password",
+                      fillColor:
+                          isEnabled ? AppColors.primaryColor : Colors.grey,
+                      onPressed: isEnabled
+                          ? () {
+                              if (_formKey.currentState!.validate()) {
+                                accountProvider.completeAccountRegistration();
+                              }
+                            }
+                          : null,
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
+        ),
+      ),
     );
   }
 }

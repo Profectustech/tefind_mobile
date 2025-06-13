@@ -72,6 +72,7 @@ class _HomePageState extends ConsumerState<CategoriesPage> {
       appBar: UtilityAppBar(
         centerTitle: false,
         text: "Categories",
+        hasActions: false,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -234,109 +235,109 @@ class _HomePageState extends ConsumerState<CategoriesPage> {
                 SizedBox(
                   height: 20.h,
                 ),
-                Text(
-                  "Popular Tags",
-                  style: GoogleFonts.roboto(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                SizedBox(height: 20.h),
-            Wrap(
-              spacing: 10, // space between items
-              runSpacing: 10, // space between lines
-              children: tags.map((tag) {
-                return Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30),
-                    border: Border.all(color: Colors.grey.shade300),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 2,
-                        offset: Offset(0, 1),
-                      )
-                    ],
-                  ),
-                  child: Text(
-                    tag,
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                );
-              }).toList(),),
-                SizedBox(height: 20.h),
-
-                Text(
-                  "Trending Now",
-                  style: GoogleFonts.roboto(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                SizedBox(height: 20.h),
-                GridView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 9,
-                    crossAxisSpacing: 15,
-                    childAspectRatio: 0.90,
-                  ),
-                  itemCount: 4,
-                  itemBuilder: (context, index) {
-                    //  final feed = productProvider.allProduct![index];
-                    return Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 10.h, vertical: 10.h),
-                      width: 103.66.w,
-                      height: 132.h,
-                      decoration: BoxDecoration(
-                          color: AppColors.white,
-                          borderRadius: BorderRadius.circular(16.r),
-                        image: DecorationImage(
-                          image: AssetImage(
-                              'assets/images/cloth.png'),
-                          fit: BoxFit.cover,
-                        ),),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: 15.h,
-                          ),
-                          Text(
-                            "Sustainable",
-                            overflow: TextOverflow.ellipsis,
-                            style: GoogleFonts.roboto(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.white
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          Text(
-                            "245 items",
-                            overflow: TextOverflow.ellipsis,
-                            style: GoogleFonts.roboto(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.grey
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
+            //     Text(
+            //       "Popular Tags",
+            //       style: GoogleFonts.roboto(
+            //         fontSize: 16,
+            //         fontWeight: FontWeight.w600,
+            //       ),
+            //     ),
+            //     SizedBox(height: 20.h),
+            // Wrap(
+            //   spacing: 10, // space between items
+            //   runSpacing: 10, // space between lines
+            //   children: tags.map((tag) {
+            //     return Container(
+            //       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            //       decoration: BoxDecoration(
+            //         color: Colors.white,
+            //         borderRadius: BorderRadius.circular(30),
+            //         border: Border.all(color: Colors.grey.shade300),
+            //         boxShadow: [
+            //           BoxShadow(
+            //             color: Colors.black12,
+            //             blurRadius: 2,
+            //             offset: Offset(0, 1),
+            //           )
+            //         ],
+            //       ),
+            //       child: Text(
+            //         tag,
+            //         style: TextStyle(
+            //           fontSize: 12.sp,
+            //           fontWeight: FontWeight.w500,
+            //         ),
+            //       ),
+            //     );
+            //   }).toList(),),
+            //     SizedBox(height: 20.h),
+            //
+            //     Text(
+            //       "Trending Now",
+            //       style: GoogleFonts.roboto(
+            //         fontSize: 16,
+            //         fontWeight: FontWeight.w600,
+            //       ),
+            //     ),
+            //     SizedBox(height: 20.h),
+            //     GridView.builder(
+            //       shrinkWrap: true,
+            //       physics: NeverScrollableScrollPhysics(),
+            //       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            //         crossAxisCount: 2,
+            //         mainAxisSpacing: 9,
+            //         crossAxisSpacing: 15,
+            //         childAspectRatio: 0.90,
+            //       ),
+            //       itemCount: 4,
+            //       itemBuilder: (context, index) {
+            //         //  final feed = productProvider.allProduct![index];
+            //         return Container(
+            //           padding: EdgeInsets.symmetric(
+            //               horizontal: 10.h, vertical: 10.h),
+            //           width: 103.66.w,
+            //           height: 132.h,
+            //           decoration: BoxDecoration(
+            //               color: AppColors.white,
+            //               borderRadius: BorderRadius.circular(16.r),
+            //             image: DecorationImage(
+            //               image: AssetImage(
+            //                   'assets/images/cloth.png'),
+            //               fit: BoxFit.cover,
+            //             ),),
+            //           child: Column(
+            //             mainAxisAlignment: MainAxisAlignment.end,
+            //             crossAxisAlignment: CrossAxisAlignment.start,
+            //             children: [
+            //               SizedBox(
+            //                 height: 15.h,
+            //               ),
+            //               Text(
+            //                 "Sustainable",
+            //                 overflow: TextOverflow.ellipsis,
+            //                 style: GoogleFonts.roboto(
+            //                   fontSize: 14.sp,
+            //                   fontWeight: FontWeight.w500,
+            //                   color: AppColors.white
+            //                 ),
+            //               ),
+            //               SizedBox(
+            //                 height: 5.h,
+            //               ),
+            //               Text(
+            //                 "245 items",
+            //                 overflow: TextOverflow.ellipsis,
+            //                 style: GoogleFonts.roboto(
+            //                   fontSize: 12.sp,
+            //                   fontWeight: FontWeight.w400,
+            //                   color: AppColors.grey
+            //                 ),
+            //               ),
+            //             ],
+            //           ),
+            //         );
+            //       },
+            //     ),
               ],
             ),
           ),

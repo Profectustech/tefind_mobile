@@ -18,7 +18,7 @@ class OrderCompletedWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
-      height: 237.h,
+      height: 240.h,
       width: double.infinity,
       decoration: BoxDecoration(
           color: AppColors.white, borderRadius: BorderRadius.circular(16)),

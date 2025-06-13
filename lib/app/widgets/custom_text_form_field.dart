@@ -22,6 +22,7 @@ class CustomTextFormField extends StatelessWidget {
   final double? borderRadius;
   final String? prefixText;
   final Widget? prefixIcon;
+  final Function()? onTap;
 
   const CustomTextFormField({
     super.key,
@@ -35,6 +36,7 @@ class CustomTextFormField extends StatelessWidget {
     this.enable = true,
     this.inputType,
     this.controller,
+    this.onTap,
     this.suffixIcon,
     this.inputFormatters,
     this.color = AppColors.white, this.borderRadius,
@@ -45,6 +47,7 @@ class CustomTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onTap: onTap,
       inputFormatters: inputFormatters,
       obscureText: obscure!,
       validator: validator != null ? validator : null,

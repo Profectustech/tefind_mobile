@@ -2,6 +2,7 @@
 
 const String bottomNavigationRoute = "BottomNavigation";
 const String onBoardingScreenRoute = "OnBoardingScreen";
+const String privacyAnsSecurity = "privacyAnsSecurity";
 const String loginScreenRoute = "loginScreen";
 const String emailInputScreenRoute = "EmailInputScreen";
 const String emailVerificationScreenRoute = "EmailVerificationScreen";

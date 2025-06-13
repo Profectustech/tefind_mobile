@@ -73,7 +73,7 @@ class AuthRepository {
   Future<HTTPResponseModel> setTransactionPin(
       Map<String, dynamic> body) async {
     return await _networkHelper.runApi(
-      type: ApiRequestType.put,
+      type: ApiRequestType.post,
       url: "user/transaction-pin/set",
       body: body,
     );
@@ -83,7 +83,7 @@ class AuthRepository {
       Map<String, dynamic> body) async {
     return await _networkHelper.runApi(
       type: ApiRequestType.formData,
-      url: "auth/profile/image",
+      url: "user/profile/image",
       body: body,
     );
   }
