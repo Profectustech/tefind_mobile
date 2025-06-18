@@ -248,29 +248,7 @@ class ProductProvider extends BaseModel {
 
 // changes ends here
 
-  Future<List<MarketListModel>> fetchMarket() async {
-    if (packageList == null) {
-      _nextPage = 1;
-      notifyListeners();
-      setLoadingState(LoadingState.loading);
-      HTTPResponseModel res = await _productRepository.fetchMarket();
-      if (HTTPResponseModel.isApiCallSuccess(res)) {
-        List<MarketListModel> productList = List<MarketListModel>.from(
-            res.data.map((item) => MarketListModel.fromJson(item)));
-        _packageList = productList;
-        _nextPage = _nextPage + 1;
-        notifyListeners();
-        setLoadingState(LoadingState.done);
-        //_orderCount = res.all['pagination']["totalItems"];
-        return productList;
-      } else {
-        setLoadingState(LoadingState.error);
-        notifyListeners();
-        return [];
-      }
-    }
-    return [];
-  }
+
 
   fetchMoreMarket() async {
     // if (controller!.position.extentAfter < 100 &&
@@ -282,12 +260,12 @@ class ProductProvider extends BaseModel {
     // {
     setFetchState(LoadingState.loading);
     HTTPResponseModel res =
-        await _productRepository.fetchMarket(page: _nextPage);
+        await _productRepository.getGenderCategories();
     if (HTTPResponseModel.isApiCallSuccess(res)) {
-      List<MarketListModel> packageList = List<MarketListModel>.from(
-          res.data.map((item) => MarketListModel.fromJson(item)));
-      _packageList?.addAll(packageList);
-      _nextPage = _nextPage + 1;
+      // List<MarketListModel> packageList = List<MarketListModel>.from(
+      //     res.data.map((item) => MarketListModel.fromJson(item)));
+      // _packageList?.addAll(packageList);
+      // _nextPage = _nextPage + 1;
       notifyListeners();
       setFetchState(LoadingState.done);
       return res.data;
@@ -486,12 +464,6 @@ class ProductProvider extends BaseModel {
     }
   }
 
-  setMyMarket() async {
-    if (market == null) {
-      market = fetchMarket();
-      notifyListeners();
-    }
-  }
 
   setMyBrand() async {
     if (brand == null) {

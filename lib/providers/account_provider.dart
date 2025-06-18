@@ -1,17 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:http_parser/http_parser.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:map_location_picker/map_location_picker.dart';
 import 'package:te_find/models/BannerModel.dart';
 import 'package:te_find/models/auth_model.dart';
 import 'package:te_find/models/SignInResponse.dart';
-import 'package:te_find/models/storage/app_storage.dart';
 import 'package:te_find/models/util_model.dart';
-import 'package:te_find/providers/provider.dart';
 import 'package:te_find/repository/auth_repository.dart';
 import 'package:te_find/services/dialog_service.dart';
 import 'package:te_find/services/navigation/navigator_service.dart';
@@ -24,7 +23,6 @@ import 'package:te_find/utils/locator.dart';
 import 'package:te_find/utils/storage_util.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:uuid/uuid.dart';
-
 import '../app/widgets/bottom_modals.dart';
 import '../models/CustomerAddressModel.dart';
 import '../models/PickUpLocationModel.dart';
@@ -361,6 +359,27 @@ TextEditingController updateUserNameController =
       return false;
     }
   }
+  deleteUserAccount(
+      ) async {
+    setBusy(true);
+    try {
+      HTTPResponseModel result = await _authRepository.deleteUser({});
+      if (HTTPResponseModel.isApiCallSuccess(result)) {
+        setBusy(false);
+        StorageUtil.clearData();
+        _navigation.navigateReplacementTo(loginScreenRoute);
+        return true;
+      } else {
+        setBusy(false);
+        showErrorToast(message: result.all['message']);
+        return false;
+      }
+    } catch (e) {
+      setBusy(false);
+      showErrorToast(message: e.toString());
+      return false;
+    }
+  }
 
   createTransactionPin(
       String? pin
@@ -499,56 +518,56 @@ updateUserprofileImage(
       return false;
     }
   }
-
-TextEditingController bcSellerFullName = TextEditingController();
-TextEditingController bcUserName = TextEditingController();
-TextEditingController bcSellerBussName = TextEditingController();
-TextEditingController bcSellerBussPhoneNumber = TextEditingController();
-TextEditingController bcSellerBussAddress = TextEditingController();
-TextEditingController bcSellerCity = TextEditingController();
-TextEditingController bcSellerState = TextEditingController();
-TextEditingController bcSellerBio = TextEditingController();
-
-  becomeASeller() async {
-    setBusy(true);
-    try {
-      HTTPResponseModel result = await _authRepository.login({
-        "fullname": bcSellerFullName.text,
-        "username": bcUserName.text,
-        "phoneNumber":bcSellerBussPhoneNumber.text,
-        "businessName" : bcSellerBussName.text,
-        "businessAddress": bcSellerBussAddress.text,
-        "city": bcSellerCity.text,
-        "state": bcSellerState.text,
-        "images" : MultipartFile,
-        "location": {
-          "type": "Point",
-          "coordinates": [ _userPosition!.latitude,
-
-            _userPosition!.longitude,]
-        },
-        "bio":bcSellerBio.text
-      });
-      if (HTTPResponseModel.isApiCallSuccess(result)) {
-        setBusy(false);
-        print(result.data);
-        _navigation.pushNamedAndRemoveUntil(
-          bottomNavigationRoute,
-        );
-        return true;
-      } else {
-        setBusy(false);
-        print(result);
-        showErrorToast(message: result.all['error']['message']);
-        return false;
-      }
-    } catch (e) {
-      setBusy(false);
-      print(e.toString());
-      showErrorToast(message: e.toString());
-      return false;
-    }
-  }
+//
+// TextEditingController bcSellerFullName = TextEditingController();
+// TextEditingController bcUserName = TextEditingController();
+// TextEditingController bcSellerBussName = TextEditingController();
+// TextEditingController bcSellerBussPhoneNumber = TextEditingController();
+// TextEditingController bcSellerBussAddress = TextEditingController();
+// TextEditingController bcSellerCity = TextEditingController();
+// TextEditingController bcSellerState = TextEditingController();
+// TextEditingController bcSellerBio = TextEditingController();
+//
+//   becomeASeller() async {
+//     setBusy(true);
+//     try {
+//       HTTPResponseModel result = await _authRepository.login({
+//         "fullname": bcSellerFullName.text,
+//         "username": bcUserName.text,
+//         "phoneNumber":bcSellerBussPhoneNumber.text,
+//         "businessName" : bcSellerBussName.text,
+//         "businessAddress": bcSellerBussAddress.text,
+//         "city": bcSellerCity.text,
+//         "state": bcSellerState.text,
+//         "images" : MultipartFile,
+//         "location": {
+//           "type": "Point",
+//           "coordinates": [ _userPosition!.latitude,
+//
+//             _userPosition!.longitude,]
+//         },
+//         "bio":bcSellerBio.text
+//       });
+//       if (HTTPResponseModel.isApiCallSuccess(result)) {
+//         setBusy(false);
+//         print(result.data);
+//         _navigation.pushNamedAndRemoveUntil(
+//           bottomNavigationRoute,
+//         );
+//         return true;
+//       } else {
+//         setBusy(false);
+//         print(result);
+//         showErrorToast(message: result.all['error']['message']);
+//         return false;
+//       }
+//     } catch (e) {
+//       setBusy(false);
+//       print(e.toString());
+//       showErrorToast(message: e.toString());
+//       return false;
+//     }
+//   }
 
 
 
@@ -569,6 +588,89 @@ TextEditingController bcSellerBio = TextEditingController();
       return false;
     }
   }
+
+  TextEditingController sellerFullNameController = TextEditingController();
+  TextEditingController sellerUsername = TextEditingController();
+  TextEditingController sellerBvn = TextEditingController();
+  TextEditingController sellerPhoneNumber = TextEditingController();
+  TextEditingController sellerBcName = TextEditingController();
+  TextEditingController sellerBio = TextEditingController();
+  TextEditingController sellerCity = TextEditingController();
+  TextEditingController sellerState = TextEditingController();
+  TextEditingController sellerBankName = TextEditingController();
+  TextEditingController sellerBankAccountNumber = TextEditingController();
+  TextEditingController sellerBankAccountName = TextEditingController();
+  List<String> selectedDeliveryOptions = [];
+  bool isChecked = false;
+  bool isChecked1 = false;
+
+  String? dp;
+  String? dpName;
+
+  takePicture() async {
+    final imagePicker = ImagePicker();
+    File file = File(await imagePicker
+        .pickImage(
+      source: ImageSource.gallery,
+    )
+        .then((pickedFile) => pickedFile!.path));
+
+      dp = file.path;
+      dpName = file.path.split('/').last;
+   notifyListeners();
+  }
+  createSellerAccount() async {
+    setBusy(true);
+    try {
+      final ext = dpName!.split('.').last.toLowerCase();
+      final mimeType = ext == 'png' ? MediaType('image', 'png') : MediaType('image', 'jpeg');
+      selectedDeliveryOptions.clear();
+      if (isChecked) selectedDeliveryOptions.add("In-person Meetup");
+      if (isChecked1) selectedDeliveryOptions.add("Shipping");
+      HTTPResponseModel result = await _authRepository.createSellerAccount({
+        "images":  await MultipartFile.fromFile(
+          dp!,
+          filename: dpName,
+          contentType: mimeType,
+        ),
+        "fullname": sellerFullNameController.text,
+        "username": sellerUsername.text,
+        "businessName": sellerBvn.text,
+        "businessPhone": sellerPhoneNumber.text,
+        "bvn": sellerBvn.text,
+        "businessAddress": businessAddressController.text,
+        "bio": sellerBio.text,
+        "city": sellerCity.text,
+        "state": sellerState.text,
+        "location": jsonEncode({
+          "type": "Point",
+          "coordinates": [shippingLng, shippingLat],
+        }),
+        "bankName": sellerBankName.text,
+        "accountName": sellerBankAccountName.text,
+        "accountNumber": sellerBankAccountNumber.text,
+        "delivery_options": selectedDeliveryOptions,
+      });
+      if (HTTPResponseModel.isApiCallSuccess(result)) {
+        setBusy(false);
+        showToast(message: result.all['message']);
+        print(result.all);
+        getUserProfile();
+       // _navigation.navigateReplacementTo(loginScreenRoute);
+        notifyListeners();
+        return true;
+      } else {
+        setBusy(false);
+        showErrorToast(message: result.all['message']);
+        return false;
+      }
+    } catch (e) {
+      setBusy(false);
+      showErrorToast(message: e.toString());
+      return false;
+    }
+  }
+
 
   // Future<bool> getDefaultLocation() async {
   //   try {
@@ -984,9 +1086,10 @@ String? shippingAddress = '';
   TextEditingController businessAddressController = TextEditingController();
   double? shippingLat;
   double? shippingLng;
+
   void showDestinationAddressPicker(appProvider) async {
-    if (appProvider.userPosition == null) {
-      await appProvider.getUserLocation(); // <-- This should set userPosition
+    if (appProvider._userPosition == null) {
+      await appProvider.getUserLocation();
       if (appProvider.userPosition == null) {
         print("Could not fetch user location");
         return;

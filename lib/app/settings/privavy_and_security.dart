@@ -3,11 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:te_find/app/home/widgets/shoppingCartListView.dart';
+import 'package:te_find/providers/account_provider.dart';
 
+import '../../providers/provider.dart';
 import '../../services/navigation/navigator_service.dart';
 import '../../services/navigation/route_names.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/progress_bar_manager/utility_app_bar.dart';
+import '../../utils/storage_util.dart';
+import '../widgets/custom_button.dart';
 
 class PrivavyAndSecurity extends ConsumerStatefulWidget {
   const PrivavyAndSecurity({super.key});
@@ -16,9 +21,11 @@ class PrivavyAndSecurity extends ConsumerStatefulWidget {
   ConsumerState createState() => _PrivavyAndSecurityState();
 }
 
+late AccountProvider accountProvider;
 class _PrivavyAndSecurityState extends ConsumerState<PrivavyAndSecurity> {
   @override
   Widget build(BuildContext context) {
+    accountProvider = ref.watch(RiverpodProvider.accountProvider);
     return Scaffold(
       appBar: UtilityAppBar(
         text: 'Privacy and Security',
@@ -54,6 +61,15 @@ class _PrivavyAndSecurityState extends ConsumerState<PrivavyAndSecurity> {
               onPressed: () {
                 NavigatorService().navigateTo(createTransactionPin);
               },
+            ),  SizedBox(height: 15.h),
+            PrivacyOption(
+              color: AppColors.lightPink,
+              image: 'closeAccount',
+              title: 'Close Account',
+              subtitle: 'Account cancellation',
+              onPressed: () {
+                deleteAccount(context);
+              },
             ),
           ],
         ),
@@ -67,12 +83,14 @@ class PrivacyOption extends StatelessWidget {
   final String title;
   final String subtitle;
   final Function()? onPressed;
+  final Color? color;
   const PrivacyOption({
     super.key,
     required this.image,
     required this.title,
-    required this.onPressed,
     required this.subtitle,
+    required this.onPressed,
+    this.color = AppColors.lightGreen2,
   });
 
   @override
@@ -94,11 +112,11 @@ class PrivacyOption extends StatelessWidget {
                 width: 37.w,
                 height: 37.h,
                 decoration: BoxDecoration(
-                    shape: BoxShape.circle, color: AppColors.lightGreen2),
+                    shape: BoxShape.circle, color: color,),
                 child: Center(
                     child: SvgPicture.asset(
                       'assets/images/$image.svg',
-                      height: 20.h,
+                      height: 15.h,
                     ))),
             SizedBox(width: 5.w),
             Column(
@@ -108,7 +126,7 @@ class PrivacyOption extends StatelessWidget {
                 Text(
                   title,
                   style: GoogleFonts.roboto(
-                      fontSize: 14, fontWeight: FontWeight.w400),
+                      fontSize: 14, fontWeight: FontWeight.w500),
                 ),
                 Text(
                   subtitle,
@@ -130,4 +148,74 @@ class PrivacyOption extends StatelessWidget {
       ),
     );
   }
+}
+
+
+void deleteAccount(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) {
+      return Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Close Account',
+                style: GoogleFonts.roboto(
+                    fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+              SizedBox(height: 10.h),
+              Text(
+                'Are you sure you want to close your account?',
+                style: GoogleFonts.roboto(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12.sp,
+                    color: AppColors.lightTextBlack),
+              ),
+            SizedBox(height: 10.h),
+              Text(
+                'Note: you will loose access to your account',
+                style: GoogleFonts.roboto(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12,
+                    color: AppColors.red),
+              ),
+              SizedBox(height: 20.h),
+              Row(
+                spacing: 5.w,
+                children: [
+                  Expanded(
+                    child: CustomButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      fillColor: AppColors.greyLight,
+                      label: 'Cancel',
+                      buttonTextColor: AppColors.lightTextBlack,
+                    ),
+                  ),
+                  Expanded(
+                    child: CustomButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      accountProvider.deleteUserAccount();
+                      },
+                      fillColor: AppColors.red,
+                      label: 'Close',
+                      buttonTextColor: AppColors.white,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+      );
+    },
+  );
 }

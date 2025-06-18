@@ -181,7 +181,7 @@ class _ViewAllProductState extends ConsumerState<ViewAllProducts> {
                       : NetworkErrorScreen(
                           title: 'Network error try again',
                           onPressed: () {
-                            productProvider.fetchMarket();
+                           // productProvider.fetchMarket();
                           },
                         ),
               SizedBox(height: 50.h),

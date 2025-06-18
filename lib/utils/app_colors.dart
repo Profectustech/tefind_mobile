@@ -13,7 +13,7 @@ class AppColors {
   static const Color black = Color(0xFF000000);
   static  Color lightTextBlack =  HexColor.fromHex("#4B5563");
   static  Color lightGreen =  HexColor.fromHex("#DCFCE7");
-  static  Color lightGreen2 =  Color.fromRGBO(64, 210, 161, 0.05);
+  static  const Color lightGreen2 =  Color.fromRGBO(64, 210, 161, 0.05);
   //static  Color lightGreen2 =  HexColor.fromHex("#40D2A1");
   static  Color cyan =  HexColor.fromHex("#DBEAFE");
   static  Color lightPurple =  HexColor.fromHex("#F3E8FF");

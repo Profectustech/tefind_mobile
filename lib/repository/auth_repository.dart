@@ -22,6 +22,14 @@ class AuthRepository {
     );
   }
 
+  Future<HTTPResponseModel> createSellerAccount(Map<String, dynamic> body) async {
+    return await _networkHelper.runApi(
+      type: ApiRequestType.formData,
+      url: "shop",
+      body: body,
+    );
+  }
+
   Future<HTTPResponseModel> verify(Map<String, dynamic> body) async {
     return await _networkHelper.runApi(
       type: ApiRequestType.post,
@@ -70,6 +78,14 @@ class AuthRepository {
       body: body,
     );
   }
+  Future<HTTPResponseModel> deleteUser(
+      Map<String, dynamic> body) async {
+    return await _networkHelper.runApi(
+      type: ApiRequestType.delete,
+      url: "user/profile",
+      body: body,
+    );
+  }
   Future<HTTPResponseModel> setTransactionPin(
       Map<String, dynamic> body) async {
     return await _networkHelper.runApi(
@@ -92,6 +108,14 @@ class AuthRepository {
     return await _networkHelper.runApi(
       type: ApiRequestType.post,
       url: "main-svc-v2/products/create-customer-address",
+      body: body,
+    );
+  }
+  Future<HTTPResponseModel> changeProfilePassword(
+      Map<String, dynamic> body) async {
+    return await _networkHelper.runApi(
+      type: ApiRequestType.post,
+      url: "auth/forgot-password",
       body: body,
     );
   }

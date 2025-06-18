@@ -24,8 +24,11 @@ class _SellerProfileState extends ConsumerState<SellerProfile> {
   late AccountProvider accountProvider;
   bool isChecked = false;
   bool isChecked1 = false;
+
+
   @override
   Widget build(BuildContext context) {
+
     accountProvider = ref.watch(RiverpodProvider.accountProvider);
     otherProvider = ref.watch(RiverpodProvider.otherProvider);
     return Padding(
@@ -71,7 +74,7 @@ class _SellerProfileState extends ConsumerState<SellerProfile> {
                       height: 10.h,
                     ),
                     CustomTextFormField(
-                      //controller: accountProvider.lastNameController,
+                      controller: accountProvider.sellerCity,
                       hint: "Enter your City",
                       // validator: Validators().isSignUpEmpty,
                     ),
@@ -89,7 +92,7 @@ class _SellerProfileState extends ConsumerState<SellerProfile> {
                       height: 10.h,
                     ),
                     CustomTextFormField(
-                      //controller: accountProvider.lastNameController,
+                      controller: accountProvider.sellerState,
                       hint: "Select your State",
                       // validator: Validators().isSignUpEmpty,
                     ),
@@ -110,14 +113,14 @@ class _SellerProfileState extends ConsumerState<SellerProfile> {
                       children: [
                         Checkbox(
                           activeColor: AppColors.primaryColor,
-                          value: isChecked,
+                          value: accountProvider.isChecked,
                           materialTapTargetSize: MaterialTapTargetSize
-                              .shrinkWrap, // 👈 makes it compact
+                              .shrinkWrap,
                           visualDensity:
                               const VisualDensity(horizontal: -4, vertical: -4),
                           onChanged: (val) {
                             setState(() {
-                              isChecked = val ?? false;
+                              accountProvider.isChecked = val ?? false;
                             });
                           },
                         ),
@@ -138,14 +141,14 @@ class _SellerProfileState extends ConsumerState<SellerProfile> {
                       children: [
                         Checkbox(
                           activeColor: AppColors.primaryColor,
-                          value: isChecked1,
+                          value: accountProvider.isChecked1,
                           materialTapTargetSize:
                               MaterialTapTargetSize.shrinkWrap,
                           visualDensity:
                               const VisualDensity(horizontal: -4, vertical: -4),
                           onChanged: (val) {
                             setState(() {
-                              isChecked1 = val ?? false;
+                              accountProvider.isChecked1 = val ?? false;
                             });
                           },
                         ),

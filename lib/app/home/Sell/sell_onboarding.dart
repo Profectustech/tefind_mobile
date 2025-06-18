@@ -12,6 +12,7 @@ import 'package:te_find/app/widgets/custom_button.dart';
 import 'package:te_find/utils/assets_manager.dart';
 import 'package:te_find/utils/map_helper.dart';
 
+import '../../../providers/account_provider.dart';
 import '../../../providers/otherProvider.dart';
 import '../../../providers/provider.dart';
 import '../../../utils/app_colors.dart';
@@ -27,11 +28,17 @@ class SellOnboarding extends ConsumerStatefulWidget {
 
 class _SellOnboardingState extends ConsumerState<SellOnboarding> {
   late OtherProvider otherProvider;
+  late AccountProvider accountProvider;
   String? dp;
   String? dpName;
 
   LatLng? selectedLatLng;
   String? selectedAddress;
+
+  TextEditingController emailController = TextEditingController();
+
+  TextEditingController phoneNumber = TextEditingController();
+  TextEditingController userName = TextEditingController();
 
   takePicture() async {
     final imagePicker = ImagePicker();
@@ -50,7 +57,11 @@ class _SellOnboardingState extends ConsumerState<SellOnboarding> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() async {
+    Future.microtask(()  {
+      accountProvider.sellerFullNameController.text =
+          accountProvider.currentUser.name ?? '';
+      accountProvider.sellerPhoneNumber.text = accountProvider.currentUser.phoneNumber ?? '';
+      accountProvider.sellerUsername.text = accountProvider.currentUser.username ?? '';
 
     });
   }
@@ -58,6 +69,7 @@ class _SellOnboardingState extends ConsumerState<SellOnboarding> {
   @override
   Widget build(BuildContext context) {
     otherProvider = ref.watch(RiverpodProvider.otherProvider);
+    accountProvider = ref.watch(RiverpodProvider.accountProvider);
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 30.h),
@@ -72,16 +84,16 @@ class _SellOnboardingState extends ConsumerState<SellOnboarding> {
                     height: 80.h,
                     width: 80.w,
                     decoration: BoxDecoration(
-                      image: dp != null
+                      image: accountProvider.dp != null
                           ? DecorationImage(
-                        image: FileImage(File(dp!)),
+                        image: FileImage(File(accountProvider.dp!)),
                         fit: BoxFit.cover,
                       )
                           : null,
                       shape: BoxShape.circle,
                       color: AppColors.greyLight,
                     ),
-                    child: dp == null
+                    child: accountProvider.dp == null
                         ? Center(
                       child: SvgPicture.asset(
                         Assets.userProfile,
@@ -94,7 +106,9 @@ class _SellOnboardingState extends ConsumerState<SellOnboarding> {
                     bottom: 0,
                     right: 0,
                     child: GestureDetector(
-                      onTap: takePicture,
+                      onTap: (){
+                        accountProvider.takePicture();
+                      },
                       child: Container(
                         height: 32.h,
                         width: 32.w,
@@ -114,12 +128,12 @@ class _SellOnboardingState extends ConsumerState<SellOnboarding> {
               ),
             ),
             SizedBox(height: 20.h),
-
             /// Full Name
             labelText('Full Name'),
             CustomTextFormField(
               hint: "Enter your full name",
-              validator: Validators().isEmpty,
+              controller: accountProvider.sellerFullNameController,
+              enable: false,
             ),
             SizedBox(height: 20.h),
 
@@ -127,12 +141,15 @@ class _SellOnboardingState extends ConsumerState<SellOnboarding> {
             labelText('User Name'),
             CustomTextFormField(
               hint: "Enter your user name",
+              controller: accountProvider.sellerUsername,
+              enable: false,
             ),
             SizedBox(height: 20.h),
 
             /// Business Name
             labelText('Business Name (Optional)'),
             CustomTextFormField(
+              controller: accountProvider.sellerBcName,
               hint: "Enter your business name",
             ),
             SizedBox(height: 20.h),
@@ -145,6 +162,7 @@ class _SellOnboardingState extends ConsumerState<SellOnboarding> {
                 LengthLimitingTextInputFormatter(11),
               ],
               hint: "Enter your phone number",
+              controller: accountProvider.sellerPhoneNumber,
             ),
             SizedBox(height: 20.h),
 
@@ -153,15 +171,17 @@ class _SellOnboardingState extends ConsumerState<SellOnboarding> {
             CustomTextFormField(
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
-                LengthLimitingTextInputFormatter(11),
+                LengthLimitingTextInputFormatter(10),
               ],
               hint: "Enter your BVN number",
+              controller: accountProvider.sellerBvn,
             ),
             SizedBox(height: 20.h),
 
             /// Bio
             labelText('Bio'),
             CustomTextFormField(
+              controller: accountProvider.sellerBio,
               maxLines: 5,
               hint: "Tell buyers about yourself and your business",
             ),

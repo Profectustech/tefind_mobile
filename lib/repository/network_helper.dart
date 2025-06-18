@@ -44,7 +44,7 @@ class NetworkHelper {
     print('token: $token');
 
     var kHeader = {
-      'Content-Type': 'application/json',
+      //'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
     };

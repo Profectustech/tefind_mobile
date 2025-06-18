@@ -453,20 +453,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
               fillColor: AppColors.white,
             ),
           ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Center(
-            child: CustomButton(
-              onPressed: () {
-                logout(context);
-              },
-              label: 'Delete Account',
-              buttonTextColor: AppColors.red,
-              borderColor: AppColors.red,
-              fillColor: AppColors.white,
-            ),
-          ),
+
           SizedBox(
             height: 30.h,
           ),

@@ -5,10 +5,10 @@ import 'package:te_find/utils/enums.dart';
 class ProductRepository {
   final NetworkHelper _networkHelper = NetworkHelper();
 
-  Future<HTTPResponseModel> fetchMarket({int? page = 1}) async {
+  Future<HTTPResponseModel> getGenderCategories() async {
     return await _networkHelper.runApi(
       type: ApiRequestType.get,
-      url: "main-svc-v2/public//products/market-place&per_page=10&page=$page",
+      url: "category/gender-categories",
     );
   }
 
