@@ -65,7 +65,7 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
             itemCount: 8,
             itemBuilder: (context, index) {
               //  final feed = productProvider.allProduct![index];
-              return ProductGridview();
+              //return ProductGridview();
             },
           )
                   : Center(

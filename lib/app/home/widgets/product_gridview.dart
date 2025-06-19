@@ -20,9 +20,9 @@ import '../../widgets/global.dart';
 class ProductGridview extends ConsumerStatefulWidget {
   ProductGridview({
     super.key,
-    //  required this.newProducts,
+      required this.newProducts,
   });
-  // final Products newProducts;
+   final Products newProducts;
   @override
   ConsumerState<ProductGridview> createState() => _PostTileState();
 }
@@ -87,34 +87,71 @@ class _PostTileState extends ConsumerState<ProductGridview>
           onTap: () {
             NavigatorService().navigateTo(
               productDetailScreenRoute,
-             // arguments: widget.newProducts,
+              arguments: widget.newProducts,
             );
             // Navigator.push(context,
             //     MaterialPageRoute(builder: (context) => ProductDetail()));
           },
           child: Stack(alignment: Alignment.center, children: [
             Container(
-              height: 218.h,
+              height: 225.h,
               width: 165.w,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black
+                          .withOpacity(0.2), // corrected method
+                      spreadRadius: 0.2,
+                      blurRadius: 0.2,
+                      offset: Offset(0, 0.2),
+                    ),
+                  ],
                   color: AppColors.white),
               child: Stack(
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        height: 140.h,
-                        //    width: 240.w,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(12),
-                              topRight: Radius.circular(12)),
-                          color: AppColors.primaryColor,
-                          image: DecorationImage(
-                            image: AssetImage('assets/images/bag.png'),
-                            fit: BoxFit.cover,
+                      CachedNetworkImage(
+                        // imageUrl:
+                        //     widget.newProducts.imageUrls?[0].localUrl ?? "",
+                        imageUrl: widget.newProducts.images?.isNotEmpty ??
+                            false
+                            ? widget.newProducts.images[0] ?? ""
+                            : "",
+                        imageBuilder: (context, imageProvider) => ClipRRect(
+                          borderRadius: BorderRadius.circular(15.r),
+                          child: Container(
+                            height: 140.h,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: imageProvider,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                        placeholder: (context, url) => Container(
+                          width: double.infinity, // 50.w,
+                          height: 140.h,
+                          child: Center(
+                            child: SizedBox(
+                              width: 30.w,
+                              height: 30.h,
+                              child: const CircularProgressIndicator(
+                                color: AppColors.primaryColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => ClipRRect(
+                          borderRadius: BorderRadius.circular(15.r),
+                          child: Image.asset(
+                            Assets.laptopPowerbank,
+                            height: 130.h,
+                            width: double.infinity,
                           ),
                         ),
                       ),
@@ -125,7 +162,7 @@ class _PostTileState extends ConsumerState<ProductGridview>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Luxury Leather Handbag",
+                              widget.newProducts.name,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   fontSize: 14,
@@ -134,7 +171,7 @@ class _PostTileState extends ConsumerState<ProductGridview>
                             ),
                             SizedBox(height: 2.h),
                             Text(
-                              "₦18,000",
+                              "₦${widget.newProducts.price}",
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.roboto(
                                   fontSize: 16,
@@ -148,6 +185,7 @@ class _PostTileState extends ConsumerState<ProductGridview>
                                 Row(
                                   spacing: 5,
                                   children: [
+
                                     Container(
                                       height: 16.h,
                                       width: 16.w,
@@ -160,7 +198,7 @@ class _PostTileState extends ConsumerState<ProductGridview>
                                       ),
                                     ),
                                     Text(
-                                      "Amara",
+                                      "${widget.newProducts.rating}",
                                       overflow: TextOverflow.ellipsis,
                                       style: GoogleFonts.roboto(
                                           fontSize: 12,

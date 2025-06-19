@@ -65,7 +65,11 @@ class _HomePageState extends ConsumerState<HomePage> {
       if (accountProvider.currentAddress?.state == null ||
           accountProvider.currentAddress?.state == '') {
       //  accountProvider.getUserLocationAndAddress();
+         accountProvider.initUserLocation();
+        accountProvider.startListeningToLocation();
       }
+      accountProvider.getUserProfile();
+      productProvider.setMyProduct();
 
     });
   }
@@ -126,6 +130,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                       children: [
                         InkWell(
                           onTap: () {
+                            accountProvider.initUserLocation();
                             NavigatorService().navigateTo(notificationPage);
                           },
                           child: Stack(
@@ -227,225 +232,6 @@ class _HomePageState extends ConsumerState<HomePage> {
                     // setState(() {});
                   },
                 ),
-                SizedBox(
-                  height: 30.h,
-                ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Text('Featured Items',
-                //         textAlign: TextAlign.center,
-                //         style: TextStyle(
-                //           fontSize: 16,
-                //           fontWeight: FontWeight.w600,
-                //         )),
-                //     Text('View All',
-                //         textAlign: TextAlign.center,
-                //         style: TextStyle(
-                //           fontSize: 14,
-                //           color: AppColors.primaryColor,
-                //           fontWeight: FontWeight.w500,
-                //         )),
-                //   ],
-                // ),
-                // SizedBox(
-                //   height: 20.h,
-                // ),
-                // SizedBox(
-                //   width: double.infinity,
-                //   height: 241.h,
-                //   child: ListView.builder(
-                //     padding: EdgeInsets.only(left: 5),
-                //     scrollDirection: Axis.horizontal,
-                //     itemCount: 4,
-                //     itemBuilder: (context, index) {
-                //       // Products negotiableProducts =
-                //       // productProvider
-                //       //     .negotiableProduct![index];
-                //       return FeaturedProductContainer();
-                //     },
-                //   ),
-                // ),
-                // SizedBox(
-                //   height: 30.h,
-                // ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Categories',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        )),
-                    GestureDetector(
-                      onTap: () {
-                        NavigatorService().navigateTo(categories);
-                      },
-                      child: Text('See All',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: AppColors.primaryColor,
-                            fontWeight: FontWeight.w500,
-                          )),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  height: 120.h,
-                  child: ListView.builder(
-                    padding: EdgeInsets.only(left: 5),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 4,
-                    itemBuilder: (context, index) {
-                      // Products negotiableProducts =
-                      // productProvider
-                      //     .negotiableProduct![index];
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: Column(
-                          children: [
-                            GestureDetector(
-                              onDoubleTap: () {},
-                              child: Container(
-                                height: 64.h,
-                                width: 64.w,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image:
-                                          AssetImage('assets/images/men.png'),
-                                      fit: BoxFit.cover,
-                                    ),
-                                    shape: BoxShape.circle,
-                                    color: AppColors.white),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 15.h,
-                            ),
-                            Text(
-                              "Men's",
-                              overflow: TextOverflow.ellipsis,
-                              style: GoogleFonts.roboto(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                LearnMoreContent(),
-                SizedBox(
-                  height: 20.h,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Recent Listings',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        )),
-                    Row(
-                      spacing: 8.w,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 6.w, vertical: 5.h),
-                          // height: 26,
-                          // width: 64,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(16)),
-                          child: Row(
-                            spacing: 4,
-                            children: [
-                              Icon(
-                                Icons.filter_list,
-                                size: 15,
-                              ),
-                              Text('Filter',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                  )),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 8.w, vertical: 5.h),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: Transform.scale(
-                                  scale: 0.7,
-                                  child: Radio<int>(
-                                    value: 1,
-                                    activeColor: AppColors.primaryColor,
-                                    materialTapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                    groupValue: selectedOption,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        selectedOption = value!;
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ),
-                              SizedBox(width: 4),
-                              Text(
-                                'Sort',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                GridView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 9,
-                    crossAxisSpacing: 6,
-                    childAspectRatio: 0.72,
-                  ),
-                  itemCount: 8,
-                  itemBuilder: (context, index) {
-                    //  final feed = productProvider.allProduct![index];
-                    return ProductGridview();
-                  },
-                ),
-
 
                 _searchController.text.isNotEmpty
                     ? FutureBuilder<List<Products>>(
@@ -472,9 +258,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                                 ),
                                 itemBuilder: (context, index) {
                                   Products product = snapshot.data![index];
-                                  return ProductGridview(
-                                      // newProducts: product
-                                      );
+                                  // return ProductGridview(
+                                  //     // newProducts: product
+                                  //     );
                                 },
                               ),
                             );
@@ -524,7 +310,340 @@ class _HomePageState extends ConsumerState<HomePage> {
                         },
                       )
                     : Column(
-                        children: [],
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 30.h,
+                          ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //   children: [
+                          //     Text('Featured Items',
+                          //         textAlign: TextAlign.center,
+                          //         style: TextStyle(
+                          //           fontSize: 16,
+                          //           fontWeight: FontWeight.w600,
+                          //         )),
+                          //     Text('View All',
+                          //         textAlign: TextAlign.center,
+                          //         style: TextStyle(
+                          //           fontSize: 14,
+                          //           color: AppColors.primaryColor,
+                          //           fontWeight: FontWeight.w500,
+                          //         )),
+                          //   ],
+                          // ),
+                          // SizedBox(
+                          //   height: 20.h,
+                          // ),
+                          // SizedBox(
+                          //   width: double.infinity,
+                          //   height: 241.h,
+                          //   child: ListView.builder(
+                          //     padding: EdgeInsets.only(left: 5),
+                          //     scrollDirection: Axis.horizontal,
+                          //     itemCount: 4,
+                          //     itemBuilder: (context, index) {
+                          //       // Products negotiableProducts =
+                          //       // productProvider
+                          //       //     .negotiableProduct![index];
+                          //       return FeaturedProductContainer();
+                          //     },
+                          //   ),
+                          // ),
+                          // SizedBox(
+                          //   height: 30.h,
+                          // ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Categories',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  )),
+                              GestureDetector(
+                                onTap: () {
+                                  NavigatorService().navigateTo(categories);
+                                },
+                                child: Text('See All',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: AppColors.primaryColor,
+                                      fontWeight: FontWeight.w500,
+                                    )),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
+                          SizedBox(
+                            width: double.infinity,
+                            height: 120.h,
+                            child: ListView.builder(
+                              padding: EdgeInsets.only(left: 5),
+                              scrollDirection: Axis.horizontal,
+                              itemCount: 4,
+                              itemBuilder: (context, index) {
+                                // Products negotiableProducts =
+                                // productProvider
+                                //     .negotiableProduct![index];
+                                return Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: Column(
+                                    children: [
+                                      GestureDetector(
+                                        onDoubleTap: () {},
+                                        child: Container(
+                                          height: 64.h,
+                                          width: 64.w,
+                                          decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image:
+                                                AssetImage('assets/images/men.png'),
+                                                fit: BoxFit.cover,
+                                              ),
+                                              shape: BoxShape.circle,
+                                              color: AppColors.white),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 15.h,
+                                      ),
+                                      Text(
+                                        "Men's",
+                                        overflow: TextOverflow.ellipsis,
+                                        style: GoogleFonts.roboto(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          LearnMoreContent(),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Recent Listings',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  )),
+                              Row(
+                                spacing: 8.w,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 6.w, vertical: 5.h),
+                                    // height: 26,
+                                    // width: 64,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(16)),
+                                    child: Row(
+                                      spacing: 4,
+                                      children: [
+                                        Icon(
+                                          Icons.filter_list,
+                                          size: 15,
+                                        ),
+                                        Text('Filter',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400,
+                                            )),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 8.w, vertical: 5.h),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        SizedBox(
+                                          height: 20,
+                                          width: 20,
+                                          child: Transform.scale(
+                                            scale: 0.7,
+                                            child: Radio<int>(
+                                              value: 1,
+                                              activeColor: AppColors.primaryColor,
+                                              materialTapTargetSize:
+                                              MaterialTapTargetSize.shrinkWrap,
+                                              groupValue: selectedOption,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  selectedOption = value!;
+                                                });
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(width: 4),
+                                        Text(
+                                          'Sort',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                          ),
+                          FutureBuilder<List<Products>>(
+                            future: productProvider.products,
+                            builder: (context, snapshot) {
+                              if (!snapshot.hasData) {
+                                return Container(
+                                  height: 230,
+                                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                                  child: Center(
+                                    child: Shimmer.fromColors(
+                                      direction: ShimmerDirection.ltr,
+                                      period: const Duration(seconds: 10),
+                                      baseColor: AppColors.greyLight,
+                                      highlightColor: AppColors.primaryColor,
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: 8,
+                                        itemBuilder: (context, index) {
+                                          return Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Container(
+                                              padding: const EdgeInsets.all(10.0),
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.circular(10.0),
+                                              ),
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    height: 12.h,
+                                                    width: 100.w,
+                                                    color: Colors.white,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              } else if (snapshot.data!.isNotEmpty) {
+                                return GridView.builder(
+                                  scrollDirection: Axis.vertical,
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: snapshot
+                                      .data!.length, //snapshot.data!.length,
+                                  gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                        mainAxisSpacing: 9,
+                                        crossAxisSpacing: 6,
+                                         childAspectRatio: 0.72,
+                                  ),
+                                  itemBuilder: (context, index) {
+                                    Products product = snapshot.data![index];
+                                    return ProductGridview(
+                                      newProducts: product
+                                    );
+                                  },
+                                );
+                              } else if (snapshot.hasError) {
+                                return const Center(
+                                    child: Column(
+                                      children: <Widget>[
+                                        SizedBox(
+                                          height: 100,
+                                        ),
+                                        Text(
+                                          'Network error',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text('Network error'),
+                                        SizedBox(
+                                          height: 100,
+                                        ),
+                                      ],
+                                    ));
+                              } else {
+                                return Center(
+                                  child: Column(
+                                    children: [
+                                      const SizedBox(
+                                        height: 50,
+                                      ),
+                                      const Text(
+                                        "No products found",
+                                        style: TextStyle(
+                                            fontSize: 14, color: AppColors.black),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      const SizedBox(
+                                        height: 30,
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }
+                            },
+                          ),
+
+                          SizedBox(height: 10),
+                          // GridView.builder(
+                          //   shrinkWrap: true,
+                          //   physics: NeverScrollableScrollPhysics(),
+                          //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          //     crossAxisCount: 2,
+                          //     mainAxisSpacing: 9,
+                          //     crossAxisSpacing: 6,
+                          //     childAspectRatio: 0.72,
+                          //   ),
+                          //   itemCount: 8,
+                          //   itemBuilder: (context, index) {
+                          //     //  final feed = productProvider.allProduct![index];
+                          //     return ProductGridview();
+                          //   },
+                          // ),
+
+
+
+                        ],
                       ),
               ],
             ),

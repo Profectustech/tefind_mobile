@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:te_find/providers/account_provider.dart';
 import 'package:te_find/services/navigation/navigator_service.dart';
 import 'package:te_find/services/navigation/router.dart';
 import 'package:te_find/utils/app_colors.dart';
@@ -32,16 +33,17 @@ void main() async {
   );
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  ConsumerState<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends ConsumerState<MyApp> {
   late FirebaseMessaging messaging;
   late AndroidNotificationChannel channel;
+  late AccountProvider accountProvider;
 
   void selectNotification(String? payload) async {
     if (payload != null) {
@@ -136,8 +138,13 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+
   @override
   void initState() {
+    Future.microtask(() {
+       accountProvider.initUserLocation();
+        accountProvider.startListeningToLocation();
+    });
 
     if (!Platform.isIOS) {
     //  Firebase.initializeApp();

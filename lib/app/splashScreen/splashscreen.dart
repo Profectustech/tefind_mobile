@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -57,6 +56,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   @override
   void initState() {
     super.initState();
+    // Future.microtask(() {
+    //   accountProvider.initUserLocation();
+    //   accountProvider.startListeningToLocation();
+    // });
     init();
 
     animationController = AnimationController(

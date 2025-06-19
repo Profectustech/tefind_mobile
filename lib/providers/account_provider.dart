@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:http_parser/http_parser.dart';
@@ -628,7 +629,7 @@ updateUserprofileImage(
       if (isChecked) selectedDeliveryOptions.add("In-person Meetup");
       if (isChecked1) selectedDeliveryOptions.add("Shipping");
       HTTPResponseModel result = await _authRepository.createSellerAccount({
-        "images":  await MultipartFile.fromFile(
+        "coverImage":  await MultipartFile.fromFile(
           dp!,
           filename: dpName,
           contentType: mimeType,
@@ -1082,50 +1083,7 @@ updateUserprofileImage(
     _navigation.navigateReplacementTo(bottomNavigationRoute);
     return "Success";
   }
-String? shippingAddress = '';
-  TextEditingController businessAddressController = TextEditingController();
-  double? shippingLat;
-  double? shippingLng;
 
-  void showDestinationAddressPicker(appProvider) async {
-    if (appProvider._userPosition == null) {
-      await appProvider.getUserLocation();
-      if (appProvider.userPosition == null) {
-        print("Could not fetch user location");
-        return;
-      }
-    }
-    Navigator.push(
-      NavigatorService.navigationKey_.currentContext!,
-      MaterialPageRoute(
-        builder: (context) {
-          return MapLocationPicker(
-            location: Location(lat: 9.0820, lng: 8.6753),
-            radius: 1200,
-            apiKey: "AIzaSyBSzjGUZiQN3ixGLGVHs1p3o6mUm9GxYfs",
-            currentLatLng: LatLng(
-              appProvider.userPosition.latitude,
-              appProvider.userPosition.longitude,
-            ),
-            popOnNextButtonTaped: true,
-            backButton: IconButton(
-              onPressed: () {
-                NavigatorService().goBack();
-              },
-              icon: const Icon(Icons.arrow_back_ios),
-            ),
-            hideBackButton: false,
-            onNext: (GeocodingResult? result) {
-              shippingAddress = result?.formattedAddress ?? '';
-              businessAddressController.text = result?.formattedAddress ?? '';
-              shippingLat = result?.geometry.location.lat;
-              shippingLng = result?.geometry.location.lng;
-            },
-          );
-        },
-      ),
-    );
-  }
 
   Position? _userPosition;
   Position? get userPosition => _userPosition;
@@ -1167,13 +1125,13 @@ String? shippingAddress = '';
   //     print(_userPosition!.longitude);
   //
   //     // Reverse geocoding
-  //     List<Placemark> placemarks = await placemarkFromCoordinates(
+  //     List<Geocoding.Placemark> placemarks = await Geocoding.placemarkFromCoordinates(
   //       position.latitude,
   //       position.longitude,
   //     );
   //
   //     if (placemarks.isNotEmpty) {
-  //       Placemark place = placemarks.first;
+  //       Geocoding.Placemark place = placemarks.first;
   //
   //       _currentAddress = CustomerAddress(
   //         addressTitle: "Current Location",
@@ -1195,42 +1153,153 @@ String? shippingAddress = '';
   //   }
   // }
 
-  Future<void> getUserLocation() async {
-    bool serviceEnabled;
-    LocationPermission permission;
+  // Future<void> getUserLocation() async {
+  //   bool serviceEnabled;
+  //   LocationPermission permission;
+  //
+  //   // Check if location services are enabled
+  //   serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  //   if (!serviceEnabled) {
+  //     // You can show a dialog to prompt the user to enable location services
+  //     print('Location services are disabled.');
+  //     return;
+  //   }
+  //
+  //   // Check permission
+  //   permission = await Geolocator.checkPermission();
+  //   if (permission == LocationPermission.denied) {
+  //     permission = await Geolocator.requestPermission();
+  //     if (permission == LocationPermission.denied) {
+  //       print('Location permissions are denied');
+  //       return;
+  //     }
+  //   }
+  //
+  //   if (permission == LocationPermission.deniedForever) {
+  //     print('Location permissions are permanently denied');
+  //     return;
+  //   }
+  //
+  //   // Get the current position
+  //   _userPosition = await Geolocator.getCurrentPosition(
+  //     desiredAccuracy: LocationAccuracy.high,
+  //   );
+  //
+  //   print('User location: ${userPosition!.latitude}, ${userPosition!.longitude}');
+  //   notifyListeners();
+  // }
 
-    // Check if location services are enabled
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  StreamSubscription<Position>? _positionStreamSubscription;
+
+  void startListeningToLocation() {
+    _positionStreamSubscription = Geolocator.getPositionStream(
+      locationSettings: LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 10, // only update if user moves 10m or more
+      ),
+    ).listen((Position position) {
+      _userPosition = position;
+      print('New location update: ${position.latitude}, ${position.longitude}');
+      notifyListeners();
+    });
+  }
+
+  void stopListeningToLocation() {
+    _positionStreamSubscription?.cancel();
+  }
+
+
+
+
+  Future<void> initUserLocation() async {
+    if (_userPosition != null) return; // Already have it
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      // You can show a dialog to prompt the user to enable location services
-      print('Location services are disabled.');
+      print("Location services disabled");
       return;
     }
 
-    // Check permission
-    permission = await Geolocator.checkPermission();
+    LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        print('Location permissions are denied');
+        print("Location permission denied");
         return;
       }
     }
-
     if (permission == LocationPermission.deniedForever) {
-      print('Location permissions are permanently denied');
+      print("Location permission permanently denied");
       return;
     }
 
-    // Get the current position
     _userPosition = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );
-
-    print('User location: ${userPosition!.latitude}, ${userPosition!.longitude}');
+    print("User location initialized: ${_userPosition!.latitude}, ${_userPosition!.longitude}");
     notifyListeners();
+
+    // Reverse geocoding
+    List<Geocoding.Placemark> placemarks = await Geocoding.placemarkFromCoordinates(
+      _userPosition!.latitude,
+      _userPosition!.longitude,
+    );
+
+    if (placemarks.isNotEmpty) {
+      Geocoding.Placemark place = placemarks.first;
+
+      _currentAddress = CustomerAddress(
+        addressTitle: "Current Location",
+        address: "${place.street}, ${place.subLocality}",
+        city: place.locality ?? '',
+        state: place.administrativeArea ?? '',
+        lga: place.subAdministrativeArea ?? '',
+        landmark: place.name ?? '',
+        defaultAddress: true,
+      );
+
+      debugPrint("Customer Address: ${_currentAddress!.toJson()}");
+    }
   }
 
+
+  String? shippingAddress = '';
+  TextEditingController businessAddressController = TextEditingController();
+  double? shippingLat;
+  double? shippingLng;
+
+  void showDestinationAddressPicker(appProvider) async {
+    Navigator.push(
+      NavigatorService.navigationKey_.currentContext!,
+      MaterialPageRoute(
+        builder: (context) {
+          print("Opening MapLocationPicker...");
+          return MapLocationPicker(
+            location: Location(lat: 9.0820, lng: 8.6753),
+            radius: 1200,
+            apiKey: "AIzaSyBSzjGUZiQN3ixGLGVHs1p3o6mUm9GxYfs",
+            currentLatLng: LatLng(
+              appProvider._userPosition!.latitude,
+              appProvider._userPosition!.longitude,
+            ),
+            popOnNextButtonTaped: true,
+            backButton: IconButton(
+              onPressed: () {
+                NavigatorService().goBack();
+              },
+              icon: const Icon(Icons.arrow_back_ios),
+            ),
+            hideBackButton: false,
+            onNext: (GeocodingResult? result) {
+              shippingAddress = result?.formattedAddress ?? '';
+              businessAddressController.text = result?.formattedAddress ?? '';
+              shippingLat = result?.geometry.location.lat;
+              shippingLng = result?.geometry.location.lng;
+            },
+          );
+        },
+      ),
+    );
+  }
 
 
   // sign up method

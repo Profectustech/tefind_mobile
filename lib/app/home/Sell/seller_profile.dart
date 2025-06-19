@@ -54,6 +54,7 @@ class _SellerProfileState extends ConsumerState<SellerProfile> {
                     ),
                     CustomTextFormField(
                         onTap: () {
+                          print('i press something');
                           accountProvider
                               .showDestinationAddressPicker(accountProvider);
                         },

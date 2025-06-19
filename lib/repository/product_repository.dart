@@ -11,6 +11,12 @@ class ProductRepository {
       url: "category/gender-categories",
     );
   }
+  Future<HTTPResponseModel> categoryByHirachy() async {
+    return await _networkHelper.runApi(
+      type: ApiRequestType.get,
+      url: "admin/category/hierarchy",
+    );
+  }
 
   Future<HTTPResponseModel> fetchBrand() async {
     return await _networkHelper.runApi(
@@ -23,6 +29,22 @@ class ProductRepository {
     return await _networkHelper.runApi(
       type: ApiRequestType.get,
       url: "main-svc-v2/public/products/categories/tree",
+    );
+  }
+
+  Future<HTTPResponseModel> createProductListings(Map<String, dynamic> body) async {
+    return await _networkHelper.runApi(
+      type: ApiRequestType.formData,
+      url: "product",
+      body: body,
+    );
+  }
+
+  Future<HTTPResponseModel> updateProduct(Map<String, dynamic> body) async {
+    return await _networkHelper.runApi(
+      type: ApiRequestType.patch,
+      url: "product",
+      body: body,
     );
   }
 
@@ -53,11 +75,10 @@ class ProductRepository {
 
   // https://staging.te_find.ng/api/main-svc-v2/public/products/market?market_id=1&per_page=4&page=1
 
-  Future<HTTPResponseModel> fProduct({int? page = 1}) async {
+  Future<HTTPResponseModel> getProduct({int? page = 1}) async {
     return await _networkHelper.runApi(
       type: ApiRequestType.get,
-      url:
-          "main-svc-v2/public/products/attributes?type=featured&per_page=10&page=1",
+      url: "product",
       //"product/featured-products?pageSize=5&pageNumber=1&searchValue=&channel=default&locale=en",
     );
   }

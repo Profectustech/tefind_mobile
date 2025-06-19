@@ -148,11 +148,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
              // product: product
           ));
     case productDetailScreenRoute:
-  //    Products newProducts = settings.arguments! as Products;
+     Products newProducts = settings.arguments! as Products;
       return _getPageRoute(
         routeName: settings.name!,
         viewToShow: ProductDetail(
-         // newProducts: newProducts,
+          newProducts: newProducts,
         ),
       );
     case categories:

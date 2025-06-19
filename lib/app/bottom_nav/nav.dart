@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:te_find/app/bottom_nav/nav_service.dart';
+import 'package:te_find/app/home/Sell/sell_items.dart';
 import 'package:te_find/app/orders/my_orders.dart';
 import 'package:te_find/app/home/home_page.dart';
 import 'package:te_find/app/profile/profile_page.dart';
@@ -30,7 +31,7 @@ class _NavState extends ConsumerState<BottomNav> {
   final pages = [
     HomePage(),
     SearchPage(),
-    SteperExistingCustomer(),
+    SellItems(), //SteperExistingCustomer(), //SellItems(),
     MyOrders(),
     ProfilePage(),
   ];

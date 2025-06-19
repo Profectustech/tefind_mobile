@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'package:http_parser/http_parser.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -18,6 +21,8 @@ import 'package:te_find/utils/base_model.dart';
 import 'package:te_find/utils/enums.dart';
 import 'package:te_find/utils/helpers.dart';
 import '../models/BestSellerModel.dart';
+import '../models/categoryByHierachy.dart';
+import '../models/gender_category_model.dart';
 
 class ProductProvider extends BaseModel {
   final Ref reader;
@@ -29,7 +34,7 @@ class ProductProvider extends BaseModel {
   Future<List<MarketListModel>>? market;
   Future<List<BrandListModel>>? brand;
   Future<List<CategoriesModel>>? categories;
-  Future<List<Products>>? fProducts;
+  Future<List<Products>>? products;
   Future<List<Products>>? newProducts;
   List<Products> negotiableProduct = [];
   List<Products>? discountedProduct = [];
@@ -141,7 +146,7 @@ class ProductProvider extends BaseModel {
       if (type == 'New Products') {
         res = await _productRepository.newProduct(page: _nextPage);
       } else if (type == 'Featured Products') {
-        res = await _productRepository.fProduct(page: _nextPage);
+        res = await _productRepository.getProduct(page: _nextPage);
       } else if (type == 'Market') {
         res = await _productRepository.fetchProductByMarket(idFetch,
             page: _nextPage);
@@ -223,8 +228,7 @@ class ProductProvider extends BaseModel {
       filteredMarketList = [];
     } else {
       filteredMarketList = _packageList!
-          .where((market) =>
-          (market.name ?? "")
+          .where((market) => (market.name ?? "")
               .toLowerCase()
               .contains(searchText.toLowerCase()))
           .toList();
@@ -244,31 +248,25 @@ class ProductProvider extends BaseModel {
   //   notifyListeners();
   // }
 
-
-
 // changes ends here
 
+  CategoryByGender? GenderbyCategory;
+  List<CategoryByGender> _categoryByGender = [];
+  List<CategoryByGender> get categoryGender => _categoryByGender;
+  setGenderByCategories(List<CategoryByGender> gender) {
+    _categoryByGender = gender;
+    notifyListeners();
+  }
 
-
-  fetchMoreMarket() async {
-    // if (controller!.position.extentAfter < 100 &&
-    //     fetchState != LoadingState.loading) {
-    // if (packageList.length >= orderCount!) {
-    //   // showToast('all order History fetched');
-    // } else
-
-    // {
-    setFetchState(LoadingState.loading);
-    HTTPResponseModel res =
-        await _productRepository.getGenderCategories();
+  getGenderCategories() async {
+    HTTPResponseModel res = await _productRepository.getGenderCategories();
     if (HTTPResponseModel.isApiCallSuccess(res)) {
-      // List<MarketListModel> packageList = List<MarketListModel>.from(
-      //     res.data.map((item) => MarketListModel.fromJson(item)));
-      // _packageList?.addAll(packageList);
-      // _nextPage = _nextPage + 1;
+      print(res);
+      List<CategoryByGender> categoryGender = List<CategoryByGender>.from(
+          res.data.map((item) => CategoryByGender.fromJson(item)));
       notifyListeners();
-      setFetchState(LoadingState.done);
-      return res.data;
+      setGenderByCategories(categoryGender);
+      return categoryGender;
     } else {
       setFetchState(LoadingState.error);
       notifyListeners();
@@ -278,6 +276,209 @@ class ProductProvider extends BaseModel {
     //}
     // }
   }
+
+  CategoryGender? selectedGender;
+  Category? selectedCategory;
+  SubCategory? selectedSubCategory;
+
+  List<CategoryGender> _genderData = [];
+
+  List<CategoryGender> get genderData => _genderData;
+
+  void setGenderData(List<CategoryGender> data) {
+    _genderData = data;
+    notifyListeners();
+  }
+
+  void selectGender(CategoryGender gender) {
+    selectedGender = gender;
+    selectedCategory = null;
+    selectedSubCategory = null;
+    notifyListeners();
+  }
+
+  void selectCategory(Category category) {
+    selectedCategory = category;
+    selectedSubCategory = null;
+    notifyListeners();
+  }
+
+  void selectSubCategory(SubCategory sub) {
+    selectedSubCategory = sub;
+    notifyListeners();
+  }
+
+  List<Category> get category => selectedGender?.categories ?? [];
+  List<SubCategory> get subcategories => selectedCategory?.subcategories ?? [];
+  Future<List<CategoryGender>> getCategoriesByHierarchy() async {
+    try {
+      final HTTPResponseModel res =
+          await _productRepository.categoryByHirachy();
+
+      if (HTTPResponseModel.isApiCallSuccess(res)) {
+        final List<CategoryGender> genderCategoryList =
+            List<CategoryGender>.from(
+          res.data.map((item) => CategoryGender.fromJson(item)),
+        );
+        setGenderData(genderCategoryList);
+        return genderCategoryList;
+      } else {
+        throw Exception('Failed to load category hierarchy');
+      }
+    } catch (e) {
+      setFetchState(LoadingState.error); // Optional
+      rethrow;
+    }
+  }
+
+  Future<List<MultipartFile>> prepareMultipleFiles(List<File> images) async {
+    List<MultipartFile> multiPartFiles = [];
+
+    for (var file in images) {
+      String fileName = file.path.split('/').last;
+      multiPartFiles.add(
+        await MultipartFile.fromFile(
+          file.path,
+          filename: fileName,
+          contentType: MediaType('image', 'jpeg'),
+        ),
+      );
+    }
+
+    return multiPartFiles;
+  }
+
+  TextEditingController productNameController = TextEditingController();
+  TextEditingController productPriceController = TextEditingController();
+  TextEditingController productDescriptionController = TextEditingController();
+  TextEditingController productAmountInStockController =
+      TextEditingController();
+  String? selectedColor;
+  createProductListings(List<File> images) async {
+    setBusy(true);
+    try {
+      List<MultipartFile> multiPartFiles = await prepareMultipleFiles(images);
+      HTTPResponseModel result =
+          await _productRepository.createProductListings({
+        "images": multiPartFiles,
+        // await MultipartFile.fromFile(
+        //   dp!,
+        //   filename: dpName,
+        //   contentType: mimeType,
+        // ),
+        "name": productNameController.text,
+        "gender": selectedGender?.id,
+        "description": productDescriptionController.text,
+        "color": 'Pink',
+        "price": double.tryParse(productPriceController.text
+                .replaceAll(RegExp(r'[^\d.]'), '')) ??
+            0.0,
+
+        "category": selectedCategory?.id,
+        "subCategory": selectedSubCategory?.id,
+        "size": 'S',
+        "condition": selectedSubCategory?.id,
+        "stock": productAmountInStockController.text,
+      });
+      if (HTTPResponseModel.isApiCallSuccess(result)) {
+        setBusy(false);
+        showToast(message: result.all['message']);
+        print(result.all);
+        getProducts();
+        _navigation.navigateReplacementTo(bottomNavigationRoute);
+        notifyListeners();
+        return true;
+      } else {
+        setBusy(false);
+        showErrorToast(message: result.all['message']);
+        return false;
+      }
+    } catch (e) {
+      setBusy(false);
+      showErrorToast(message: e.toString());
+      return false;
+    }
+  }
+
+  bool isEditMode = false;
+  Future<void> updateProductListing({
+    required String productId,
+    required List<File> images,
+  }) async {
+    try {
+      setBusy(true);
+      List<MultipartFile> multiPartFiles = await prepareMultipleFiles(images);
+      final response = await _productRepository.updateProduct({
+        "name": productNameController.text,
+        "description": productDescriptionController.text,
+        "gender": selectedGender?.id,
+        "color": selectedColor,
+        "price": productPriceController.text,
+        "category": selectedCategory?.id,
+        "sub_category": selectedSubCategory?.id,
+        "condition": selectedSubCategory?.id,
+        "size": selectedSubCategory?.id,
+        "stock": productAmountInStockController.text,
+        "images": multiPartFiles,
+      });
+
+      if (HTTPResponseModel.isApiCallSuccess(response)) {
+        showToast(message: "Product updated successfully");
+      } else {
+        showErrorToast(message: response.all['message']);
+      }
+    } catch (e) {
+      showErrorToast(message: e.toString());
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  //
+  // Future<void> loadProductImagesForEditing(Products product) async {
+  //   try {
+  //     setBusy(true);
+  //
+  //     // Activate edit mode and store product model
+  //     editListing = true;
+  //     editProductsModel = Products.fromJson(product.toJson());
+  //
+  //     // Clear previously selected images
+  //     selectedImages.clear();
+  //     notifyListeners();
+  //
+  //     final tempDir = await getTemporaryDirectory();
+  //     List<File> downloadedFiles = [];
+  //
+  //     // Iterate over photo URLs
+  //     for (String url in product.photos!.map((item) => item.path!).toList()) {
+  //       try {
+  //         final fileName = basename(url);
+  //         final file = File('${tempDir.path}/$fileName');
+  //
+  //         // Download image using Dio
+  //         await dio.download(url, file.path);
+  //
+  //         downloadedFiles.add(file);
+  //       } catch (e) {
+  //         print('❌ Failed to download $url: $e');
+  //       }
+  //     }
+  //
+  //     if (downloadedFiles.isNotEmpty) {
+  //       selectedImages.addAll(downloadedFiles);
+  //       notifyListeners();
+  //     }
+  //
+  //     // Navigate to the create/edit listing page
+  //     _navigatorService.navigateTo(ProductListingRoute);
+  //   } catch (e) {
+  //     print('❌ Error in loadProductImagesForEditing: $e');
+  //   } finally {
+  //     setBusy(false);
+  //   }
+  // }
+  //
 
   Future<List<BrandListModel>> fetchBrand() async {
     HTTPResponseModel res = await _productRepository.fetchBrand();
@@ -301,13 +502,13 @@ class ProductProvider extends BaseModel {
     }
   }
 
-  Future<List<Products>> fetchFProduct() async {
-    HTTPResponseModel res = await _productRepository.fProduct();
+  Future<List<Products>> getProducts() async {
+    HTTPResponseModel res = await _productRepository.getProduct();
     if (HTTPResponseModel.isApiCallSuccess(res)) {
-      List<Products> featureProductList = List<Products>.from(
-          res.data['products'].map((item) => Products.fromJson(item)));
+      List<Products> getProductList =
+          List<Products>.from(res.data.map((item) => Products.fromJson(item)));
       notifyListeners();
-      return featureProductList;
+      return getProductList;
     } else {
       return [];
     }
@@ -464,7 +665,6 @@ class ProductProvider extends BaseModel {
     }
   }
 
-
   setMyBrand() async {
     if (brand == null) {
       brand = fetchBrand();
@@ -479,11 +679,11 @@ class ProductProvider extends BaseModel {
     }
   }
 
-  setMyFeatureProduct() async {
-    //  if (fProducts == null) {
-    fProducts = fetchFProduct();
-    notifyListeners();
-    // }
+  setMyProduct() async {
+    if (products == null) {
+      products = getProducts();
+      notifyListeners();
+    }
   }
 
   setMyNewProduct() async {
@@ -603,8 +803,7 @@ class ProductProvider extends BaseModel {
   }
 
   loopCartToAuth() async {
-    if (reader.read(RiverpodProvider.accountProvider).currentUser.id ==
-        null) {
+    if (reader.read(RiverpodProvider.accountProvider).currentUser.id == null) {
       fetchCart();
     } else {
       print(offlineCart);
@@ -625,8 +824,7 @@ class ProductProvider extends BaseModel {
     num quantity,
   ) async {
     late HTTPResponseModel res;
-    if (reader.read(RiverpodProvider.accountProvider).currentUser.id !=
-        null) {
+    if (reader.read(RiverpodProvider.accountProvider).currentUser.id != null) {
       res = await _productRepository.addToCart(sku: sku, quantity: quantity);
     } else {
       res = await _productRepository.addToCartGuest(
@@ -653,8 +851,7 @@ class ProductProvider extends BaseModel {
     num cartItemId = 0,
   }) async {
     late HTTPResponseModel res;
-    if (reader.read(RiverpodProvider.accountProvider).currentUser.id !=
-        null) {
+    if (reader.read(RiverpodProvider.accountProvider).currentUser.id != null) {
       res = await _productRepository.removeFromCart(
           id: productId, cartId: cartId, cartItemId: cartItemId);
     } else {
@@ -682,8 +879,7 @@ class ProductProvider extends BaseModel {
     num quantity = 0,
   }) async {
     late HTTPResponseModel res;
-    if (reader.read(RiverpodProvider.accountProvider).currentUser.id !=
-        null) {
+    if (reader.read(RiverpodProvider.accountProvider).currentUser.id != null) {
       res = await _productRepository.updateCart(
           id: productId, cartId: cartId, quantity: quantity);
     } else {
@@ -705,8 +901,7 @@ class ProductProvider extends BaseModel {
 
   fetchCart() async {
     late HTTPResponseModel res;
-    if (reader.read(RiverpodProvider.accountProvider).currentUser.id !=
-        null) {
+    if (reader.read(RiverpodProvider.accountProvider).currentUser.id != null) {
       res = await _productRepository.fetchCart();
     } else {
       res = await _productRepository.fetchCartGuest(
@@ -730,88 +925,4 @@ class ProductProvider extends BaseModel {
       showErrorToast(message: res.message);
     }
   }
-}
-
-//-----------------------------------
-// List<Product> allProducts = [
-//   Product(
-//       title: "Fashion",
-//       imagePath: 'assets/images/basket.png',
-//       destinationPage: fashionScreenRoute),
-//   Product(
-//       title: "Electronic",
-//       imagePath: 'assets/images/laptop.png',
-//       destinationPage: fashionScreenRoute),
-//   Product(
-//       title: "Phones",
-//       imagePath: 'assets/images/laptop.png',
-//       destinationPage: fashionScreenRoute),
-//   Product(
-//       title: "Computers",
-//       imagePath: 'assets/images/laptop.png',
-//       destinationPage: fashionScreenRoute),
-//   Product(
-//       title: "Babies",
-//       imagePath: 'assets/images/laptop.png',
-//       destinationPage: fashionScreenRoute),
-//   Product(
-//       title: "Sports",
-//       imagePath: 'assets/images/laptop.png',
-//       destinationPage: fashionScreenRoute),
-//   Product(
-//       title: "Autopart",
-//       imagePath: 'assets/images/ipad.png',
-//       destinationPage: fashionScreenRoute),
-//   Product(
-//       title: "Gaming",
-//       imagePath: 'assets/images/ipad.png',
-//       destinationPage: fashionScreenRoute),
-// ];
-
-// final productsProvider = Provider((ref) {
-//   return allProducts;
-// });
-
-// for wallet transaction page
-class Transaction {
-  final String statusType;
-  final String price;
-  final String assetImage;
-
-  Transaction({
-    required this.statusType,
-    required this.price,
-    required this.assetImage,
-  });
-}
-
-final transactionProvider =
-    StateNotifierProvider<TransactionNotifier, List<Transaction>>(
-  (ref) => TransactionNotifier(),
-);
-
-class TransactionNotifier extends StateNotifier<List<Transaction>> {
-  TransactionNotifier()
-      : super([
-          // i will replace with actual transction
-          Transaction(
-              statusType: "Fund Wallet",
-              price: "+ ₦100,200",
-              assetImage: Assets.fundTransaction),
-          Transaction(
-            statusType: "Order Purchase for Iphone",
-            price: "- ₦1,200",
-            assetImage: Assets.purchaseTransaction,
-          ),
-          Transaction(
-            statusType: "Order Purchase for Iphone",
-            price: "- ₦1,200",
-            assetImage: Assets.purchaseTransaction,
-          ),
-          Transaction(
-            statusType: "Order Purchase for Iphone",
-            price: "- ₦1,200",
-            assetImage: Assets.purchaseTransaction,
-          ),
-        ]);
 }

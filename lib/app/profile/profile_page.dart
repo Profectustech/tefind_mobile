@@ -12,6 +12,7 @@ import 'package:te_find/app/profile/widgets/edit_dialog.dart';
 import 'package:te_find/app/widgets/custom_button.dart';
 import 'package:te_find/models/SignInResponse.dart';
 import 'package:te_find/providers/account_provider.dart';
+import 'package:te_find/providers/product_provider.dart';
 import 'package:te_find/providers/provider.dart';
 import 'package:te_find/services/navigation/navigator_service.dart';
 import 'package:te_find/services/navigation/route_names.dart';
@@ -34,11 +35,13 @@ class ProfilePage extends ConsumerStatefulWidget {
 
 class ProfilePageState extends ConsumerState<ProfilePage> {
   late AccountProvider accountProvider;
+  late ProductProvider productProvider;
   final NavigatorService _navigation = NavigatorService();
 
   @override
   Widget build(BuildContext context) {
     accountProvider = ref.watch(RiverpodProvider.accountProvider);
+    productProvider = ref.watch(RiverpodProvider.productProvider);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
