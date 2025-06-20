@@ -165,7 +165,7 @@ class _PostTileState extends ConsumerState<ProductGridview>
                               widget.newProducts.name,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: 14.sp,
                                   fontWeight: FontWeight.w500,
                                   color: AppColors.blackTextColor),
                             ),
@@ -174,7 +174,7 @@ class _PostTileState extends ConsumerState<ProductGridview>
                               "₦${widget.newProducts.price}",
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.roboto(
-                                  fontSize: 16,
+                                  fontSize: 16.sp,
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.primaryColor),
                             ),

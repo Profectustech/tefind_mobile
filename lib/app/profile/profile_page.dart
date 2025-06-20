@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:te_find/app/profile/widgets/edit_dialog.dart';
 import 'package:te_find/app/widgets/custom_button.dart';
 import 'package:te_find/models/SignInResponse.dart';
@@ -21,6 +22,7 @@ import 'package:te_find/utils/app_colors.dart';
 import 'package:te_find/utils/helpers.dart';
 import 'package:te_find/utils/storage_util.dart';
 
+import '../../models/Products.dart';
 import '../home/widgets/listings_gride_view.dart';
 import '../home/widgets/product_gridview.dart';
 import '../widgets/custom_profile_listTIle.dart';
@@ -344,7 +346,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
           ),
           Container(
               padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
-              height: 512.h,
+              // height: 512.h,
               width: double.infinity,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
@@ -352,48 +354,147 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
               ),
               child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('My Listings',
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.roboto(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          )),
-                      GestureDetector(
-                        onTap: () {
-                          NavigatorService().navigateTo(listingviewallProducts);
-                        },
-                        child: Text('View All',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: AppColors.primaryColor,
-                              fontWeight: FontWeight.w500,
-                            )),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  GridView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: 4, //productProvider.myProductByMerchant.length,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 7,
-                      crossAxisSpacing: 7,
-                      childAspectRatio: 0.80,
-                    ),
-                    itemBuilder: (context, index) {
-                      //  final product = productProvider.myProductByMerchant[index];
-                      return ListingsGrideView(
-                          //  product: product
-                          ); // Custom widget
+                  FutureBuilder<List<Products>>(
+                    future: productProvider.products,
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return Container(
+                          height: 230,
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Center(
+                            child: Shimmer.fromColors(
+                              direction: ShimmerDirection.ltr,
+                              period: const Duration(seconds: 10),
+                              baseColor: AppColors.greyLight,
+                              highlightColor: AppColors.primaryColor,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: 4,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Container(
+                                      padding: const EdgeInsets.all(10.0),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10.0),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            height: 12.h,
+                                            width: 100.w,
+                                            color: Colors.white,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        );
+                      } else if (snapshot.data!.isNotEmpty) {
+                        final products = snapshot.data!;
+                        return Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left:8.0, right: 8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text('My Listings',
+                                      textAlign: TextAlign.center,
+                                      style: GoogleFonts.roboto(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                      )),
+                                  GestureDetector(
+                                    onTap: () {
+                                      NavigatorService().navigateTo(listingviewallProducts, arguments: products);
+                                    },
+                                    child: Text('View All',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: AppColors.primaryColor,
+                                          fontWeight: FontWeight.w500,
+                                        )),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            GridView.builder(
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: snapshot.data!.length > 4
+                                  ? 4
+                                  : snapshot.data!.length,
+                              gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 7,
+                                crossAxisSpacing: 7,
+                                childAspectRatio: 0.80,
+                              ),
+                              itemBuilder: (context, index) {
+                                Products product = snapshot.data![index];
+                                return ListingsGrideView(
+                                   newProducts: product
+                                );
+                              },
+                            ),
+                          ],
+                        );
+                      } else if (snapshot.hasError) {
+                        return const Center(
+                            child: Column(
+                              children: <Widget>[
+                                SizedBox(
+                                  height: 100,
+                                ),
+                                Text(
+                                  'Network error',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text('Network error'),
+                                SizedBox(
+                                  height: 100,
+                                ),
+                              ],
+                            ));
+                      } else {
+                        return Center(
+                          child: Column(
+                            children: [
+                              const SizedBox(
+                                height: 50,
+                              ),
+                              const Text(
+                                "No products found",
+                                style: TextStyle(
+                                    fontSize: 14, color: AppColors.black),
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(
+                                height: 30,
+                              ),
+                            ],
+                          ),
+                        );
+                      }
                     },
                   ),
                 ],
@@ -402,7 +503,7 @@ class ProfilePageState extends ConsumerState<ProfilePage> {
             height: 10.h,
           ),
           Container(
-            height: 413.h,
+            //height: 413.h,
             width: double.infinity,
             decoration: BoxDecoration(
                 color: AppColors.white,

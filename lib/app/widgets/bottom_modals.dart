@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,7 +13,9 @@ import 'package:te_find/services/navigation/navigator_service.dart';
 import 'package:te_find/services/navigation/route_names.dart';
 import 'package:te_find/utils/assets_manager.dart';
 
+import '../../models/Products.dart';
 import '../../providers/account_provider.dart';
+import '../../providers/provider.dart';
 import '../../utils/app_colors.dart';
 import '../home/filter_page.dart';
 import '../home/widgets/category_filter.dart';
@@ -723,7 +726,7 @@ class BottomModals {
     );
   }
 
-  static listingMoreOption({required BuildContext context}) {
+  static listingMoreOption({required BuildContext context, required Products product, required WidgetRef ref}) {
     return showModalBottomSheet(
       context: context,
       isDismissible: true,
@@ -765,16 +768,26 @@ class BottomModals {
                         ),
                       ),
                       SizedBox(height: 20.h),
-                      Row(
-                        spacing: 10.w,
-                        children: [
-                          Icon(Icons.edit),
-                          Text('Edit Listing',
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.black)),
-                        ],
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                          //ref.read(RiverpodProvider.productProvider).prepareProductForEdit(product);
+                          NavigatorService().navigateTo(
+                            sellItemScreens,
+                            arguments: product,
+                          );
+                        },
+                        child: Row(
+                          spacing: 10.w,
+                          children: [
+                            Icon(Icons.edit),
+                            Text('Edit Listing',
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    color: AppColors.black)),
+                          ],
+                        ),
                       ),
                       SizedBox(height: 22.h),
                       Row(

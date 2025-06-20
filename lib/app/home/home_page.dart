@@ -12,7 +12,6 @@ import 'package:te_find/app/home/widgets/category_grid.dart';
 import 'package:te_find/app/home/widgets/featured_product_detail.dart';
 import 'package:te_find/app/home/widgets/product_gridview.dart';
 import 'package:te_find/models/Products.dart';
-import 'package:te_find/models/product.dart';
 import 'package:te_find/providers/provider.dart';
 import 'package:te_find/services/navigation/route_names.dart';
 import 'package:te_find/utils/assets_manager.dart';
@@ -238,7 +237,12 @@ class _HomePageState extends ConsumerState<HomePage> {
                         future: productProvider.searchProduct,
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
-                            return Center(child: CircularProgressIndicator());
+                            return Column(
+                              children: [
+                                SizedBox(height: 40.h,),
+                                Center(child: CircularProgressIndicator()),
+                              ],
+                            );
                           } else if (snapshot.data!.isNotEmpty) {
                             return Padding(
                               padding:

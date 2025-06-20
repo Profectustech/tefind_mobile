@@ -8,7 +8,6 @@ import 'package:te_find/models/Products.dart';
 import 'package:te_find/models/WishListModel.dart';
 import 'package:te_find/models/brandListModel.dart';
 import 'package:te_find/models/featured_product_model.dart';
-import 'package:te_find/models/product.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:te_find/models/util_model.dart';
 import 'package:te_find/providers/provider.dart';

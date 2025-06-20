@@ -26,7 +26,7 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:uuid/uuid.dart';
 import '../app/widgets/bottom_modals.dart';
 import '../models/CustomerAddressModel.dart';
-import '../models/PickUpLocationModel.dart';
+
 import 'package:geocoding/geocoding.dart' as Geocoding;
 import 'package:map_location_picker/map_location_picker.dart' as Picker;
 
@@ -46,8 +46,7 @@ class AccountProvider extends BaseModel {
   List<BannerModel>? _bannerList;
   List<BannerModel>? get bannerList => _bannerList;
 
-  List<PickUpLocation>? _pickUpAddress;
-  List<PickUpLocation>? get pickUpAddress => _pickUpAddress;
+
   int? selectedAddressIndex;
   int? selectedPickUpIndex;
   CustomerAddress? _currentLocationAddress;
@@ -75,17 +74,6 @@ class AccountProvider extends BaseModel {
     );
   }
 
-  PickUpLocation getSelectedPickUpAddress(
-      List<PickUpLocation> pickUpAddressList) {
-    if (pickUpAddressList.isEmpty) {
-      return PickUpLocation();
-    }
-    if (selectedPickUpIndex != null &&
-        selectedPickUpIndex! < pickUpAddressList.length) {
-      return pickUpAddressList[selectedPickUpIndex!];
-    }
-    return pickUpAddressList.first;
-  }
 
 // functions for profile pages
   void onTapDetailPage() {
@@ -572,23 +560,6 @@ updateUserprofileImage(
 
 
 
-
-  getPickUpAddress() async {
-    try {
-      HTTPResponseModel result = await _authRepository.getPickUpAddress();
-      if (HTTPResponseModel.isApiCallSuccess(result)) {
-        List<PickUpLocation> pickUpLocation = List<PickUpLocation>.from(
-            result.data.map((item) => PickUpLocation.fromJson(item)));
-        _pickUpAddress = pickUpLocation;
-        notifyListeners();
-        return true;
-      } else {
-        return false;
-      }
-    } catch (e) {
-      return false;
-    }
-  }
 
   TextEditingController sellerFullNameController = TextEditingController();
   TextEditingController sellerUsername = TextEditingController();

@@ -31,7 +31,7 @@ import '../widgets/make_offer_dialog.dart';
 import '../widgets/product_gridview.dart';
 
 // Create a provider to manage the current page index
-final currentIndexProvider = StateProvider<int>((ref) => 0);
+//final currentIndexProvider = StateProvider<int>((ref) => 0);
 
 class ProductDetail extends ConsumerStatefulWidget {
   final Products newProducts;
@@ -71,6 +71,8 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
   final NavigatorService _navigation = NavigatorService();
   late TabController _tabController;
   int quantity = 1;
+  late PageController _pageController;
+  int currentPageIndex = 0;
 
 
   addQuantity() {
@@ -95,11 +97,13 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
   @override
   void initState() {
     super.initState();
+    _pageController = PageController();
     _tabController = TabController(length: 2, vsync: this); // Two tabs
   }
 
   @override
   void dispose() {
+    _pageController.dispose();
     _tabController.dispose();
     super.dispose();
   }
@@ -112,11 +116,11 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
   Widget build(BuildContext context) {
     accountProvider = ref.watch(RiverpodProvider.accountProvider);
     productProvider = ref.watch(RiverpodProvider.productProvider);
-    final currentPageIndex = ref.watch(currentIndexProvider);
+    //final currentPageIndex = ref.watch(currentIndexProvider);
 
     return Scaffold(
       appBar: UtilityAppBar(
-        text: "Product Name",
+        text: widget.newProducts.name,
         centerTitle: false,
         hasActions: false,
       ),
@@ -124,74 +128,109 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
         child: SingleChildScrollView(
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Stack(
-              children: [
-                Container(
-                  height: 300.h,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryColor,
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/gown.png'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                Positioned(
-                  top: 10,
-                  right: 10,
-                  child: Container(
-                    height: 32,
-                    width: 32,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                        boxShadow: []),
-                    child: Center(
-                      child: Icon(
-                        Icons.favorite_border_outlined,
+                Stack(
+                  children: [
+                    // 1. PageView for swiping images
+                    SizedBox(
+                      height: 300.h,
+                      width: double.infinity,
+                      child: PageView.builder(
+                        controller: _pageController,
+                        itemCount: widget.newProducts.images.length,
+                        onPageChanged: (index) {
+                          setState(() {
+                            currentPageIndex = index;
+                          });
+                        },
+                        itemBuilder: (context, index) {
+                          return CachedNetworkImage(
+                            imageUrl: widget.newProducts.images[index] ?? '',
+                            imageBuilder: (context, imageProvider) => Container(
+                              height: 300.h,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: imageProvider,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            placeholder: (context, url) => Center(
+                              child: SizedBox(
+                                width: 30.w,
+                                height: 30.h,
+                                child: const CircularProgressIndicator(
+                                  color: AppColors.primaryColor,
+                                ),
+                              ),
+                            ),
+                            errorWidget: (context, url, error) => Image.asset(
+                              Assets.laptopPowerbank,
+                              height: 130.h,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
+                          );
+                        },
                       ),
                     ),
-                  ),
-                ),
-                Positioned(
-                  bottom: 10,
-                  left: 10,
-                  child: Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),
-                    decoration: BoxDecoration(
-                        color: AppColors.yellow,
-                        borderRadius: BorderRadius.circular(28.r)),
-                    child: Text(
-                      "Good",
-                      overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.roboto(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.white),
+                    Positioned(
+                      top: 10,
+                      right: 10,
+                      child: Container(
+                        height: 32,
+                        width: 32,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Center(
+                          child: Icon(Icons.favorite_border_outlined),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                Positioned(
-                  bottom: 10.h,
-                  left: 170.w,
-                  child: AnimatedSmoothIndicator(
-                    activeIndex: currentPageIndex,
-                    count: 3,
-                    effect: ScrollingDotsEffect(
-                      spacing: 4.0,
-                      dotWidth: 8.0,
-                      dotHeight: 7.0,
-                      strokeWidth: 8,
-                      dotColor: AppColors.grey,
-                      activeDotColor: AppColors.primaryColor,
+                    Positioned(
+                      bottom: 10,
+                      left: 10,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),
+                        decoration: BoxDecoration(
+                          color: AppColors.yellow,
+                          borderRadius: BorderRadius.circular(28.r),
+                        ),
+                        child: Text(
+                          "Good",
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.roboto(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.white,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                    Positioned(
+                      bottom: 10.h,
+                      left: 0,
+                      right: 0,
+                      child: Center(
+                        child: AnimatedSmoothIndicator(
+                          activeIndex: currentPageIndex,
+                          count: widget.newProducts.images.length,
+                          effect: ScrollingDotsEffect(
+                            spacing: 4.0,
+                            dotWidth: 8.0,
+                            dotHeight: 7.0,
+                            strokeWidth: 8,
+                            dotColor: AppColors.grey,
+                            activeDotColor: AppColors.primaryColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            SizedBox(
+                SizedBox(
               height: 5.h,
             ),
             Container(
@@ -209,7 +248,7 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
                       // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "₦45,000",
+                          "₦${widget.newProducts.price}",
                           style: GoogleFonts.roboto(
                               fontSize: 24.sp,
                               fontWeight: FontWeight.w700,
@@ -218,7 +257,7 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
                       ],
                     ),
                     Text(
-                      "Floral Summer Dress",
+                      "${widget.newProducts.name}",
                       style: GoogleFonts.roboto(
                           fontSize: 20.sp,
                           fontWeight: FontWeight.w500,
@@ -246,7 +285,7 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
                           children: [
                             SvgPicture.asset(Assets.timeIcon),
                             Text(
-                              "Posted on ${formatDate("2023-10-01")}",
+                              "Posted on ${formatDate("${widget.newProducts.createdAt}")}",
                               style: GoogleFonts.roboto(
                                   fontSize: 14.sp,
                                   fontWeight: FontWeight.w400,
@@ -401,7 +440,7 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
                       if (isDescriptionExpanded) ...[
                         SizedBox(height: 16.h),
                         Text(
-                          'Beautiful floral summer dress perfect for casual outings or beach days. The vibrant floral pattern adds a touch of elegance to this comfortable piece. ',
+                          widget.newProducts.description,
                           style: GoogleFonts.roboto(
                               color: AppColors.lightTextBlack),
                         ),
@@ -528,7 +567,7 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "Amara Johnson",
+                                 widget.newProducts.createdBy,//  "Amara Johnson",
                                   style: GoogleFonts.roboto(
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.w500,
@@ -543,18 +582,20 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
                                 // Stars
                                 Row(
                                   children: List.generate(5, (index) {
-                                    if (index < 4) {
-                                      return const Icon(Icons.star,
-                                          color: Colors.amber, size: 18);
+                                    double rating = widget.newProducts.rating.toDouble();
+                                    if (index < rating.floor()) {
+                                      return const Icon(Icons.star, color: Colors.amber, size: 18); // full star
+                                    } else if (index < rating && rating - index >= 0.5) {
+                                      return const Icon(Icons.star_half, color: Colors.amber, size: 18); // half star
                                     } else {
-                                      return const Icon(Icons.star_half,
-                                          color: Colors.amber, size: 18);
+                                      return const Icon(Icons.star_border, color: Colors.amber, size: 18); // empty star
                                     }
                                   }),
                                 ),
-                                const SizedBox(width: 4),
+
+                                 SizedBox(width: 4.h),
                                 Text(
-                                  '4.8',
+                                  widget.newProducts.rating.toString(),
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
@@ -623,7 +664,7 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "87",
+                             widget.newProducts.stock.toString(),// "87",
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
@@ -852,7 +893,7 @@ class _ProductDetailState extends ConsumerState<ProductDetail>
           children: [
             Expanded(
               child: GestureDetector(
-                onTap: () => showMakeOfferDialog(context),
+                onTap: () => showMakeOfferDialog(context, widget.newProducts),
                 child: Container(
                   decoration: BoxDecoration(
                     color: AppColors.primaryColor,

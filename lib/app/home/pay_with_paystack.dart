@@ -9,7 +9,6 @@ import 'package:te_find/app/widgets/custom_bottom_sheet.dart';
 import 'package:te_find/app/widgets/custom_button.dart';
 import 'package:te_find/app/widgets/custom_text_form_field.dart';
 import 'package:te_find/app/widgets/feature_widget.dart';
-import 'package:te_find/models/product.dart';
 import 'package:te_find/providers/app_nav_notifier.dart';
 import 'package:te_find/providers/provider.dart';
 import 'package:te_find/services/navigation/route_names.dart';

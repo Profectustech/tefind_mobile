@@ -14,16 +14,16 @@ import 'package:te_find/providers/provider.dart';
 import 'package:te_find/services/navigation/route_names.dart';
 import 'package:te_find/utils/app_colors.dart';
 import 'package:te_find/utils/assets_manager.dart';
-import 'package:te_find/utils/helpers.dart';
+
 import '../../../services/navigation/navigator_service.dart';
 import '../../widgets/global.dart';
 
 class ListingsGrideView extends ConsumerStatefulWidget {
   ListingsGrideView({
     super.key,
-    //  required this.newProducts,
+      required this.newProducts,
   });
-  // final Products newProducts;
+   final Products newProducts;
   @override
   ConsumerState<ListingsGrideView> createState() => _PostTileState();
 }
@@ -88,7 +88,7 @@ class _PostTileState extends ConsumerState<ListingsGrideView>
           onTap: () {
             NavigatorService().navigateTo(
               productDetailScreenRoute,
-              // arguments: widget.newProducts,
+               arguments: widget.newProducts,
             );
             // Navigator.push(context,
             //     MaterialPageRoute(builder: (context) => ProductDetail()));
@@ -114,17 +114,45 @@ class _PostTileState extends ConsumerState<ListingsGrideView>
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        height: 140.h,
-                        //    width: 240.w,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(12),
-                              topRight: Radius.circular(12)),
-                          color: AppColors.primaryColor,
-                          image: DecorationImage(
-                            image: AssetImage('assets/images/cloth.png'),
-                            fit: BoxFit.cover,
+                      CachedNetworkImage(
+                        // imageUrl:
+                        //     widget.newProducts.imageUrls?[0].localUrl ?? "",
+                        imageUrl: widget.newProducts.images?.isNotEmpty ??
+                            false
+                            ? widget.newProducts.images[0] ?? ""
+                            : "",
+                        imageBuilder: (context, imageProvider) => ClipRRect(
+                          borderRadius: BorderRadius.circular(15.r),
+                          child: Container(
+                            height: 140.h,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: imageProvider,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                        placeholder: (context, url) => Container(
+                          width: double.infinity, // 50.w,
+                          height: 140.h,
+                          child: Center(
+                            child: SizedBox(
+                              width: 30.w,
+                              height: 30.h,
+                              child: const CircularProgressIndicator(
+                                color: AppColors.primaryColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => ClipRRect(
+                          borderRadius: BorderRadius.circular(15.r),
+                          child: Image.asset(
+                            Assets.laptopPowerbank,
+                            height: 130.h,
+                            width: double.infinity,
                           ),
                         ),
                       ),
@@ -135,25 +163,25 @@ class _PostTileState extends ConsumerState<ListingsGrideView>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Luxury Leather Handbag",
+                              widget.newProducts.name,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: 14.sp,
                                   fontWeight: FontWeight.w500,
                                   color: AppColors.blackTextColor),
                             ),
                             SizedBox(height: 2.h),
                             Text(
-                              "₦18,000",
+                              "₦${widget.newProducts.price}",
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.roboto(
-                                  fontSize: 16,
+                                  fontSize: 16.sp,
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.primaryColor),
                             ),
                             SizedBox(height: 2.h),
                             Text(
-                              "2d ago",
+                              "${formatDate("${widget.newProducts.createdAt}")}",
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.roboto(
                                   fontSize: 12,
@@ -189,7 +217,7 @@ class _PostTileState extends ConsumerState<ListingsGrideView>
                     right: 8,
                     child:  InkWell(
                       onTap: (){
-                        BottomModals.listingMoreOption(context: context);
+                        BottomModals.listingMoreOption(context: context, product: widget.newProducts, ref: ref );
                         // _controller.forward(from: 0.0);
                       },
                       child: Container(

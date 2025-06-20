@@ -31,6 +31,7 @@ class NetworkHelper {
     Map<String, dynamic>? body,
     Map<String, String>? headers,
     bool showError = true,
+    bool isFormData = false,
   }) async {
     debugPrint('URL:: ${AppConstants.kBaseUrl + url}, body:: ${body}');
     _dio.options.baseUrl = AppConstants.kBaseUrl;
@@ -44,7 +45,7 @@ class NetworkHelper {
     print('token: $token');
 
     var kHeader = {
-      //'Content-Type': 'application/json',
+      'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
     };

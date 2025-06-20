@@ -568,7 +568,7 @@ class _FeaturedProductDetailState extends ConsumerState<FeaturedProductDetail>
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(bottom: 30.0, left: 20, right: 20),
         child: GestureDetector(
-          onTap: () => showMakeOfferDialog(context),
+        //  onTap: () => showMakeOfferDialog(context),
           child: Container(
             decoration: BoxDecoration(
               color: AppColors.primaryColor,

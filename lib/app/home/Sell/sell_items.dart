@@ -22,6 +22,10 @@ import '../../../models/gender_category_model.dart';
 import '../../../utils/app_colors.dart';
 import '../../widgets/currency_formater.dart';
 import '../../widgets/custom_text_form_field.dart';
+import 'package:dio/dio.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart';
+import 'dart:io';
 
 class SellItems extends ConsumerStatefulWidget {
   final Products? product;
@@ -119,12 +123,13 @@ class _SellItemsState extends ConsumerState<SellItems> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
+    Future.microtask(() async {
       productProvider.isEditMode = widget.product != null;
       if (productProvider.isEditMode) {
-        // Fill the fields from the product
-        selectedImages = widget.product!.images.map((url) => File(url)).toList();
         final product = widget.product!;
+
+        productProvider.selectedImages = await productProvider.downloadProductImages(product.images);
+      //  final product = widget.product!;
         productProvider.productDescriptionController.text = product.description;
         productProvider.productPriceController.text = product.price.toString();
         productProvider.productAmountInStockController.text = product.stock.toString();
@@ -137,28 +142,10 @@ class _SellItemsState extends ConsumerState<SellItems> {
         // productProvider.selectedGender = productProvider.genderData.firstWhereOrNull((g) => g.id == product.);
         // productProvider.selectedCategory = productProvider.selectedGender?.categories.firstWhereOrNull((c) => c.id == product.category);
         // productProvider.selectedSubCategory = productProvider.selectedCategory?.subcategories.firstWhereOrNull((s) => s.id == product.subCategory);
+
       }
-      productProvider.getGenderCategories();
       productProvider.getCategoriesByHierarchy();
     });
-  }
-
-  List<File> selectedImages = [];
-  final ImagePicker _picker = ImagePicker();
-
-  Future<void> takePicture() async {
-    final XFile? pickedFile =
-        await _picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null && selectedImages.length < 6) {
-      setState(() {
-        selectedImages.add(File(pickedFile.path));
-      });
-    } else if (selectedImages.length >= 6) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        showErrorToast(message: 'You can only select up to 6 images.') as SnackBar,
-      );
-    }
   }
 
 
@@ -181,12 +168,17 @@ class _SellItemsState extends ConsumerState<SellItems> {
               GoogleFonts.roboto(fontSize: 16.sp, fontWeight: FontWeight.w600),
         ),
         actions: [
-          Text(
-            'Cancel',
-            style: GoogleFonts.roboto(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
-                color: AppColors.grey),
+          GestureDetector(
+            onTap: (){
+              Navigator.pop(context);
+            },
+            child: Text(
+              'Cancel',
+              style: GoogleFonts.roboto(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.grey),
+            ),
           ),
           SizedBox(
             width: 5.w,
@@ -212,7 +204,7 @@ class _SellItemsState extends ConsumerState<SellItems> {
                     ),
                     SizedBox(width: 5.w),
                     Text(
-                      '(${selectedImages.length}/6)',
+                      '(${productProvider.selectedImages.length}/6)',
                       style: GoogleFonts.roboto(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
@@ -224,7 +216,7 @@ class _SellItemsState extends ConsumerState<SellItems> {
                 SizedBox(height: 20.h),
                 GestureDetector(
                   onTap: () {
-                    takePicture();
+                    productProvider.takePicture();
                   },
                   child: Container(
                     height: 160.h,
@@ -276,12 +268,12 @@ class _SellItemsState extends ConsumerState<SellItems> {
                 ),
                 SizedBox(height: 10.h),
 
-                selectedImages.isNotEmpty
+                productProvider.selectedImages.isNotEmpty
                     ? SizedBox(
                         height: 80.h,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount: selectedImages.length,
+                          itemCount: productProvider.selectedImages.length,
                           itemBuilder: (context, index) {
                             return Stack(
                               children: [
@@ -292,7 +284,7 @@ class _SellItemsState extends ConsumerState<SellItems> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8),
                                     image: DecorationImage(
-                                      image: FileImage(selectedImages[index]),
+                                      image: FileImage(productProvider.selectedImages[index]),
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -303,7 +295,7 @@ class _SellItemsState extends ConsumerState<SellItems> {
                                   child: GestureDetector(
                                     onTap: () {
                                       setState(() {
-                                        selectedImages.removeAt(index);
+                                        productProvider.selectedImages.removeAt(index);
                                       });
                                     },
                                     child: Container(
@@ -855,11 +847,11 @@ class _SellItemsState extends ConsumerState<SellItems> {
                   onPressed: () async {
                     if (productProvider.isEditMode) {
                       await productProvider.updateProductListing(
-                        productId: widget.product!.id,
-                        images: selectedImages,
+                       // productId: widget.product!.id,
+                        images: productProvider.selectedImages,
                       );
                     } else {
-                      await productProvider.createProductListings(selectedImages);
+                      await productProvider.createProductListings(productProvider.selectedImages);
                     }
                   },
                   label:   productProvider.isEditMode ? 'Update Listing' : 'Post Listing',

@@ -34,7 +34,7 @@ class ProductRepository {
 
   Future<HTTPResponseModel> createProductListings(Map<String, dynamic> body) async {
     return await _networkHelper.runApi(
-      type: ApiRequestType.formData,
+      type: ApiRequestType.formDataPatch,
       url: "product",
       body: body,
     );
@@ -42,7 +42,7 @@ class ProductRepository {
 
   Future<HTTPResponseModel> updateProduct(Map<String, dynamic> body) async {
     return await _networkHelper.runApi(
-      type: ApiRequestType.patch,
+      type: ApiRequestType.formData,
       url: "product",
       body: body,
     );
@@ -79,6 +79,13 @@ class ProductRepository {
     return await _networkHelper.runApi(
       type: ApiRequestType.get,
       url: "product",
+      //"product/featured-products?pageSize=5&pageNumber=1&searchValue=&channel=default&locale=en",
+    );
+  }
+  Future<HTTPResponseModel> getDetailedProduct(productId) async {
+    return await _networkHelper.runApi(
+      type: ApiRequestType.get,
+      url: "product/:$productId",
       //"product/featured-products?pageSize=5&pageNumber=1&searchValue=&channel=default&locale=en",
     );
   }

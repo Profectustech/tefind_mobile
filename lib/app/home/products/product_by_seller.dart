@@ -361,9 +361,9 @@ class _ProductBySellerState extends ConsumerState<ProductBySeller> {
                                 ),
                                 itemBuilder: (context, index) {
                                   //  final product = productProvider.myProductByMerchant[index];
-                                  return ListingsGrideView(
-                                      //  product: product
-                                      ); // Custom widget
+                                  // return ListingsGrideView(
+                                  //     //  product: product
+                                  //     ); // Custom widget
                                 },
                               ),
                             ),

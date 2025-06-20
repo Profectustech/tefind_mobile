@@ -1,14 +1,17 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../models/Products.dart';
 import '../../../utils/app_colors.dart';
+import '../../../utils/assets_manager.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_text_form_field.dart';
 
 
-void showMakeOfferDialog(BuildContext context) {
+void showMakeOfferDialog(BuildContext context, Products product) {
   showDialog(
     context: context,
     barrierDismissible: false,
@@ -39,15 +42,45 @@ void showMakeOfferDialog(BuildContext context) {
               SizedBox(height: 12.h),
               Row(
                 children: [
-                  Container(
-                    height: 64.h,
-                    width: 64.w,
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryColor,
+                  CachedNetworkImage(
+                    // imageUrl:
+                    //     widget.newProducts.imageUrls?[0].localUrl ?? "",
+                    imageUrl: product.images?.isNotEmpty ??
+                        false
+                        ? product.images[0] ?? ""
+                        : "",
+                    imageBuilder: (context, imageProvider) => ClipRRect(
                       borderRadius: BorderRadius.circular(8.r),
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/gown.png'),
-                        fit: BoxFit.cover,
+                      child: Container(
+                        height: 60.h,
+                        width: 60.w,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
+                    placeholder: (context, url) => Container(
+                      height: 60.h,
+                      width: 60.w,
+                      child: Center(
+                        child: SizedBox(
+                          width: 30.w,
+                          height: 30.h,
+                          child: const CircularProgressIndicator(
+                            color: AppColors.primaryColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                    errorWidget: (context, url, error) => ClipRRect(
+                      borderRadius: BorderRadius.circular(185.r),
+                      child: Image.asset(
+                        Assets.laptopPowerbank,
+                        height: 60.h,
+                        width: 60.w,
                       ),
                     ),
                   ),
@@ -56,7 +89,7 @@ void showMakeOfferDialog(BuildContext context) {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Floral Summer Dress",
+                        product.name,
                         style: GoogleFonts.roboto(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w500,
@@ -73,7 +106,7 @@ void showMakeOfferDialog(BuildContext context) {
                                 color: AppColors.grey),
                           ),
                           Text(
-                            "₦45,000",
+                            "₦${product.price}",
                             style: GoogleFonts.roboto(
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.w500,
@@ -100,7 +133,7 @@ void showMakeOfferDialog(BuildContext context) {
                 decoration: InputDecoration(
                   fillColor: Color.fromRGBO(249, 250, 251, 1),
                   hintStyle:
-                  TextStyle(color: AppColors.grey, fontSize: 12.sp),
+                  GoogleFonts.roboto(color: AppColors.grey, fontSize: 12.sp),
                   hintText: 'Enter amount in Naira',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),

@@ -30,6 +30,7 @@ import 'package:te_find/app/profile/wishlight_page.dart';
 import 'package:te_find/app/sign_up/set_password.dart';
 import 'package:te_find/app/sign_up/signup.dart';
 import 'package:te_find/app/sign_up/verify_account.dart';
+import 'package:te_find/models/Products.dart';
 import 'package:te_find/services/analytics_service.dart';
 import 'package:te_find/services/navigation/route_names.dart';
 import 'package:te_find/utils/base_model.dart';
@@ -148,7 +149,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
              // product: product
           ));
     case productDetailScreenRoute:
-     Products newProducts = settings.arguments! as Products;
+      Products newProducts = settings.arguments! as Products;
       return _getPageRoute(
         routeName: settings.name!,
         viewToShow: ProductDetail(
@@ -172,11 +173,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         ),
       );
       case sellItemScreens:
-  //    Products newProducts = settings.arguments! as Products;
+     Products newProducts = settings.arguments! as Products;
       return _getPageRoute(
         routeName: settings.name!,
         viewToShow: SellItems(
-         // newProducts: newProducts,
+          product: newProducts,
         ),
       );
       case orderDetailScreen:
@@ -205,11 +206,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         ),
       );
       case listingviewallProducts:
-  //    Products newProducts = settings.arguments! as Products;
+        List<Products> newProducts = settings.arguments! as List<Products>;
       return _getPageRoute(
         routeName: settings.name!,
         viewToShow: ListingViewAll(
-         // newProducts: newProducts,
+          newProducts: newProducts,
         ),
       );
       case favouriteScreen:

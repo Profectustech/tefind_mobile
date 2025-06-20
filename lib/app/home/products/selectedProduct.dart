@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:te_find/models/product.dart';
 import 'package:te_find/providers/provider.dart';
 import 'package:te_find/services/navigation/route_names.dart';
 import 'package:te_find/utils/progress_bar_manager/utility_app_bar.dart';

@@ -4,6 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:te_find/app/home/products/product_detail.dart';
 import 'package:te_find/models/CartModel.dart';
 import 'package:te_find/models/CategoriesModel.dart';
 import 'package:te_find/models/MarketListModel.dart';
@@ -21,8 +23,14 @@ import 'package:te_find/utils/base_model.dart';
 import 'package:te_find/utils/enums.dart';
 import 'package:te_find/utils/helpers.dart';
 import '../models/BestSellerModel.dart';
-import '../models/categoryByHierachy.dart';
+import 'package:te_find/models/categoryByHierachy.dart' as hierarchy;
 import '../models/gender_category_model.dart';
+import '../models/product_details_model.dart';
+import 'package:path_provider/path_provider.dart'; // For getTemporaryDirectory()
+import 'package:path/path.dart'; // For basename()
+import 'dart:io'; // For File
+import 'package:dio/dio.dart'; // Since you're using Dio to download images
+
 
 class ProductProvider extends BaseModel {
   final Ref reader;
@@ -40,6 +48,7 @@ class ProductProvider extends BaseModel {
   List<Products>? discountedProduct = [];
   List<WishListModel>? wishListProduct = [];
   Future<List<Products>>? fashionProduct;
+  Future<List<ProductDetailModel>>? productDetails;
   Future<List<Products>>? electronicProducts;
   Future<List<Products>>? searchProduct;
   Future<List<Products>>? selectedProduct;
@@ -277,48 +286,48 @@ class ProductProvider extends BaseModel {
     // }
   }
 
-  CategoryGender? selectedGender;
-  Category? selectedCategory;
-  SubCategory? selectedSubCategory;
+  hierarchy.CategoryGender? selectedGender;
+  hierarchy.Category? selectedCategory;
+  hierarchy.SubCategory? selectedSubCategory;
 
-  List<CategoryGender> _genderData = [];
+  List<hierarchy.CategoryGender> _genderData = [];
 
-  List<CategoryGender> get genderData => _genderData;
+  List<hierarchy.CategoryGender> get genderData => _genderData;
 
-  void setGenderData(List<CategoryGender> data) {
+  void setGenderData(List<hierarchy.CategoryGender> data) {
     _genderData = data;
     notifyListeners();
   }
 
-  void selectGender(CategoryGender gender) {
+  void selectGender(hierarchy.CategoryGender gender) {
     selectedGender = gender;
     selectedCategory = null;
     selectedSubCategory = null;
     notifyListeners();
   }
 
-  void selectCategory(Category category) {
+  void selectCategory(hierarchy.Category category) {
     selectedCategory = category;
     selectedSubCategory = null;
     notifyListeners();
   }
 
-  void selectSubCategory(SubCategory sub) {
+  void selectSubCategory(hierarchy.SubCategory sub) {
     selectedSubCategory = sub;
     notifyListeners();
   }
 
-  List<Category> get category => selectedGender?.categories ?? [];
-  List<SubCategory> get subcategories => selectedCategory?.subcategories ?? [];
-  Future<List<CategoryGender>> getCategoriesByHierarchy() async {
+  List<hierarchy.Category> get category => selectedGender?.categories ?? [];
+  List<hierarchy.SubCategory> get subcategories => selectedCategory?.subcategories ?? [];
+  Future<List<hierarchy.CategoryGender>> getCategoriesByHierarchy() async {
     try {
       final HTTPResponseModel res =
           await _productRepository.categoryByHirachy();
 
       if (HTTPResponseModel.isApiCallSuccess(res)) {
-        final List<CategoryGender> genderCategoryList =
-            List<CategoryGender>.from(
-          res.data.map((item) => CategoryGender.fromJson(item)),
+        final List<hierarchy.CategoryGender> genderCategoryList =
+            List<hierarchy.CategoryGender>.from(
+          res.data.map((item) => hierarchy.CategoryGender.fromJson(item)),
         );
         setGenderData(genderCategoryList);
         return genderCategoryList;
@@ -400,9 +409,99 @@ class ProductProvider extends BaseModel {
     }
   }
 
+
+  List<File> selectedImages = [];
+  final ImagePicker _picker = ImagePicker();
+  Future<void> takePicture() async {
+    final XFile? pickedFile =
+    await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null && selectedImages.length < 6) {
+        selectedImages.add(File(pickedFile.path));
+      notifyListeners();
+    } else if (selectedImages.length >= 6) {
+      ScaffoldMessenger.of(NavigatorService().navigationKey!.currentState as BuildContext).showSnackBar(
+        showErrorToast(message: 'You can only select up to 6 images.') as SnackBar,
+      );
+    }
+  }
+
+
+//
+// String? editingProduct;
+//   Future<void> prepareProductForEdit(Products product) async {
+//     isEditMode = true;
+//     editingProduct = product as String;
+//     selectedImages.clear();
+//     notifyListeners();
+//
+//     final tempDir = await getTemporaryDirectory();
+//     List<File> downloadedFiles = [];
+//
+//     for (String url in product.images) {
+//       try {
+//         String fileName = basename(url);
+//         File file = File('${tempDir.path}/$fileName');
+//
+//         await Dio().download(url, file.path);
+//         downloadedFiles.add(file);
+//       } catch (e) {
+//         print("Image download failed: $e");
+//       }
+//     }
+//
+//     selectedImages = downloadedFiles;
+//     notifyListeners();
+//
+//     NavigatorService().navigateTo(sellItemScreens, arguments: product);
+//   }
+
+
+
   bool isEditMode = false;
+  // Future<void> updateProductListing({
+  //   required List<File> images,
+  // }) async {
+  //   try {
+  //     setBusy(true);
+  //
+  //     // Convert files to MultipartFile
+  //     List<MultipartFile> multiPartFiles = await prepareMultipleFiles(images);
+  //
+  //     // Create FormData
+  //     final formData = FormData.fromMap({
+  //       "name": productNameController.text,
+  //       "description": productDescriptionController.text,
+  //       "gender": selectedGender?.id,
+  //       "color": selectedColor,
+  //       "price": double.tryParse(
+  //         productPriceController.text.replaceAll(RegExp(r'[^\d.]'), ''),
+  //       ) ??
+  //           0.0,
+  //       "category": selectedCategory?.id,
+  //       "sub_category": selectedSubCategory?.id,
+  //       "condition": selectedSubCategory?.id,
+  //       "size": selectedSubCategory?.id,
+  //       "stock": productAmountInStockController.text,
+  //       "images": multiPartFiles,
+  //     });
+  //
+  //     // Send FormData to repository
+  //     final response = await _productRepository.updateProduct(formData as Map<String, dynamic>);
+  //
+  //     if (HTTPResponseModel.isApiCallSuccess(response)) {
+  //       showToast(message: "Product updated successfully");
+  //     } else {
+  //       showErrorToast(message: response.all['message']);
+  //     }
+  //   } catch (e) {
+  //     showErrorToast(message: e.toString());
+  //   } finally {
+  //     setBusy(false);
+  //   }
+  // }
+
   Future<void> updateProductListing({
-    required String productId,
+   // required String productId,
     required List<File> images,
   }) async {
     try {
@@ -413,7 +512,9 @@ class ProductProvider extends BaseModel {
         "description": productDescriptionController.text,
         "gender": selectedGender?.id,
         "color": selectedColor,
-        "price": productPriceController.text,
+        "price": double.tryParse(productPriceController.text
+            .replaceAll(RegExp(r'[^\d.]'), '')) ??
+            0.0,
         "category": selectedCategory?.id,
         "sub_category": selectedSubCategory?.id,
         "condition": selectedSubCategory?.id,
@@ -433,6 +534,31 @@ class ProductProvider extends BaseModel {
       setBusy(false);
     }
   }
+
+  Future<List<File>> downloadProductImages(List<String> imageUrls) async {
+    setBusy(true);
+    final tempDir = await getTemporaryDirectory();
+    List<File> downloadedFiles = [];
+    for (String url in imageUrls) {
+      try {
+        String fileName = basename(url);
+        File file = File('${tempDir.path}/$fileName');
+        await Dio().download(url, file.path);
+        downloadedFiles.add(file);
+      } catch (e) {
+        print("Failed to download image: $e");
+      }
+    }
+    setBusy(false);
+    return downloadedFiles;
+  }
+
+
+
+
+
+
+
 
   //
   // Future<void> loadProductImagesForEditing(Products product) async {
@@ -509,6 +635,18 @@ class ProductProvider extends BaseModel {
           List<Products>.from(res.data.map((item) => Products.fromJson(item)));
       notifyListeners();
       return getProductList;
+    } else {
+      return [];
+    }
+  }
+
+  Future<List<ProductDetailModel>> getDetailedProducts(productId) async {
+    HTTPResponseModel res = await _productRepository.getDetailedProduct(productId);
+    if (HTTPResponseModel.isApiCallSuccess(res)) {
+      List<ProductDetailModel> getProductdetails =
+          List<ProductDetailModel>.from(res.data.map((item) => ProductDetailModel.fromJson(item)));
+      notifyListeners();
+      return getProductdetails;
     } else {
       return [];
     }
@@ -750,9 +888,9 @@ class ProductProvider extends BaseModel {
     }
   }
 
-  setMyMarketProduct(String marketID) async {
+  setMyDetailedProduct(String productId) async {
     try {
-      marketProduct = selectedMarketProduct(marketID);
+      productDetails = getDetailedProducts(productId);
       notifyListeners();
     } catch (e) {
       print(e);
